@@ -3,11 +3,11 @@ import '../../index.css'
 
 const Navbar = () => {
   return (
-    <div class="navbar-section">
-      <p>This is navbar component.</p>
+    <div class="each-section" id="navbar">
+      <p>Logo Here</p>
       <div>
-        <button>Sign In</button>
-        <button>Sign Up</button>
+        <button class="black-button">Sign In</button>
+        <button class="black-button">Sign Up</button>
       </div>
     </div>
   )

@@ -1,18 +1,19 @@
 import React from 'react';
-import '../../index.css'
+import image from "../../images/landing1.jpg";
 
 const HeroSection = () => {
   return (
-    <>
-      <p>This is Hero Section component.</p>
+    <div class="each-section" id="hero-section">
+      <div>
       <h1>Your next job is just around the corner</h1>
       <p>Offer your skills or hire helping hands, right here in your neighborhood</p>
       <div>
-        <button>Find jobs</button>
-        <button>Post a job</button>
+        <button class="black-button">Find jobs</button>
+        <button class="white-button">Post a job</button>
+      </div>        
       </div>
-      <img src="none"></img>
-    </>
+      <img src={image} alt="computer" width="1200"/>
+    </div>
   )
 }
 
