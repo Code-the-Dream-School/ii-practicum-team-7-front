@@ -7,7 +7,7 @@ const HeroSection = () => {
       <div>
       <h1>Your next job is just around the corner</h1>
       <p>Offer your skills or hire helping hands, right here in your neighborhood</p>
-      <div>
+      <div class="button-row">
         <button class="black-button">Find jobs</button>
         <button class="white-button">Post a job</button>
       </div>        
