@@ -1,63 +1,52 @@
-import React,{useState} from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import NavBar from "./NavBar";
 
 function LoginForm() {
-    const [formData, setFormData] = useState({ email: '', password: '' });
+    const [formData, setFormData] = useState({
+        email: '',
+        password: ''
+    });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
     const handleSubmit = async (e) => {
-        e.preventDefualt()
-        setLoading(true)
-        setError('')
-       try {
-        const response = await fetch('FAKE URL', {
-            method: 'POST',
-            headers: {
-                'conetnt -type' : 'application/json'
-            },
-            body: JSON.stringify(formData)
-        });
+        e.preventDefault();
 
-        const result = await response.json()
-        if (!response.ok) throw new Error(response.message || 'Failed to Log In')
-            localStorage.setItem('authToken', result)
-            fetchUserData();
-       } catch (error) {
-            setError(error.message)
-        } finally {
-            setLoading(false)
-        }
-    }
+        setLoading(true);
+        setError('');
 
-    const fetchUserData = async () => {
-        const token = localStorage.getItem("authToken");
-        if (token) {
-            const response = await fetch('FAKE URL', {
-                method: 'GET',
+        try {
+            const response = await fetch('YOUR_API_URL', {
+                method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
                 },
+                body: JSON.stringify(formData),
             });
-            const userData = await response.json();
-            console.log("User data fetched:", userData);
-            // Store or display user data as needed
-        }
-    };
 
-    const handleLogout = () => {
-        localStorage.removeItem("authToken");
-        console.log("User logged out");
-        // Redirect to login page or handle post-logout behavior
-        window.location.href = "/login";
+            const result = await response.json();
+
+            if (!response.ok) throw new Error(result.message || 'Failed to log in');
+
+            localStorage.setItem('authToken', result.token);
+
+            navigate('/dashboard');
+        } catch (error) {
+            setError(error.message);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
         <>
+            <NavBar />
             <form onSubmit={handleSubmit}>
                 <h2>Login</h2>
                 <input
@@ -77,16 +66,15 @@ function LoginForm() {
                     required
                 />
                 <button type="submit" disabled={loading}>
-                    {loading ? 'Logging in...' : 'Login'}
+                    {loading ? 'Logging In...' : 'Log In'}
                 </button>
                 {error && <p>{error}</p>}
             </form>
-            <button onClick={handleLogout}>Logout</button>
             <p>
-                Dont have an account? <Link to='/register'>Register Here</Link>
+                Don't have an account? <Link to='/register'>Register here</Link>
             </p>
         </>
-    )
+    );
 }
 
-export default LoginForm
+export default LoginForm;
