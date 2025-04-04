@@ -3,7 +3,7 @@ import '../../index.css'
 
 const TestimonialSection = () => {
   return (
-    <div class="each-section">
+    <div class="each-section" id="testimonial-section">
       
       <h3>"An Absolute Game-Changer for My Career!"</h3>
 

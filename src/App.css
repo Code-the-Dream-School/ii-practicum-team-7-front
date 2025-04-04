@@ -18,15 +18,27 @@ h1 {
 }
 
 h2 {
-  font-size: 40px;
+  font-size: 50px;
 }
 
+h3 {
+  font-size: 25px;
+}
+
+p {
+  font-size: 20px;
+}
+
+button:hover {
+  cursor:pointer;
+}
 .each-section {
   height: 500px;
   width: 1200px;
   background-color:white;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   padding: 25px 0px;
 }
@@ -105,4 +117,37 @@ h2 {
 
 #each-how-section-2 div img {
   height: 50%;
+  margin-bottom: 20px;
+}
+
+#testimonial-section {
+  background-color: rgb(233, 254, 250);
+  padding: 0px 200px;
+  display: flex;
+  gap: 20px;
+}
+
+#sign-up-section {
+  padding: 0px 200px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 30px;
+  background-color:rgb(137, 235, 202)
+}
+
+#sign-up-field-container {
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+#email-input {
+  font-size:larger;
+  width: 400px;
+  height: 100%;
+  border-style: none;
+  border-bottom: 1px rgb(210, 210, 210) solid;
+  background-color: rgb(137, 235, 202);
 }

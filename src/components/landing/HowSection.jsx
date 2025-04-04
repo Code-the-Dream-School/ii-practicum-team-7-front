@@ -25,7 +25,7 @@ const HowSection = () => {
         </div>
         <div>
           <img src={thirdimage} alt="together"></img>
-          <h3>Connect, Collaborate and Get Things Done</h3>
+          <h3>Connect and Collaborate</h3>
           <p>Work together and complete your project</p>
         </div>
       </div>
