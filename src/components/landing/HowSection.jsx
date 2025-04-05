@@ -1,5 +1,4 @@
 import React from 'react';
-import '../../index.css'
 import firstimage from "../../images/how1.jpg";
 import secondimage from "../../images/how2.jpg";
 import thirdimage from "../../images/how3.jpg";

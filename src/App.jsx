@@ -6,15 +6,12 @@ import HowSection from './components/landing/HowSection.jsx';
 import TestimonialSection from './components/landing/TestimonialSection.jsx';
 import SignUpSection from  './components/landing/SignUpSection.jsx';
 import FooterSection from  './components/landing/FooterSection.jsx';
-
 import './App.css';
 
 const URL = 'http://localhost:8000/api/v1/';
 
 function App() {
 
-  // library.add(fas, fass, fad, fadt, fasds, faTwitter, faFontAwesome, faHatCowboy, faHatChef);
-  
   const [message, setMessage] = useState(''); 
 
   useEffect(() => {
