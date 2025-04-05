@@ -63,12 +63,13 @@ button:hover {
 #navbar, #footer{
   width: 1200px;
   height: 100px;
-  color: red;
+  color: black;
+  background-color: rgb(152, 161, 198);
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: 0px 20px;
+  padding: 0px 30px;
 }
 
 #hero-section {
@@ -150,4 +151,17 @@ button:hover {
   border-style: none;
   border-bottom: 1px rgb(210, 210, 210) solid;
   background-color: rgb(137, 235, 202);
+}
+
+#footer-center-links {
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  font-weight: bold; 
+}
+
+#social-media-icons {
+  display: flex;
+  gap: 10px;
 }
