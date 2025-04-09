@@ -2,47 +2,51 @@ import { useState } from 'react';
 
 function UserInfoForm() {
 
-    // Next to-do: Make form editable
+    //TODO: Connect form to backend routes via POST, GET, PATCH, and DELETE API calls
 
-    // Set state and auto-format for phone number
-    const [phone, setPhone] = useState('');
+    // State management
+    // Using 'profileName' instead of 'name' to avoid conflict with form.name
+    const [formData, setFormData] = useState({
+        profileName: '',
+        email: '',
+        role: '',
+        phone: '',
+        address: '',
+        bio: '',
+        skills: '',
+        image: ''
+    });
 
-    // Possible issue: if user tries to edit in between characters, the cursor jumps to the end
+    // Set + show character limit/remaining characters for bio and skills
+    const maxLength = 250;
+    const remainingBioCharacters = maxLength - formData.bio.length;
+    const remainingSkillsCharacters = maxLength - formData.skills.length;
+
+    // Auto-format phone number
+    // TODO: Fix possible issue: if user tries to input between characters, caret jumps to the end
     const formatPhoneNumber = (value) => {
         const cleanedNum = value.replace(/\D/g, '');
-        let formattedNum = '';
+        let length = cleanedNum.length;
 
-        if (cleanedNum.length === 0) return '';
+        if (length === 0) return '';
 
-        if (cleanedNum.length <= 3) {
-            formattedNum = `(${cleanedNum}`;
-        } else if (cleanedNum.length <= 6) {
-            formattedNum = `(${cleanedNum.slice(0, 3)})${cleanedNum.slice(3)}`;
-        } else if (cleanedNum.length <= 10) {
-            formattedNum = `(${cleanedNum.slice(0, 3)})${cleanedNum.slice(3, 6)}-${cleanedNum.slice(6,10)}`;
-        } else {
-            formattedNum = cleanedNum.slice(0, 10);
+        if (length <= 3) return `${cleanedNum}`;
+        if (length <= 6) return `${cleanedNum.slice(0, 3)}-${cleanedNum.slice(3)}`;
+        return `${cleanedNum.slice(0, 3)}-${cleanedNum.slice(3, 6)}-${cleanedNum.slice(6,10)}`;
+    };
+
+    // Handle form changes
+    const handleInputChange = (event) => {
+        const { name, value } = event.target;
+        let newPhoneValue = value;
+        if (name === 'phone') {
+            newPhoneValue = formatPhoneNumber(value);
         }
-
-        return formattedNum;
+        setFormData(prev => ({
+            ...prev,
+            [name]: name === 'phone' ? newPhoneValue : value
+        }));
     };
-
-    const handlePhoneChange = (event) => {
-        const input = event.target.value;
-        const formattedNum = formatPhoneNumber(input);
-        setPhone(formattedNum);
-    };
-       
-    // Set max length and state management for user description
-    // Shows remaining character limit
-    const maxLength = 250;
-    const [description, setDescription] = useState('');
-
-    const handleDescriptionChange = (event) => {
-        setDescription(event.target.value);
-    };
-
-    const remainingCharacters = maxLength - description.length;
 
     // Handle form submission
     const handleSubmit = (event) => {
@@ -56,56 +60,148 @@ function UserInfoForm() {
     return (
         <>
             <form onSubmit={handleSubmit} id='userInfoForm'>
-                <label htmlFor='firstName'>
-                    First Name:
+                <label htmlFor='profileName'>
+                    Your Name:
                     <span style={{color: 'red' }}>*</span>
-                    </label>
+                </label>
                 <input
-                    id='firstName'
                     type='text'
-                    name='firstName'
+                    id='profileName'
+                    name='profileName'
+                    value={formData.profileName}
+                    onChange={handleInputChange}
                     required
                 />
-                <label htmlFor='lastName'>
-                    Last Name:
+
+                <label htmlFor='email'>
+                    Email:
                     <span style={{color: 'red' }}>*</span>
-                    </label>
+                </label>
                 <input
-                    id='lastName'
-                    type='text'
-                    name='lastName'
-                    required
-                />
-                {/* Adjustments for individual sections + API call? */}
-                <label htmlFor='address'>Address:</label>
-                <input
-                    id='address'
-                    type='text'
-                    name='address'
+                    type='email'
+                    id='email'
+                    name='email'
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    placeholder='you@example.com'
                     autoComplete='yes'
+                    required
                 />
+                
+                <fieldset>
+                    <legend>
+                        Choose Your Role:                        
+                        <span style={{color: 'red' }}>*</span>
+                    </legend>
+
+                    <label htmlFor='jobSeeker'>Job Seeker</label>
+                    <input
+                        type='radio'
+                        id='jobSeeker'
+                        name='role'
+                        value='jobSeeker'
+                        checked={formData.role === 'jobSeeker'}
+                        onChange={handleInputChange}
+                        required
+                    />
+
+                    <label htmlFor='hiring'>Hiring</label>
+                    <input
+                        type='radio'
+                        id='hiring'
+                        name='role'
+                        value='hiring'
+                        checked={formData.role === 'hiring'}
+                        onChange={handleInputChange}
+                    />
+
+                    <label htmlFor='both'>Both: Job Seeker and Hiring</label>
+                    <input
+                        type='radio'
+                        id='both'
+                        name='role'
+                        value='both'
+                        checked={formData.role === 'both'}
+                        onChange={handleInputChange}
+                    />
+                </fieldset>
+
                 <label htmlFor='phone'>Phone Number:</label>
                 <input
+                    type='tel'
                     id='phone'
-                    type='text'
                     name='phone'
-                    value={phone}
-                    placeholder='(xxx)xxx-xxxx'
-                    minLength={13}
-                    maxLength={13}
-                    onChange={handlePhoneChange}
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    placeholder='xxx-xxx-xxxx'
+                    minLength={12}
+                    maxLength={12}
+                    pattern='^\d{3}-\d{3}-\d{4}$'
                     autoComplete='yes'
                 />
-                <label htmlFor='description'>About You:</label>
-                <textarea
-                    id='description'
-                    name='description'
-                    placeholder='Tell the world about yourself!'
-                    maxLength={maxLength}
-                    value={description}
-                    onChange={handleDescriptionChange}
+
+                <label htmlFor='address'>Address:</label>
+                <input
+                    type='text'
+                    id='address'
+                    name='address'
+                    value={formData.address}
+                    onChange={handleInputChange}
+                    autoComplete='yes'
                 />
-                <p style={{color: 'grey'}}>Remaining characters: {remainingCharacters}</p>
+
+                <label htmlFor='bio'>About You:</label>
+                <textarea
+                    id='bio'
+                    name='bio'
+                    placeholder='Tell the world about yourself'
+                    maxLength={maxLength}
+                    value={formData.bio}
+                    onChange={handleInputChange}
+                />
+                <p style={{color: 'grey'}}>Remaining characters: {remainingBioCharacters}</p>
+
+                <label htmlFor='skills'>Skills:</label>
+                <textarea
+                    id='skills'
+                    name='skills'
+                    placeholder='Tell the world what you can do'
+                    maxLength={maxLength}
+                    value={formData.skills}
+                    onChange={handleInputChange}
+                />
+                <p style={{color: 'grey'}}>Remaining characters: {remainingSkillsCharacters}</p>
+
+                <label htmlFor='image'>Profile Image URL:</label>
+                <input
+                    type='url'
+                    id='image'
+                    name='image'
+                    value={formData.image}
+                    onChange={handleInputChange}
+                    // TODO: Adjust field width so placeholder is fully visible?
+                    placeholder='https://example.com/image.png'
+                    pattern='https?:\/\/.*\.(?:png|jpg|jpeg)'
+                    title='Please enter a URL that ends in .png, .jpg, or .jpeg'
+                />
+                <small style={{color: 'grey'}}>Paste a direct image URL (ending in .png, .jpg, or .jpeg). 
+                    You can use a site like
+                    <a href='https://postimages.org'
+                        target='_blank'
+                        rel='noopener noreferrer'
+                        style={{ marginLeft: '4px', color: 'blue' }}>
+                        postimages.org
+                    </a>
+                </small>
+
+                <p>Image Preview:</p>
+                {formData.image && (
+                    <img
+                        src={formData.image}
+                        alt='Image preview'
+                        style={{ maxWidth: '200px', marginTop: '10px', borderRadius: '8px'}}
+                    />
+                )}
 
                 <button type='submit'>Save</button>
             </form>
