@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import NavBar from "./NavBar";
+import { useNavigate, Link } from "react-router-dom";
 
 function LoginForm() {
     const [formData, setFormData] = useState({
@@ -22,7 +21,7 @@ function LoginForm() {
         setError('');
 
         try {
-            const response = await fetch('YOUR_API_URL', {
+            const response = await fetch('http://localhost:8000/api/v1/auth/login', {  
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -46,7 +45,6 @@ function LoginForm() {
 
     return (
         <>
-            <NavBar />
             <form onSubmit={handleSubmit}>
                 <h2>Login</h2>
                 <input
@@ -78,3 +76,4 @@ function LoginForm() {
 }
 
 export default LoginForm;
+

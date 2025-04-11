@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import NavBar from "./NavBar";
+import { Link, useNavigate } from "react-router-dom";
 
 function RegisterForm() {
     const [formData, setFormData] = useState({
@@ -30,7 +28,7 @@ function RegisterForm() {
         setError('');
 
         try {
-            const response = await fetch('YOUR_API_URL', {
+            const response = await fetch('http://localhost:8000/api/v1/auth/register', {  
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -54,7 +52,6 @@ function RegisterForm() {
 
     return (
         <>
-            <NavBar />
             <form onSubmit={handleSubmit}>
                 <h2>Register</h2>
                 <input
