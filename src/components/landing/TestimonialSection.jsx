@@ -65,7 +65,8 @@ const TestimonialSection = () => {
     position: "absolute", 
     top: "45%", 
     left: "100px", 
-    fontSize: "50px"
+    fontSize: "50px",
+    cursor: "pointer"
   }
 
   const rightArrowStyle = {
@@ -74,6 +75,23 @@ const TestimonialSection = () => {
     right: "100px", 
     fontSize: "50px",
     cursor: "pointer"
+  }
+
+  const slideContainerStyle = {
+    display: "flex",
+    transition: "transform 0.5s ease",
+    transform: `translateX(-${currIndex * 800}px)`,
+    width: `${testimonialData.length * 800}px`,
+  }
+
+  const slideStyle = {
+    width: "100%", 
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: "10px"
   }
 
   const dotStyle = {
@@ -103,17 +121,23 @@ const TestimonialSection = () => {
   return (
     <div style={{position: "relative"}} class="each-section" id="testimonial-section">
       <div style={leftArrowStyle} onClick={changeSlideLeft}> {"<"} </div>
-      
-      <h3>{testimonialData[currIndex].title}</h3>
 
-      <p>{testimonialData[currIndex].body}</p>
-
-      <div class="test-image">
-        <img src={testimonialData[currIndex].imageURL}/>
-        <div>
-          <p>{testimonialData[currIndex].name}</p>
-          <p>{testimonialData[currIndex].jobTitle}</p>
-        </div>        
+      <div style={{ overflow: "hidden", width: "100%" }}>
+        <div style={slideContainerStyle}>
+          {testimonialData.map((testimonial, index) => (
+            <div key={index} style={slideStyle}>
+              <h3>{testimonial.title}</h3>
+              <p>{testimonial.body}</p>
+              <div className="test-image">
+                <img src={testimonial.imageURL} />
+                <div>
+                  <p>{testimonial.name}</p>
+                  <p>{testimonial.jobTitle}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       <div style={rightArrowStyle} onClick={changeSlideRight}> {">"} </div>
