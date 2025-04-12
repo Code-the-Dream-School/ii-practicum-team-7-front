@@ -8,6 +8,8 @@ import SignUpSection from  './components/landing/SignUpSection.jsx';
 import FooterSection from  './components/landing/FooterSection.jsx';
 import './App.css';
 
+
+
 const URL = 'http://localhost:8000/api/v1/';
 
 function App() {
@@ -29,7 +31,6 @@ function App() {
 
   return (
     <main>
-      {/* <h1>{message}</h1> */}
       <Navbar />
       <HeroSection />
       <HowSection />
@@ -38,7 +39,5 @@ function App() {
       <FooterSection />
     </main>
   );
-
 }
-
 export default App
