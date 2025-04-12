@@ -1,4 +1,5 @@
 import React from 'react';
+import logo from "../../images/logo1.png";
 import { faXTwitter, faFacebook, faInstagram, faLinkedin, faYoutube } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -6,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 const FooterSection = () => {
   return (
     <div id="footer">
-      <div>Logo here</div>
+      <img src={logo} alt="logo" width="100px"/>
       <ul id="footer-center-links">
         <li>About</li>
         <li>FAQs</li>
