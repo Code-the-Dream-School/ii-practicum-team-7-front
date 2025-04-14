@@ -5,6 +5,7 @@ import HeroSection from './components/HeroSection';
 import HowSection from './components/HowSection';  
 import TestimonialSection from './components/TestimonialSection';  
 import SignupSection from './components/SignupSection'; 
+import './App.css';
 import { getAllData } from './util/index';
 
 const URL = 'http://localhost:8000/api/v1/';
@@ -35,7 +36,7 @@ function App() {
         <Routes>
           <Route path="/" element={
             <>
-              <h1>{message}</h1>
+              
               <HeroSection />
               <HowSection />
               <TestimonialSection />
