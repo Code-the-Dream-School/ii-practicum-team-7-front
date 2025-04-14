@@ -8,6 +8,8 @@ import SignupSection from './components/SignupSection';
 import './App.css';
 import { getAllData } from './util/index';
 
+
+
 const URL = 'http://localhost:8000/api/v1/';
 
 function App() {
@@ -31,6 +33,7 @@ function App() {
 
   return (
     <>
+
       <BrowserRouter>
       <PageWrapper loggedIn={loggedIn} setLoggedIn={setLoggedIn} setUser={setUser} user={user}>
         <Routes>
@@ -46,6 +49,7 @@ function App() {
         </Routes>
       </PageWrapper>
     </BrowserRouter>
+
     </>
   );
 
