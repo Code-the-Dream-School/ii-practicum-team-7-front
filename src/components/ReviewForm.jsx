@@ -4,7 +4,7 @@ function ReviewForm({ revieweeId, setReviews }) {
     const [rating, setRating] = useState(null);
     const [comment, setComment] = useState('');
 
-    handleSubmit = (e) => {
+   const handleSubmit = (e) => {
         e.preventDefault();
 
         const newReview = {
@@ -21,7 +21,7 @@ function ReviewForm({ revieweeId, setReviews }) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(newReview)
         })
-            .then((respnse) => respnse.json())
+            .then((response) => response.json())
             .then((addedReview) => {
                 setReviews((PrevReviews) => [addedReview, ...PrevReviews])
                 setRating(null)
@@ -47,7 +47,7 @@ function ReviewForm({ revieweeId, setReviews }) {
                 <textarea 
                     value={comment}
                     placeholder="Leave a Review"
-                    onChange={() => setComment(e.target.value)}
+                    onChange={(e) => setComment(e.target.value)}
                 />
                 <button type='submit'>Submit Review</button>
             </form>
