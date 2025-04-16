@@ -5,7 +5,7 @@ import thirdimage from "../../images/how3.jpg";
 
 const HowSection = () => {
   return (
-    <div class="each-section how-section">
+    <div className="each-section how-section">
       <div id="each-how-section-1">
         <h2>How it Works</h2>
         <p>Finding the right person for the job or the perfect job for you, made simple</p>

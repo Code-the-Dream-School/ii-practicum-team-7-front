@@ -119,7 +119,7 @@ const TestimonialSection = () => {
   }
 
   return (
-    <div style={{position: "relative"}} class="each-section" id="testimonial-section">
+    <div style={{position: "relative"}} className="each-section" id="testimonial-section">
       <div style={leftArrowStyle} onClick={changeSlideLeft}> {"<"} </div>
 
       <div style={{ overflow: "hidden", width: "100%" }}>
