@@ -1,13 +1,14 @@
 import React from "react";
-import Navbar from './components/Navbar';
-import FooterSection from './components/FooterSection';
 
-function PageWrapper({children, loggedIn, setLoggedIn, setUser, user}) {
+
+
+function PageWrapper({children}) {
     return (
         <>
-            <Navbar loggedIn={loggedIn} setLoggedIn={setLoggedIn} setUser={setUser} user={user}/>
-            <main>{children}</main>
-            <FooterSection />
+            <h1>Header</h1>
+            {children}
+            <h2>Footer</h2>
+            
         </>
     )
 }
