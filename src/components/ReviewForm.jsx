@@ -8,25 +8,29 @@ function ReviewForm({ revieweeId, setReviews, currentUser }) {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        
         if (!currentUser) {
             alert('You need to be logged in to submit a review!');
             return;
         }
 
+        const token = localStorage.getItem('authToken');
+        if (!token) {
+            alert('No token found. Please log in again.');
+            return;
+        }
+
         const newReview = {
-            reviewerId: currentUser.id, // Using currentUser's ID
-            reviewerName: currentUser.name, // Using currentUser's name
             revieweeId,
-            revieweeName,
-            rating: Number(rating), 
-            comment,
+            rating: Number(rating),
+            comment
         };
 
-        
-        fetch('Fake URL', {
+        fetch('http://localhost:8000/api/v1/review', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}` 
+            },
             body: JSON.stringify(newReview)
         })
             .then((response) => response.json())
@@ -35,6 +39,10 @@ function ReviewForm({ revieweeId, setReviews, currentUser }) {
                 setRevieweeName('');
                 setRating('');
                 setComment('');
+            })
+            .catch((error) => {
+                console.error('Error submitting review:', error);
+                alert('Something went wrong while submitting your review.');
             });
     };
 
