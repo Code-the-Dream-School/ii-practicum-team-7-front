@@ -1,14 +1,35 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
+const BASE_URL = 'http://localhost:8000/api/v1/profile';
+// TODO: move this to state
+const profileId = '';
+const url = profileId ? `${BASE_URL}/${profileId}` : BASE_URL;
+const token = localStorage.getItem('authToken');
+
+// Reusable fetch options helper
+const fetchOptions = (method, token, data) => {
+    const options = {
+        method,
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        }
+    };
+    if (data) options.body = JSON.stringify(data);
+    return options;
+};
 
 function UserInfoForm() {
 
-    //TODO: Connect form to backend routes via POST, GET, PATCH, and DELETE API calls
+    // Track if user is editing an existing profile
+    const isEditMode = !!profileId;
 
     // State management
-    // Using 'profileName' instead of 'name' to avoid conflict with form.name
+    const [isLoading, setIsLoading] = useState(false);
+    const [isSaving, setIsSaving] = useState(false);
+    const [hasChanged, setHasChanged] = useState(false);
     const [formData, setFormData] = useState({
-        profileName: '',
+        name: '',
         email: '',
         role: '',
         phone: '',
@@ -23,8 +44,8 @@ function UserInfoForm() {
     const remainingBioCharacters = maxLength - formData.bio.length;
     const remainingSkillsCharacters = maxLength - formData.skills.length;
 
-    // Auto-format phone number
-    // TODO: Fix possible issue: if user tries to input between characters, caret jumps to the end
+    // Auto-format phone number xxx-xxx-xxxx
+    // TODO: Fix: if user tries to input between characters, caret jumps to the end
     const formatPhoneNumber = (value) => {
         const cleanedNum = value.replace(/\D/g, '');
         let length = cleanedNum.length;
@@ -36,41 +57,121 @@ function UserInfoForm() {
         return `${cleanedNum.slice(0, 3)}-${cleanedNum.slice(3, 6)}-${cleanedNum.slice(6,10)}`;
     };
 
-    // Handle form changes
-    const handleInputChange = (event) => {
-        const { name, value } = event.target;
-        let newPhoneValue = value;
-        if (name === 'phone') {
-            newPhoneValue = formatPhoneNumber(value);
+    // API calls
+
+    // POST
+    const createProfile = async () => {
+        setIsSaving(true);
+        try {
+            const options = fetchOptions('POST', token, formData);
+            const response = await fetch(url, options);
+            if (!response.ok) {
+                const message = `Error: ${response.status}`;
+                throw new Error(message);
+            }
+            const data = await response.json();
+            console.log('Created new profile:', data);
+        } catch (error) {
+            console.error('Error creating profile:', error.message);
+        } setIsSaving(false);
+    };
+
+    // GET
+    const getProfile = async () => {
+        try {
+            setIsLoading(true);
+            const options = fetchOptions('GET', token);
+            const response = await fetch(url, options)
+            if (!response.ok) {
+                const message = `Error: ${response.status}`;
+                throw new Error(message);
+            }
+            const data = await response.json();
+            console.log('Profile data:', data);
+            setFormData({
+                ...data,
+                phone: formatPhoneNumber(data.phone || '')
+            });
+        } catch (error) {
+            console.error('Error fetching profile:', error.message);
+        } setIsLoading(false);
+    };
+
+    // PATCH
+    const updateProfile = async () => {
+        setIsSaving(true);
+        try {
+            const options = fetchOptions('PATCH', token, formData);
+            const response = await fetch(url, options);
+            if (!response.ok) {
+                const message = `Error: ${response.status}`;
+                throw new Error(message);
+            }
+            const data = await response.json();
+            console.log('Updated profile:', data);
+        } catch (error) {
+            console.error('Error updating profile:', error.message);
+        } finally {
+            setIsSaving(false);
+            setHasChanged(false);
         }
+    };
+
+    // Handle form changes
+    const handleInputChange = ({ target: { name, value } }) => {
         setFormData(prev => ({
             ...prev,
-            [name]: name === 'phone' ? newPhoneValue : value
+            [name]: name === 'phone' ? formatPhoneNumber(value) : value
         }));
+        setHasChanged(true);
+    };
+
+    // Fetch profile if editing
+    useEffect(() => {
+        if (isEditMode && profileId) {
+            getProfile();
+        }
+    }, [isEditMode, profileId]);
+
+    // 'Cancel' button logic for edit mode
+    // TODO: handle actual redirects/routing
+    const handleCancel = () => {
+        if (isEditMode) {
+            console.log('Redirect to user profile');
+        }
     };
 
     // Handle form submission
     const handleSubmit = (event) => {
         event.preventDefault();
-        const formData = new FormData(event.target);
-        for (let [key, value] of formData.entries()) {
-            console.log(`${key}: ${value}`);
+        console.log('Submit triggered. profileID:', profileId, '| isEditMode:', isEditMode);
+        if (profileId) {
+            updateProfile();
+        } else {
+            createProfile();
         }
     };
 
     return (
         <>
+        <h2>{isEditMode ? 'Edit Profile' : 'Create Your Profile'}</h2>
+        {isLoading ? (
+            <div role='status'>
+                <p>{isEditMode ? 'Gathering your profile...' : 'Working on it...'}</p>
+            </div>
+        ) : (
             <form onSubmit={handleSubmit} id='userInfoForm'>
-                <label htmlFor='profileName'>
+                <label htmlFor='name'>
                     Your Name:
                     <span style={{color: 'red' }}>*</span>
                 </label>
                 <input
                     type='text'
-                    id='profileName'
-                    name='profileName'
-                    value={formData.profileName}
+                    id='name'
+                    name='name'
+                    value={formData.name}
                     onChange={handleInputChange}
+                    autoComplete='name'
                     required
                 />
 
@@ -85,7 +186,7 @@ function UserInfoForm() {
                     value={formData.email}
                     onChange={handleInputChange}
                     placeholder='you@example.com'
-                    autoComplete='yes'
+                    autoComplete='email'
                     required
                 />
                 
@@ -95,7 +196,7 @@ function UserInfoForm() {
                         <span style={{color: 'red' }}>*</span>
                     </legend>
 
-                    <label htmlFor='jobSeeker'>Job Seeker</label>
+                    <label htmlFor='jobSeeker'>
                     <input
                         type='radio'
                         id='jobSeeker'
@@ -105,8 +206,10 @@ function UserInfoForm() {
                         onChange={handleInputChange}
                         required
                     />
+                    Job Seeker
+                    </label>
 
-                    <label htmlFor='hiring'>Hiring</label>
+                    <label htmlFor='hiring'>
                     <input
                         type='radio'
                         id='hiring'
@@ -115,8 +218,10 @@ function UserInfoForm() {
                         checked={formData.role === 'hiring'}
                         onChange={handleInputChange}
                     />
+                    Hiring
+                    </label>
 
-                    <label htmlFor='both'>Both: Job Seeker and Hiring</label>
+                    <label htmlFor='both'>
                     <input
                         type='radio'
                         id='both'
@@ -125,6 +230,8 @@ function UserInfoForm() {
                         checked={formData.role === 'both'}
                         onChange={handleInputChange}
                     />
+                    Both: Job Seeker and Hiring
+                    </label>
                 </fieldset>
 
                 <label htmlFor='phone'>Phone Number:</label>
@@ -138,7 +245,7 @@ function UserInfoForm() {
                     minLength={12}
                     maxLength={12}
                     pattern='^\d{3}-\d{3}-\d{4}$'
-                    autoComplete='yes'
+                    autoComplete='tel'
                 />
 
                 <label htmlFor='address'>Address:</label>
@@ -148,7 +255,7 @@ function UserInfoForm() {
                     name='address'
                     value={formData.address}
                     onChange={handleInputChange}
-                    autoComplete='yes'
+                    autoComplete='address'
                 />
 
                 <label htmlFor='bio'>About You:</label>
@@ -203,9 +310,11 @@ function UserInfoForm() {
                         style={{ maxWidth: '200px', marginTop: '10px', borderRadius: '8px'}}
                     />
                 )}
-
-                <button type='submit'>Save</button>
+                
+                {isEditMode && <button type='button' onClick={handleCancel} disabled={isSaving} variant='outline'>Cancel</button>}
+                <button type='submit' disabled={isLoading || !hasChanged || isSaving}>{isSaving ? 'Saving...' : isEditMode ? 'Save' : 'Create'}</button>
             </form>
+        )}
         </>
     );
 }
