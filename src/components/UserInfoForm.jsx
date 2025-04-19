@@ -1,9 +1,6 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 
 const BASE_URL = 'http://localhost:8000/api/v1/profile';
-// TODO: move this to state
-const profileId = '';
-const url = profileId ? `${BASE_URL}/${profileId}` : BASE_URL;
 const token = localStorage.getItem('authToken');
 
 // Reusable fetch options helper
@@ -22,7 +19,10 @@ const fetchOptions = (method, token, data) => {
 function UserInfoForm() {
 
     // Track if user is editing an existing profile
+    const [profileId, setProfileId] = useState('');
     const isEditMode = !!profileId;
+    // URL builder
+    const url = profileId ? `${BASE_URL}/${profileId}` : BASE_URL;
 
     // State management
     const [isLoading, setIsLoading] = useState(false);
@@ -44,19 +44,6 @@ function UserInfoForm() {
     const remainingBioCharacters = maxLength - formData.bio.length;
     const remainingSkillsCharacters = maxLength - formData.skills.length;
 
-    // Auto-format phone number xxx-xxx-xxxx
-    // TODO: Fix: if user tries to input between characters, caret jumps to the end
-    const formatPhoneNumber = (value) => {
-        const cleanedNum = value.replace(/\D/g, '');
-        let length = cleanedNum.length;
-
-        if (length === 0) return '';
-
-        if (length <= 3) return `${cleanedNum}`;
-        if (length <= 6) return `${cleanedNum.slice(0, 3)}-${cleanedNum.slice(3)}`;
-        return `${cleanedNum.slice(0, 3)}-${cleanedNum.slice(3, 6)}-${cleanedNum.slice(6,10)}`;
-    };
-
     // API calls
 
     // POST
@@ -73,7 +60,10 @@ function UserInfoForm() {
             console.log('Created new profile:', data);
         } catch (error) {
             console.error('Error creating profile:', error.message);
-        } setIsSaving(false);
+        } finally {
+            setIsSaving(false);
+            setHasChanged(false);
+        }
     };
 
     // GET
@@ -92,6 +82,7 @@ function UserInfoForm() {
                 ...data,
                 phone: formatPhoneNumber(data.phone || '')
             });
+            setProfileId(data._id);
         } catch (error) {
             console.error('Error fetching profile:', error.message);
         } setIsLoading(false);
@@ -121,7 +112,7 @@ function UserInfoForm() {
     const handleInputChange = ({ target: { name, value } }) => {
         setFormData(prev => ({
             ...prev,
-            [name]: name === 'phone' ? formatPhoneNumber(value) : value
+            [name]: value
         }));
         setHasChanged(true);
     };
@@ -136,15 +127,16 @@ function UserInfoForm() {
     // 'Cancel' button logic for edit mode
     // TODO: handle actual redirects/routing
     const handleCancel = () => {
-        if (isEditMode) {
-            console.log('Redirect to user profile');
+        if (hasChanged) {
+            const userConfirm = window.confirm('Are you sure you want to cancel? Any unsaved changed will be lost.');
+            if (!userConfirm) return;
         }
+        console.log('Redirect to user profile');
     };
 
     // Handle form submission
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log('Submit triggered. profileID:', profileId, '| isEditMode:', isEditMode);
         if (profileId) {
             updateProfile();
         } else {
@@ -247,6 +239,8 @@ function UserInfoForm() {
                     pattern='^\d{3}-\d{3}-\d{4}$'
                     autoComplete='tel'
                 />
+                <small style={{ color: 'gray' }}>Ex: 123-456-7890</small>
+
 
                 <label htmlFor='address'>Address:</label>
                 <input
