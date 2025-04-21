@@ -1,0 +1,198 @@
+* {
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: rgb(241, 241, 241);
+  background-color: rgb(200, 255, 202);
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1 {
+  font-size: 60px;
+}
+
+h2 {
+  font-size: 50px;
+}
+
+h3 {
+  font-size: 25px;
+}
+
+p {
+  font-size: 20px;
+}
+
+button {
+  font-size: 16px;
+  padding: 14px 25px;
+  border-radius: 12px;
+  transition: 0.5s;
+}
+
+button:hover {
+  cursor:pointer;
+}
+.each-section {
+  height: 600px;
+  width: 1200px;
+  background-color:white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 35px 10px;
+}
+
+.button-row {
+  display: flex;
+  gap: 10px;
+}
+
+.black-button {
+  color: white;
+  background-color: black;
+}
+
+.black-button:hover {
+  color: black;
+  background-color: white;
+}
+
+.white-button {
+  color: black;
+  background-color: white; 
+}
+
+.white-button:hover {
+  color: white;
+  background-color: black;
+}
+
+
+.test-image {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.test-image img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+
+#navbar, #footer{
+  width: 1200px;
+  height: 100px;
+  color: black;
+  background-color: rgb(190, 200, 238);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 30px;
+}
+
+#hero-section {
+  color: black;
+  height: 1000px;
+}
+
+#hero-section > div {
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 50px;
+}
+
+#hero-section>img {
+  height: 50%;
+  object-fit: cover;
+}
+
+#each-how-section-1 {
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  height:30%;
+  width: 100%;
+  gap: 20px;
+}
+
+#each-how-section-2 {
+  height: 70%;
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+}
+
+#each-how-section-2 div {
+  width: 33%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#each-how-section-2 div img {
+  height: 50%;
+  margin-bottom: 20px;
+}
+
+#testimonial-section {
+  background-color: rgb(233, 254, 250);
+  padding: 0px 200px;
+  display: flex;
+  gap: 20px;
+}
+
+#sign-up-section {
+  padding: 0px 200px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 30px;
+  background-color:rgb(137, 235, 202)
+}
+
+#sign-up-field-container {
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+#email-input {
+  font-size:larger;
+  width: 400px;
+  height: 100%;
+  border-style: none;
+  border-bottom: 1px rgb(210, 210, 210) solid;
+  background-color: rgb(137, 235, 202);
+}
+
+#footer-center-links {
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  font-weight: bold; 
+}
+
+#social-media-icons {
+  display: flex;
+  gap: 10px;
+}
