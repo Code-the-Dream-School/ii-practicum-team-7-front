@@ -15,7 +15,7 @@ const HeroSection = () => {
         <button className="white-button">Post a job</button>
       </div>        
       </div>
-      <img src={image} alt="computer" width="1200"/>
+      <img src={image} alt="computer" width="1100"/>
     </div>
   )
 }

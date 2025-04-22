@@ -91,7 +91,7 @@ const TestimonialSection = () => {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    gap: "10px"
+    gap: "30px"
   }
 
   const dotStyle = {

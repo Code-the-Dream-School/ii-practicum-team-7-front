@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 import './JobSearch.css';
 
 const JobSearch = () => {
@@ -103,7 +104,7 @@ const JobSearch = () => {
       <header className="header">
         <h1>CNC</h1>
         <nav>
-          <a href="#">Home</a>
+          <Link to="/"><a href="#">Home</a></Link>
           <a href="#">Jobs</a>
           <a href="#">Companies</a>
           <a href="#">About</a>

@@ -4,7 +4,7 @@
   min-height: 100vh;
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
-  background-color: #f5faff; /* Light background */
+  background-color: #CE7B85;
   color: #1a1a1a; /* Dark text */
 }
 
@@ -12,18 +12,18 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #e0f7f9; /* Soft blue-green */
+  background-color: #CE7B85;
   padding: 20px 40px;
   border-bottom: 1px solid #b2dfdb;
 }
 
 .header h1 {
-  color: #004d40; /* Deep teal */
+  color: white
 }
 
 .header nav a {
   margin: 0 15px;
-  color: #00796b; /* Blue-green link */
+  color: white;
   text-decoration: none;
 }
 

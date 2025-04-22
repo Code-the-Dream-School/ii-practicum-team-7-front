@@ -11,7 +11,6 @@ import JobSearch from './components/JobSearch.jsx';
 import './App.css';
 
 
-
 const URL = 'http://localhost:8000/api/v1/';
 
 function App() {
