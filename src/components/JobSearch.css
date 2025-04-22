@@ -1,0 +1,128 @@
+.job-search-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f5faff; /* Light background */
+  color: #1a1a1a; /* Dark text */
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #e0f7f9; /* Soft blue-green */
+  padding: 20px 40px;
+  border-bottom: 1px solid #b2dfdb;
+}
+
+.header h1 {
+  color: #004d40; /* Deep teal */
+}
+
+.header nav a {
+  margin: 0 15px;
+  color: #00796b; /* Blue-green link */
+  text-decoration: none;
+}
+
+.signin-btn {
+  background-color: #00acc1; /* Vivid cyan */
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+}
+
+.main-content {
+  display: flex;
+  padding: 40px;
+  gap: 40px;
+}
+
+.sidebar {
+  width: 20%;
+  background-color: #e8f5e9; /* Soft mint */
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 16px;
+  background-color: #ffffff;
+  color: #333;
+  border: 1px solid #b2dfdb;
+  border-radius: 8px;
+}
+
+.filters label {
+  display: block;
+  margin: 8px 0;
+  color: #00695c;
+}
+
+.job-listings {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.job-card {
+  background-color: #ffffff;
+  border: 1px solid #c8e6c9;
+  padding: 20px;
+  border-radius: 12px;
+  position: relative;
+}
+
+.job-card h2 {
+  margin: 0 0 10px;
+}
+
+.company {
+  color: #388e3c;
+  margin-bottom: 5px;
+}
+
+.location {
+  color: #607d8b;
+  margin-bottom: 10px;
+}
+
+.badge {
+  display: inline-block;
+  margin-right: 5px;
+  background-color: #00bcd4; /* Blue-green accent */
+  color: white;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+.apply-btn {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  background-color: #26c6da;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.load-more {
+  margin-top: 20px;
+  background-color: transparent;
+  border: 1px solid #00acc1;
+  color: #00acc1;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  align-self: center;
+}
