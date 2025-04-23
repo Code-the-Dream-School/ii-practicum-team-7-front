@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from "react-router-dom";
 import './JobSearch.css';
+
 
 const JobSearch = () => {
 
@@ -99,6 +100,28 @@ const JobSearch = () => {
     },
   ];
 
+  const [ jobPhrase, setJobPhrase ] = useState("");
+  const [ zipCode, setZipCode ] = useState("");
+  const [ category, setCategory ] = useState("");
+  const [ employmentType, setEmploymentType ] = useState([]);
+  const [ workplaceType, setWorkplaceType ] = useState([]);
+
+  const getAllFilters = () => {
+    console.log(`This is the job phrase: ${jobPhrase}`);
+    console.log(`This is the zip code: ${zipCode}`);
+    console.log(`This is the category: ${category}`);
+    console.log(`This is the employment type: ${employmentType}`);
+    console.log(`This is the workplace type: ${workplaceType}`);
+  } 
+  const clearAllFilters = () => {
+    setJobPhrase("");
+    setZipCode("");
+    setCategory("");
+    setEmploymentType("");
+    setWorkplaceType("")
+    console.log(`All cleared`);
+  } 
+
   return (
     <div className="job-search-page">
       <header className="header">
@@ -114,11 +137,28 @@ const JobSearch = () => {
 
       <div className="main-content">
         <aside className="sidebar">
-          <input type="text" placeholder="Search jobs..." className="input" />
 
-          <input type="text" placeholder="Enter location..." className="input" />
+          <input 
+            type="text"
+            className="input" 
+            placeholder="Search jobs..."
+            value={jobPhrase}
+            onChange={(e) => setJobPhrase(e.target.value)}
+          />
 
-          <select className="input">
+          <input
+            type="text"
+            className="input" 
+            placeholder="Enter location..."
+            value={zipCode}
+            onChange={(e) => setZipCode(e.target.value)}
+          />
+
+          <select 
+            className="input"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+          >
             <option value="">Select Category...</option>
             {jobCategories.map(jobCategory => (
               <option value={jobCategory.toLowerCase()}>{jobCategory}</option>
@@ -126,11 +166,26 @@ const JobSearch = () => {
           </select>
 
           <div className="filters">
-            <label><input type="checkbox" /> Full-time</label>
-            <label><input type="checkbox" /> Part-time</label>
-            <label><input type="checkbox" /> Remote</label>
-            <label><input type="checkbox" /> Contract</label>
+            <fieldset>
+              <legend>Employment Type</legend>
+              <div className="employment-type">
+                <label><input type="checkbox" /> Full-time</label>
+                <label><input type="checkbox" /> Part-time</label>
+                <label><input type="checkbox" /> Contract</label>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>Workplace Type</legend>
+              <div className="workplace-type">
+                <label><input type="checkbox" /> In-person</label>
+                <label><input type="checkbox" /> Remote</label>
+                <label><input type="checkbox" /> Hybrid</label>
+              </div>
+            </fieldset>
           </div>
+          <button onClick={() => getAllFilters()}>Search</button>
+          <button onClick={() => clearAllFilters()}>Reset</button>
         </aside>
 
         <section className="job-listings">
