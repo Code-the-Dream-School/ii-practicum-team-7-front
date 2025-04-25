@@ -8,6 +8,12 @@ body {
   background-color: rgb(200, 255, 202);
 }
 
+.pagewrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 main {
   display: flex;
   flex-direction: column;
