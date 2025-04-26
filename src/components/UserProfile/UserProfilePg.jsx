@@ -6,73 +6,75 @@ import { useParams, useNavigate } from "react-router-dom";
 const Profile = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [user, setUser] = useState({}); //user save data
+
+  const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  /*show the data*/
+  const loggedInUserId = localStorage.getItem("userId");
+
+  // Only check isOwner if profile exists
+  const isOwner = profile && profile.createdBy === loggedInUserId;
+
   useEffect(() => {
     if (!id) {
-      setError("User ID not found.");
+      setError("Profile not found.");
       setLoading(false);
       return;
     }
+
     const fetchUserProfile = async () => {
       try {
         const token = localStorage.getItem("authToken");
         const url = `http://localhost:8000/api/v1/profile/${id}`;
 
-        const data = await axios.get(url, {
+        const { data } = await axios.get(url, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-        setUser(data.data);
-        setLoading(false);
+        setProfile(data.profile); // assuming `data.data` contains the profile
+        console.log("Fetched profile:", data.profile);
+
       } catch (error) {
-        setError("Error to get the profile");
+        setError("Error fetching the profile.");
+      } finally {
         setLoading(false);
       }
     };
+
     fetchUserProfile();
   }, [id]);
-  if (loading) return <p>loading user profile ...</p>;
+
+  if (loading) return <p>Loading user profile...</p>;
   if (error) return <p>{error}</p>;
-  if (!user) return <p>No user data found.</p>;
+  if (!profile) return <p>No profile data found.</p>;
 
   return (
     <div className={styles.profileContainer}>
-      <h1>Mi profile</h1>
+      <h1>My Profile</h1>
       <div className={styles.profileCard}>
-        {user.profileImage && (
+        {profile.image && (
           <img
-            src={user.image}
+            src={profile.image}
             alt="profile photo"
             className={styles.profileImage}
           />
         )}
-        <p>
-          <strong>Name:</strong> {user.name}
-        </p>
-        <p>
-          <strong>Email:</strong> {user.email}
-        </p>
-        <p>
-          <strong>Phone Number:</strong> {user.phone || "No specified"}
-        </p>
-        <p>
-          <strong>location:</strong> {user.address || "No specified"}
-        </p>
-        <p>
-          <strong>Skills:</strong> {user.skills || "No specified"}
-        </p>
-        <p>
-          <strong>Descriptión:</strong> {user.bio || "no description"}
-        </p>
-        <p>
-          <strong>Rol:</strong> {user.role || "no rol specified"}
-        </p>
+        <p><strong>Name:</strong> {profile.name}</p>
+        <p><strong>Email:</strong> {profile.email}</p>
+        <p><strong>Phone Number:</strong> {profile.phone || "Not specified"}</p>
+        <p><strong>Location:</strong> {profile.address || "Not specified"}</p>
+        <p><strong>Skills:</strong> {profile.skills || "Not specified"}</p>
+        <p><strong>Description:</strong> {profile.bio || "No description"}</p>
+        <p><strong>Role:</strong> {profile.role || "Not specified"}</p>
       </div>
+
+      {isOwner && (
+        <button onClick={() => navigate(`/edit-profile/${profile._id}`)}>
+          Edit Profile
+        </button>
+      )}
     </div>
   );
 };

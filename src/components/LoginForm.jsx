@@ -34,10 +34,11 @@ function LoginForm() {
       if (!response.ok) throw new Error(result.message || "Failed to log in");
 
       localStorage.setItem("authToken", result.token);
-      localStorage.setItem("userId", result.user._id);
+      localStorage.setItem("userId", result.user.userId);
+
 
       //navigate(`/profile/${result.user._id}`);
-      navigate("/dashboard");
+      navigate("/");
     } catch (error) {
       setError(error.message);
     } finally {

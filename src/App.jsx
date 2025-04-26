@@ -1,11 +1,6 @@
-
-
-
 import Profile from "./components/UserProfile/UserProfilePg";
 import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
-
-
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { getAllData } from './util/index';
@@ -17,6 +12,7 @@ import SignUpSection from  './components/landing/SignUpSection.jsx';
 import FooterSection from  './components/landing/FooterSection.jsx';
 import JobSearch from './components/JobSearch.jsx';
 import './App.css';
+import UserInfoForm from "./components/UserInfoForm.jsx";
 
 
 const URL = "http://localhost:8000/api/v1/";
@@ -53,9 +49,12 @@ function App() {
             <FooterSection />
           </main>
         } />
-           <Route path="/login" element={<LoginForm />} />{" "}
-          <Route path="/register" element={<RegisterForm />} />{" "}
-          <Route path="/profile/:id" element={<Profile />} />{" "}
+           <Route path="/login" element={<LoginForm />} />
+          <Route path="/register" element={<RegisterForm />} />
+          <Route path="/profile/:id" element={<Profile />} />
+          <Route path="/create-profile" element={<UserInfoForm />} />
+          <Route path="/edit-profile/:id" element={<UserInfoForm />} />
+
       </Routes>
     </BrowserRouter>
   );
