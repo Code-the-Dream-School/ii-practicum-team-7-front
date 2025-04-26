@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const BASE_URL = 'http://localhost:8000/api/v1/profile';
 const token = localStorage.getItem('authToken');
@@ -6,23 +7,29 @@ const token = localStorage.getItem('authToken');
 // Reusable fetch options helper
 const fetchOptions = (method, token, data) => {
     const options = {
-        method,
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-        }
+      method,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     };
-    if (data) options.body = JSON.stringify(data);
+  
+    if (data) {
+      options.headers['Content-Type'] = 'application/json';
+      options.body = JSON.stringify(data);
+    }
+  
     return options;
-};
+  };
+  
 
 function UserInfoForm() {
+    const navigate = useNavigate();
 
     // Track if user is editing an existing profile
-    const [profileId, setProfileId] = useState('');
-    const isEditMode = !!profileId;
-    // URL builder
-    const url = profileId ? `${BASE_URL}/${profileId}` : BASE_URL;
+    const { id: profileIdFromParams } = useParams();
+    const [profileId, setProfileId] = useState(() => profileIdFromParams || '');
+    const isEditMode = !!profileIdFromParams;
+ 
 
     // State management
     const [isLoading, setIsLoading] = useState(false);
@@ -44,49 +51,62 @@ function UserInfoForm() {
     const remainingBioCharacters = maxLength - formData.bio.length;
     const remainingSkillsCharacters = maxLength - formData.skills.length;
 
-    // API calls
+    // URL builder
+    const url = profileId ? `${BASE_URL}/${profileId}` : BASE_URL;
 
+    // API calls
+    
     // POST
     const createProfile = async () => {
         setIsSaving(true);
         try {
-            const options = fetchOptions('POST', token, formData);
-            const response = await fetch(url, options);
-            if (!response.ok) {
-                const message = `Error: ${response.status}`;
-                throw new Error(message);
-            }
-            const data = await response.json();
-            console.log('Created new profile:', data);
+          const options = fetchOptions("POST", token, formData);
+          const response = await fetch(url, options);
+          if (!response.ok) throw new Error(`Error: ${response.status}`);
+          const data = await response.json();
+          console.log("Created new profile:", data);
+      
+          // Set profileId and formData with the new profile
+          setProfileId(data.profile._id);
+          setFormData({
+            ...data.profile,
+            phone: data.profile.phone || "",
+          });
+      
+          navigate(`/profile/${data.profile._id}`); // Redirect to profile page
         } catch (error) {
-            console.error('Error creating profile:', error.message);
+          console.error('Error creating profile:', error.message);
         } finally {
-            setIsSaving(false);
-            setHasChanged(false);
+          setIsSaving(false);
+          setHasChanged(false);
         }
-    };
-
+      };
+      
     // GET
-    const getProfile = async () => {
-        try {
-            setIsLoading(true);
-            const options = fetchOptions('GET', token);
-            const response = await fetch(url, options)
-            if (!response.ok) {
-                const message = `Error: ${response.status}`;
-                throw new Error(message);
-            }
-            const data = await response.json();
-            console.log('Profile data:', data);
-            setFormData({
-                ...data,
-                phone: formatPhoneNumber(data.phone || '')
-            });
-            setProfileId(data._id);
-        } catch (error) {
-            console.error('Error fetching profile:', error.message);
-        } setIsLoading(false);
-    };
+  const getProfile = async () => {
+    if (!profileId) return;
+    try {
+      setIsLoading(true);
+      const options = fetchOptions('GET', token);
+      const response = await fetch(url, options);
+      if (!response.ok) throw new Error(`Error: ${response.status}`);
+      
+      const data = await response.json();
+  
+      setFormData({
+        ...data.profile,
+        phone: data.profile.phone || "",
+      });
+  
+      setProfileId(data.profile._id);
+  
+    } catch (error) {
+      console.error('Error fetching profile:', error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
 
     // PATCH
     const updateProfile = async () => {
@@ -94,12 +114,10 @@ function UserInfoForm() {
         try {
             const options = fetchOptions('PATCH', token, formData);
             const response = await fetch(url, options);
-            if (!response.ok) {
-                const message = `Error: ${response.status}`;
-                throw new Error(message);
-            }
+            if (!response.ok) throw new Error(`Error: ${response.status}`);
             const data = await response.json();
             console.log('Updated profile:', data);
+            navigate(`/profile/${data.updatedProfile._id}`); // Redirect to the updated profile page
         } catch (error) {
             console.error('Error updating profile:', error.message);
         } finally {
@@ -117,13 +135,6 @@ function UserInfoForm() {
         setHasChanged(true);
     };
 
-    // Fetch profile if editing
-    useEffect(() => {
-        if (isEditMode && profileId) {
-            getProfile();
-        }
-    }, [isEditMode, profileId]);
-
     // 'Cancel' button logic for edit mode
     // TODO: handle actual redirects/routing
     const handleCancel = () => {
@@ -132,6 +143,7 @@ function UserInfoForm() {
             if (!userConfirm) return;
         }
         console.log('Redirect to user profile');
+        navigate(`/profile/${profileId}`);
     };
 
     // Handle form submission
@@ -143,6 +155,13 @@ function UserInfoForm() {
             createProfile();
         }
     };
+
+    // Fetch profile if editing
+    useEffect(() => {
+        if (isEditMode) {
+            getProfile();
+        }
+    }, [isEditMode, profileId]);
 
     return (
         <>
@@ -305,8 +324,10 @@ function UserInfoForm() {
                     />
                 )}
                 
-                {isEditMode && <button type='button' onClick={handleCancel} disabled={isSaving} variant='outline'>Cancel</button>}
-                <button type='submit' disabled={isLoading || !hasChanged || isSaving}>{isSaving ? 'Saving...' : isEditMode ? 'Save' : 'Create'}</button>
+                {isEditMode && (<button type='button' onClick={handleCancel} disabled={isSaving} variant='outline'>Cancel</button>)}
+                <button type="submit" disabled={isLoading || isSaving || !hasChanged}>
+                {isSaving ? "Saving..." : isEditMode ? "Save" : "Create"}
+                </button>
             </form>
         )}
         </>
