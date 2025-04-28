@@ -25,17 +25,17 @@ const Profile = () => {
 
     const fetchUserProfile = async () => {
       try {
-        const token = localStorage.getItem("authToken");
+        // const token = localStorage.getItem("authToken");
         const url = `http://localhost:8000/api/v1/profile/${id}`;
 
         const { data } = await axios.get(url, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          // headers: {
+          //   Authorization: `Bearer ${token}`,
+          // },
+          withCredentials: true, // send cookies automatically
         });
         setProfile(data.profile); // assuming `data.data` contains the profile
         console.log("Fetched profile:", data.profile);
-
       } catch (error) {
         setError("Error fetching the profile.");
       } finally {
@@ -61,13 +61,27 @@ const Profile = () => {
             className={styles.profileImage}
           />
         )}
-        <p><strong>Name:</strong> {profile.name}</p>
-        <p><strong>Email:</strong> {profile.email}</p>
-        <p><strong>Phone Number:</strong> {profile.phone || "Not specified"}</p>
-        <p><strong>Location:</strong> {profile.address || "Not specified"}</p>
-        <p><strong>Skills:</strong> {profile.skills || "Not specified"}</p>
-        <p><strong>Description:</strong> {profile.bio || "No description"}</p>
-        <p><strong>Role:</strong> {profile.role || "Not specified"}</p>
+        <p>
+          <strong>Name:</strong> {profile.name}
+        </p>
+        <p>
+          <strong>Email:</strong> {profile.email}
+        </p>
+        <p>
+          <strong>Phone Number:</strong> {profile.phone || "Not specified"}
+        </p>
+        <p>
+          <strong>Location:</strong> {profile.address || "Not specified"}
+        </p>
+        <p>
+          <strong>Skills:</strong> {profile.skills || "Not specified"}
+        </p>
+        <p>
+          <strong>Description:</strong> {profile.bio || "No description"}
+        </p>
+        <p>
+          <strong>Role:</strong> {profile.role || "Not specified"}
+        </p>
       </div>
 
       {isOwner && (
