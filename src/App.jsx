@@ -44,18 +44,17 @@ function App() {
   return (
 
     <BrowserRouter>
+    <PageWrapper>
       <Routes>
         <Route path='/login' element={<LoginForm />} />
         <Route path='/register' element={<RegisterForm />} />
         <Route path="/jobs" element={<JobSearch />} />
         <Route path="/" element={
           <main>
-            <Navbar />
             <HeroSection />
             <HowSection />
             <TestimonialSection />
             <SignUpSection />
-            <FooterSection />
           </main>
         } />
            <Route path="/login" element={<LoginForm />} />
@@ -65,6 +64,7 @@ function App() {
           <Route path="/edit-profile/:id" element={<UserInfoForm />} />
 
       </Routes>
+      </PageWrapper>
     </BrowserRouter>
 
   );

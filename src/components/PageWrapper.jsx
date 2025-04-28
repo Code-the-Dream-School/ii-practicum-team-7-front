@@ -1,13 +1,16 @@
 import React from "react";
-
+import Navbar from "./landing/Navbar";
+import FooterSection from "./landing/FooterSection";
 
 
 function PageWrapper({children}) {
     return (
         <>
-            <h1>Header</h1>
+            <div className="pagewrapper">
+            <Navbar />
             {children}
-            <h2>Footer</h2>
+            <FooterSection />
+            </div>
             
         </>
     )
