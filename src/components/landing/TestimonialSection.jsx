@@ -119,36 +119,37 @@ const TestimonialSection = () => {
   }
 
   return (
-    <div style={{position: "relative"}} className="each-section" id="testimonial-section">
-      <div style={leftArrowStyle} onClick={changeSlideLeft}> {"<"} </div>
-
-      <div style={{ overflow: "hidden", width: "100%" }}>
-        <div style={slideContainerStyle}>
-          {testimonialData.map((testimonial, index) => (
-            <div key={index} style={slideStyle}>
-              <h3>{testimonial.title}</h3>
-              <p>{testimonial.body}</p>
-              <div className="test-image">
-                <img src={testimonial.imageURL} />
-                <div>
-                  <p>{testimonial.name}</p>
-                  <p>{testimonial.jobTitle}</p>
+    <div className="section-width testimonial-wrapper">
+      <div style={{position: "relative"}} className="each-section" id="testimonial-section">
+        <div style={leftArrowStyle} onClick={changeSlideLeft}> {"<"} </div>
+        <div style={{ overflow: "hidden", width: "100%" }}>
+          <div style={slideContainerStyle}>
+            {testimonialData.map((testimonial, index) => (
+              <div key={index} style={slideStyle}>
+                <h3>{testimonial.title}</h3>
+                <p>{testimonial.body}</p>
+                <div className="test-image">
+                  <img src={testimonial.imageURL} />
+                  <div>
+                    <p>{testimonial.name}</p>
+                    <p>{testimonial.jobTitle}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+        </div>
+
+        <div style={rightArrowStyle} onClick={changeSlideRight}> {">"} </div>
+
+        <div style={dotStyle}>
+          {testimonialData.map((test, index) => 
+            <div key={index} data-key={index} onClick={changeSlide} onMouseOver={increaseSize} onMouseOut={reduceSize} >{"•"}</div>
+            )}
         </div>
       </div>
-
-      <div style={rightArrowStyle} onClick={changeSlideRight}> {">"} </div>
-
-      <div style={dotStyle}>
-        {testimonialData.map((test, index) => 
-          <div key={index} data-key={index} onClick={changeSlide} onMouseOver={increaseSize} onMouseOut={reduceSize} >{"•"}</div>
-          )}
-      </div>
-
     </div>
+
   )
 }
 

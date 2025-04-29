@@ -3,7 +3,7 @@ import logoimage from "../../images/logo.png";
 
 const Navbar = () => {
   return (
-    <div className="each-section" id="navbar">
+    <div className="each-section section-width" id="navbar">
       <img src={logoimage} alt="logo" width="400px" />
       <div className="button-row">
         <button className="black-button">Sign In</button>

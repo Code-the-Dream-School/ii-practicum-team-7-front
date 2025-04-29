@@ -4,7 +4,11 @@
 }
 
 body {
-  background-color: rgb(232, 199, 199);
+  background-color: rgb(128, 58, 58);
+}
+
+.section-width { 
+  width: 100%;
 }
 
 main {
@@ -46,7 +50,6 @@ button:hover {
 
 .each-section {
   height: 600px;
-  width: 1200px;
   background-color:white;
   display: flex;
   flex-direction: column;
@@ -98,7 +101,6 @@ button:hover {
 }
 
 #navbar, #footer{
-  width: 1200px;
   height: 100px;
   color: white;
   background-color: #CE7B85;
@@ -111,6 +113,7 @@ button:hover {
 
 #footer {
   color: black;
+  background-color: #F5E4E6;
 }
 
 #hero-section {
@@ -169,7 +172,15 @@ button:hover {
   margin-bottom: 20px;
 }
 
+.testimonial-wrapper {
+  background-color: rgb(233, 254, 250);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 #testimonial-section {
+  width: 1200px;
   background-color: rgb(233, 254, 250);
   padding: 0px 200px;
   display: flex;

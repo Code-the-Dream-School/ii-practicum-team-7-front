@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const FooterSection = () => {
   return (
-    <div id="footer">
+    <div id="footer" className="section-width">
       <img src={logo} alt="logo" width="100px"/>
       <ul id="footer-center-links">
         <li>About</li>

@@ -1,19 +1,27 @@
+
 .job-search-page {
   display: flex;
   flex-direction: column;
+  align-items: center;
   min-height: 100vh;
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
   background-color: #A2DCCA;
-  color: #1a1a1a; /* Dark text */
+  color: #1a1a1a;
+}
+
+.home-link { 
+  background-color: black;
+  padding: 10px 16px;
+  border-radius: 8px;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #CE7B85;
-  padding: 20px 40px;
+  background-color: #7BCEB4;
+  padding: 5px 40px;
   border-bottom: 1px solid #b2dfdb;
 }
 
@@ -28,7 +36,7 @@
 }
 
 .signin-btn {
-  background-color: #00acc1; /* Vivid cyan */
+  background-color: #00acc1;
   border: none;
   padding: 10px 16px;
   border-radius: 8px;
@@ -38,52 +46,110 @@
 
 .main-content {
   display: flex;
-  align-items: flex-start; 
-  padding: 40px 10%;
+  flex-direction: column;
+  align-items: center;
+}
+
+.search-area {
+  background-color: #7BCEB4;
+  padding:  112px 64px 80px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
   gap: 40px;
 }
 
-.sidebar {
-  width: 30%;
-  background-color: #e8f5e9; /* Soft mint */
-  padding: 20px;
-  border-radius: 12px;
+.image-section {
+  width: 40%;
+  max-width: 500px;
+}
+
+.text-section {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  width: 60%;
+  gap: 5px;
+}
+
+.input-fields {
+  margin-top: 5px;
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
 }
 
 .input {
-  width: 100%;
+  border: none;
+  width: 50%;
   padding: 10px;
-  margin-bottom: 16px;
-  background-color: #ffffff;
+  margin-bottom: 5px;
+  background-color: #7BCEB4;
   color: #333;
-  border: 1px solid #b2dfdb;
-  border-radius: 8px;
+  border-bottom: 1px solid #b2dfdb;
 }
 
-.filters {
+#select-category, #select-radius {
+  border: none;
+  width: 50%;
+}
+
+.checkboxes {
+  margin-top: 15px;
+  width: 100%;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 15px;
 }
 
-.filters label {
+.checkboxes fieldset {
+  width: 30%;
+}
+
+.checkboxes label {
   display: block;
   margin: 8px 0;
   color: #00695c;
 }
 
-.job-listings {
-  flex: 1;
+.checkboxes label span {
+  margin-left: 8px;
+}
+
+.jobsearch-btns {
   display: flex;
-  flex-direction: column;
+  width: 100%;
+  margin-top: 20px;
+  gap: 10px;
+}
+
+.jobsearch-btns button{
+  width: 50%;
+  background-color: black;
+  color: white;
+}
+
+.job-listings {
+  background-color: #F5E4E6;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 112px 64px 80px;
   gap: 20px;
 }
 
+.job-listings h2 {
+  text-align: center;
+  width: 33.3%;
+}
+
+.job-listings section {
+  width: 66.6%;
+  max-width: 1200px;
+}
+
 .job-card {
-  background-color: #ffffff;
+  background-color: #F5E4E6;
   border: 1px solid #c8e6c9;
   padding: 20px;
   border-radius: 12px;
