@@ -10,11 +10,29 @@ const Profile = () => {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [currentUserId, setCurrentUserId] = useState(null); // Get user Id from backend response instead
 
-  const loggedInUserId = localStorage.getItem("userId");
+  // const loggedInUserId = localStorage.getItem("userId");
+
+  //To fetch current user.
+  const fetchCurrentUser = async () => {
+    try {
+      const { data } = await axios.get(
+        "http://localhost:8000/api/v1/auth/current-user",
+        { withCredentials: true }
+      );
+      setCurrentUserId(data.userId);
+    } catch (error) {
+      console.log("Error fetch current user,", error.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchCurrentUser();
+  }, []);
 
   // Only check isOwner if profile exists
-  const isOwner = profile && profile.createdBy === loggedInUserId;
+  const isOwner = profile && profile.createdBy === currentUserId;
 
   useEffect(() => {
     if (!id) {
