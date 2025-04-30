@@ -192,13 +192,19 @@
   cursor: pointer;
 }
 
-.load-more {
-  margin-top: 20px;
-  background-color: transparent;
-  border: 1px solid #00acc1;
-  color: #00acc1;
-  padding: 10px 20px;
-  border-radius: 8px;
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+.page-btn {
+  background-color: #eee;
+  border: none;
+  margin: 0 5px;
+  padding: 8px 12px;
   cursor: pointer;
-  align-self: center;
+}
+.page-btn.active {
+  background-color: #007bff;
+  color: white;
 }

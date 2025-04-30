@@ -4,29 +4,34 @@ import logo from "../images/logo1.png";
 import jobSearch from "../images/jobsearch.jpg";
 import FooterSection from  './landing/FooterSection.jsx';
 import './JobSearch.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faLocationDot } from '@fortawesome/free-solid-svg-icons';
+import { faClock } from '@fortawesome/free-regular-svg-icons';
+import zipcodes from 'zipcodes';
 
 
 const JobSearch = () => {
 
   //an array of job categories
   const jobCategories = [
-    "Administration",
-    "Customer Service",
-    "Education",
-    "Engineering",
-    "Finance",
-    "Healthcare",
-    "Hospitality",
-    "Information Technology",
-    "Logistics",
-    "Maintenance",
-    "Manufacturing",
-    "Marketing",
-    "Retail",
-    "Sales",
+    "General Labor",
+    "Cleaning",
+    "Babysitting",
+    "Elder Care",
+    "Delivery",
+    "Food Service",
+    "Retail Helper",
+    "Landscaping",
+    "Moving",
+    "Plumbing",
+    "Electrical Work",
+    "Painting",
+    "Pet Care",
+    "Tutoring",
+    "Car Wash",
     "Security",
-    "Skilled Trades",
-    "Transportation",
+    "Event Help",
+    "Junk Removal"
   ];
 
   //an array of radius
@@ -36,76 +41,173 @@ const JobSearch = () => {
 
   //job postings test samples no backend yet.
   const jobPostings = [
+    // Within 5 miles
     {
-      title: "Administrative Assistant",
-      company: "CityWorks Solutions",
-      location: "Springfield, IL",
-      category: "administration",
-      type: "Full-time",
+      title: "Mover",
+      category: "Moving",
+      summary: "Help clients relocate locally.",
+      zipcode: "10011",
+      employmentType: "Full-time",
+      workLocationType: "in-person"
     },
     {
-      title: "Customer Support Specialist",
-      company: "HelpHub",
-      location: "Buffalo, NY (Remote)",
-      category: "customer-service",
-      type: "Part-time",
+      title: "Cleaner",
+      category: "Cleaning",
+      summary: "Apartment cleaning in Manhattan.",
+      zipcode: "10018",
+      employmentType: "Part-time",
+      workLocationType: "in-person"
     },
     {
-      title: "High School Math Teacher",
-      company: "Greenwood Academy",
-      location: "Greensboro, NC",
-      category: "education",
-      type: "Full-time",
+      title: "Dog Walker",
+      category: "Pet Care",
+      summary: "Daily dog walking route.",
+      zipcode: "10003",
+      employmentType: "Part-time",
+      workLocationType: "in-person"
     },
     {
-      title: "Mechanical Engineer",
-      company: "TruBuild Inc.",
-      location: "Cincinnati, OH",
-      category: "engineering",
-      type: "Full-time",
+      title: "Lawn Mower",
+      category: "Landscaping",
+      summary: "Seasonal lawn care service.",
+      zipcode: "10010",
+      employmentType: "Contract",
+      workLocationType: "hybrid"
     },
     {
-      title: "Staff Accountant",
-      company: "BalancePoint Financial",
-      location: "Tampa, FL",
-      category: "finance",
-      type: "Full-time",
+      title: "Dishwasher",
+      category: "Food Service",
+      summary: "Back-of-house restaurant role.",
+      zipcode: "10019",
+      employmentType: "Full-time",
+      workLocationType: "in-person"
+    },
+  
+    // Within 10 miles
+    {
+      title: "Cashier",
+      category: "Retail Helper",
+      summary: "Convenience store help needed.",
+      zipcode: "10451",
+      employmentType: "Full-time",
+      workLocationType: "in-person"
     },
     {
-      title: "Registered Nurse (RN)",
-      company: "Sunrise Health",
-      location: "Boise, ID",
-      category: "healthcare",
-      type: "Contract",
+      title: "Waiter",
+      category: "Food Service",
+      summary: "Serve food in a busy diner.",
+      zipcode: "11201",
+      employmentType: "Part-time",
+      workLocationType: "in-person"
     },
     {
-      title: "Hotel Front Desk Clerk",
-      company: "Seaside Inn & Suites",
-      location: "Myrtle Beach, SC",
-      category: "hospitality",
-      type: "Part-time",
+      title: "Delivery Helper",
+      category: "Delivery",
+      summary: "Assist with last-mile deliveries.",
+      zipcode: "11215",
+      employmentType: "Full-time",
+      workLocationType: "in-person"
     },
     {
-      title: "Junior Web Developer",
-      company: "BluePixel Tech",
-      location: "Des Moines, IA",
-      category: "information-technology",
-      type: "Full-time",
+      title: "Online Customer Support",
+      category: "Customer Service",
+      summary: "Respond to tickets and emails.",
+      zipcode: "10452",
+      employmentType: "Contract",
+      workLocationType: "remote"
     },
     {
-      title: "Warehouse Associate",
-      company: "FastShip Logistics",
-      location: "Columbus, OH",
-      category: "logistics",
-      type: "Full-time",
+      title: "Remote Data Entry",
+      category: "General Labor",
+      summary: "Enter simple data from home.",
+      zipcode: "11217",
+      employmentType: "Part-time",
+      workLocationType: "hybrid"
+    },
+  
+    // Within 15 miles
+    {
+      title: "Babysitter",
+      category: "Babysitting",
+      summary: "Evening childcare help needed.",
+      zipcode: "07030",
+      employmentType: "Part-time",
+      workLocationType: "in-person"
     },
     {
-      title: "Maintenance Technician",
-      company: "Core Facilities Group",
-      location: "Madison, WI",
-      category: "maintenance",
-      type: "Full-time",
+      title: "Elderly Companion",
+      category: "Elder Care",
+      summary: "Daytime elderly companionship.",
+      zipcode: "07093",
+      employmentType: "Part-time",
+      workLocationType: "in-person"
     },
+    {
+      title: "Virtual Assistant",
+      category: "General Labor",
+      summary: "Remote scheduling and admin tasks.",
+      zipcode: "07087",
+      employmentType: "Contract",
+      workLocationType: "remote"
+    },
+    {
+      title: "Security Guard",
+      category: "Security",
+      summary: "Night shift at office building.",
+      zipcode: "11373",
+      employmentType: "Full-time",
+      workLocationType: "hybrid"
+    },
+    {
+      title: "Online Tutor",
+      category: "Tutoring",
+      summary: "Remote math tutoring.",
+      zipcode: "11432",
+      employmentType: "Part-time",
+      workLocationType: "remote"
+    },
+  
+    // Within 20 miles
+    {
+      title: "Retail Stocker",
+      category: "Retail Helper",
+      summary: "Restocking shelves at night.",
+      zipcode: "11530",
+      employmentType: "Part-time",
+      workLocationType: "in-person"
+    },
+    {
+      title: "Car Washer",
+      category: "Car Wash",
+      summary: "Exterior and interior detailing.",
+      zipcode: "11501",
+      employmentType: "Contract",
+      workLocationType: "in-person"
+    },
+    {
+      title: "Tutor",
+      category: "Tutoring",
+      summary: "Help students with homework.",
+      zipcode: "07024",
+      employmentType: "Part-time",
+      workLocationType: "hybrid"
+    },
+    {
+      title: "Event Helper",
+      category: "Event Help",
+      summary: "Assist with setup/teardown.",
+      zipcode: "07020",
+      employmentType: "Contract",
+      workLocationType: "in-person"
+    },
+    {
+      title: "Remote Dispatcher",
+      category: "Logistics",
+      summary: "Coordinate drivers and shipments.",
+      zipcode: "11550",
+      employmentType: "Full-time",
+      workLocationType: "remote"
+    }
   ];
 
   const [ jobPhrase, setJobPhrase ] = useState("");
@@ -122,6 +224,12 @@ const JobSearch = () => {
     remote: false,
     hybrid: false
   });
+
+  const [currentPage, setCurrentPage] = useState(1);const jobsPerPage = 5;
+  const indexOfLastJob = currentPage * jobsPerPage;
+  const indexOfFirstJob = indexOfLastJob - jobsPerPage;
+  const currentJobs = jobPostings.slice(indexOfFirstJob, indexOfLastJob);
+  const totalPages = Math.ceil(jobPostings.length / jobsPerPage);
 
   //Function that will filter the job listing based on the phrases and set filters
   const getAllFilters = () => {
@@ -296,20 +404,33 @@ const JobSearch = () => {
         <section className="job-listings section-width">
           <h2>Current Openings</h2>
           <section>
-            {jobPostings.map((jobPosting, index) => (
-              <div className="job-card" key={`${jobPosting.title}-${jobPosting.company}-${index}`}>
-                <h3>{jobPosting.title}</h3>
-                <p className="company">{jobPosting.company}</p>
-                <p className="location">{jobPosting.location}</p>
-                <span className="badge">{jobPosting.type}</span>
-                <span className="badge">{jobPosting.category}</span>
+            {currentJobs.map((jobPosting, index) => (
+              <div className="job-card" key={`${jobPosting.title}-${index}`}>
+                <h3>{jobPosting.title}</h3> 
+                <span className="category">{jobPosting.category}</span>
+                <p className="company">{jobPosting.summary}</p>
+                <p className="location">
+                <FontAwesomeIcon icon={faLocationDot} style={{ color: "#000000" }} size="lg"/>
+                  {jobPosting.zipcode} <span><FontAwesomeIcon icon={faClock} size="lg" /> {jobPosting.employmentType}</span></p>
+                
+                <span className="badge">{jobPosting.workLocationType}</span>
                 <button className="apply-btn">Apply</button>
               </div>
             ))}
           </section>
         </section>
 
-        <button className="load-more">Load More</button>
+        <div className="pagination">
+          {Array.from({ length: totalPages }, (_, i) => (
+            <button 
+              key={i + 1} 
+              onClick={() => setCurrentPage(i + 1)} 
+              className={`page-btn ${currentPage === i + 1 ? 'active' : ''}`}
+            >
+              {i + 1}
+            </button>
+          ))}
+        </div>
       </div>
       <FooterSection />
     </div>
