@@ -35,6 +35,7 @@ function RegisterForm() {
           headers: {
             "Content-Type": "application/json",
           },
+          credentials: "include",
           body: JSON.stringify(formData),
         }
       );
@@ -43,7 +44,7 @@ function RegisterForm() {
 
       if (!response.ok) throw new Error(result.message || "Failed to register");
 
-      localStorage.setItem("authToken", result.token);
+      // localStorage.setItem("authToken", result.token);
 
       navigate("/login");
     } catch (error) {

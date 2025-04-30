@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
+const GOOGLE_OAUTH_URL = "http://localhost:8000/api/v1/auth/google";
+
 function LoginForm() {
   const [formData, setFormData] = useState({
     email: "",
@@ -26,6 +28,7 @@ function LoginForm() {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include", // ← send/receive HTTP-only cookies
         body: JSON.stringify(formData),
       });
 
@@ -33,9 +36,8 @@ function LoginForm() {
 
       if (!response.ok) throw new Error(result.message || "Failed to log in");
 
-      localStorage.setItem("authToken", result.token);
-      localStorage.setItem("userId", result.user.userId);
-
+      // localStorage.setItem("authToken", result.token);
+      // localStorage.setItem("userId", result.user.userId);
 
       //navigate(`/profile/${result.user._id}`);
       navigate("/");
@@ -44,6 +46,11 @@ function LoginForm() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleGoogleSignIn = () => {
+    // simply redirect browser to backend OAuth entrypoint
+    window.location.href = GOOGLE_OAUTH_URL;
   };
 
   return (
@@ -74,6 +81,15 @@ function LoginForm() {
       <p>
         Don't have an account? <Link to="/register">Register here</Link>
       </p>
+      <p>—or—</p>
+      <button type="button" onClick={handleGoogleSignIn}>
+        <img
+          src="https://developers.google.com/identity/images/g-logo.png"
+          alt="Google logo"
+          style={{ width: "20px", marginRight: "8px" }}
+        />
+        Sign in with Google
+      </button>
     </>
   );
 }
