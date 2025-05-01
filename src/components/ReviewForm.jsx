@@ -19,14 +19,14 @@ function ReviewForm({ revieweeId, setReviews, currentUser }) {
             comment
         };
 
-        
+
         fetch('http://localhost:8000/api/v1/review', {
             method: 'POST',
-            headers: { 
+            headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(newReview),
-            credentials: 'include', 
+            credentials: 'include',
         })
             .then((response) => response.json())
             .then((addedReview) => {
