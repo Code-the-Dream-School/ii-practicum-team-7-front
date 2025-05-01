@@ -13,25 +13,20 @@ function ReviewForm({ revieweeId, setReviews, currentUser }) {
             return;
         }
 
-        const token = localStorage.getItem('authToken');
-        if (!token) {
-            alert('No token found. Please log in again.');
-            return;
-        }
-
         const newReview = {
             revieweeId,
             rating: Number(rating),
             comment
         };
 
+        
         fetch('http://localhost:8000/api/v1/review', {
             method: 'POST',
             headers: { 
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}` 
             },
-            body: JSON.stringify(newReview)
+            body: JSON.stringify(newReview),
+            credentials: 'include', 
         })
             .then((response) => response.json())
             .then((addedReview) => {
