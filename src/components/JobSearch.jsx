@@ -211,8 +211,8 @@ const JobSearch = () => {
   ];
 
   const [ jobPhrase, setJobPhrase ] = useState("");
-  const [ zipCode, setZipCode ] = useState("");
-  const [ radius, setRadius ] = useState("");
+  const [ zipCode, setZipCode ] = useState("10001");
+  const [ radius, setRadius ] = useState("5");
   const [ category, setCategory ] = useState("");
   const [ employmentType, setEmploymentType ] = useState({
     fullTime: false,
@@ -225,10 +225,20 @@ const JobSearch = () => {
     hybrid: false
   });
 
-  const [currentPage, setCurrentPage] = useState(1);const jobsPerPage = 5;
+  //Added distance between the posting's zip code and the default zip code.
+  const [ filteredPostings, setFilteredPostings ] = useState(() => {
+    return jobPostings.map(posting => ({
+      ...posting,
+      distance : zipcodes.distance(zipCode, posting.zipcode)
+    }))
+      .sort((postingA, postingB) => postingA.distance - postingB.distance);
+  });
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const jobsPerPage = 5;
   const indexOfLastJob = currentPage * jobsPerPage;
   const indexOfFirstJob = indexOfLastJob - jobsPerPage;
-  const currentJobs = jobPostings.slice(indexOfFirstJob, indexOfLastJob);
+  const currentJobs = filteredPostings.slice(indexOfFirstJob, indexOfLastJob);
   const totalPages = Math.ceil(jobPostings.length / jobsPerPage);
 
   //Function that will filter the job listing based on the phrases and set filters
@@ -411,7 +421,7 @@ const JobSearch = () => {
                 <p className="company">{jobPosting.summary}</p>
                 <p className="location">
                 <FontAwesomeIcon icon={faLocationDot} style={{ color: "#000000" }} size="lg"/>
-                  {jobPosting.zipcode} <span><FontAwesomeIcon icon={faClock} size="lg" /> {jobPosting.employmentType}</span></p>
+                  {jobPosting.distance} miles away <span><FontAwesomeIcon icon={faClock} size="lg" /> {jobPosting.employmentType}</span></p>
                 
                 <span className="badge">{jobPosting.workLocationType}</span>
                 <button className="apply-btn">Apply</button>
