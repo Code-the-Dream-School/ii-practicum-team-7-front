@@ -1,4 +1,4 @@
-* {
+/* * {
   margin: 0;
   box-sizing: border-box;
 }
@@ -201,4 +201,4 @@ button:hover {
 #social-media-icons {
   display: flex;
   gap: 10px;
-}
+} */

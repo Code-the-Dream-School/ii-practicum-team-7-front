@@ -1,6 +1,4 @@
 import Profile from "./components/UserProfile/UserProfilePg";
-import LoginForm from "./components/LoginForm";
-import RegisterForm from "./components/RegisterForm";
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
