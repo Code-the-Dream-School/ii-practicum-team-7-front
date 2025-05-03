@@ -3,10 +3,7 @@ import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-
 import PageWrapper from './components/PageWrapper';
-import LoginForm from './components/LoginForm';
-import RegisterForm from './components/RegisterForm';
 
 import './App.css';
 
@@ -59,8 +56,6 @@ function App() {
             <SignUpSection />
           </main>
         } />
-           <Route path="/login" element={<LoginForm />} />
-          <Route path="/register" element={<RegisterForm />} />
           <Route path="/profile/:id" element={<Profile />} />
           <Route path="/create-profile" element={<UserInfoForm />} />
           <Route path="/edit-profile/:id" element={<UserInfoForm />} />

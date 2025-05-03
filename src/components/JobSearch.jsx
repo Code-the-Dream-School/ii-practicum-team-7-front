@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link } from "react-router-dom";
 import logo from "../images/logo1.png";
 import jobSearch from "../images/jobsearch.jpg";
-import FooterSection from  './landing/FooterSection.jsx';
 import './JobSearch.css';
 import zipcodes from 'zipcodes';
 import Pagination from "./jobsearch/Pagination.jsx";
@@ -276,15 +275,6 @@ const JobSearch = () => {
 
   //Function that will filter the job listing based on the phrases and set filters
   const getAllFilters = () => {
-    console.log(`This is the job phrase: ${jobPhrase}`);
-    console.log(`This is the category: ${category}`);
-
-    console.log(`This is the zip code: ${zipCode}`);
-    console.log(`This is radius: ${radius}`);
-    
-    console.log(`This is the employment type: full-time: ${employmentType.fullTime}, part-time: ${employmentType.partTime}, contract: ${employmentType.contract}`);
-    console.log(`This is the workplace type: in-person: ${workplaceType.inPerson}, remote: ${workplaceType.remote}, hybrid: ${workplaceType.hybrid}`);
-
     const filtered = jobPostings
     .map(posting => ({
       ...posting,
@@ -325,14 +315,6 @@ const JobSearch = () => {
 
   return (
     <div className="job-search-page">
-      <header className="header section-width">
-        <img src={logo} alt="logo" width="100px"/>
-        <nav>
-          <Link to="/" className="home-link">Home</Link>
-          <button className="signin-btn">Sign In</button>
-        </nav>
-      </header>
-
       <div className="main-content section-width">
 
         <JobSearchArea 
@@ -364,9 +346,8 @@ const JobSearch = () => {
           setCurrentPage={setCurrentPage} 
           currentPage={currentPage}
           />
-          
+
       </div>
-      <FooterSection />
     </div>
   )
 }

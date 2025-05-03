@@ -11,12 +11,6 @@ body {
   width: 100%;
 }
 
-.pagewrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
 main {
   display: flex;
   flex-direction: column;
@@ -115,6 +109,16 @@ button:hover {
   align-items: center;
   justify-content: space-between;
   padding: 0px 30px;
+}
+
+.home-link { 
+  background-color: black;
+  color: white;
+  text-decoration: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
 }
 
 #footer {
