@@ -4,10 +4,10 @@ import logo from "../images/logo1.png";
 import jobSearch from "../images/jobsearch.jpg";
 import FooterSection from  './landing/FooterSection.jsx';
 import './JobSearch.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLocationDot } from '@fortawesome/free-solid-svg-icons';
-import { faClock } from '@fortawesome/free-regular-svg-icons';
 import zipcodes from 'zipcodes';
+import Pagination from "./jobsearch/Pagination.jsx";
+import JobPostings from "./jobsearch/JobPostings.jsx";
+import JobSearchArea from "./jobsearch/JobSearchArea.jsx";
 
 
 const JobSearch = () => {
@@ -239,19 +239,7 @@ const JobSearch = () => {
   const indexOfLastJob = currentPage * jobsPerPage;
   const indexOfFirstJob = indexOfLastJob - jobsPerPage;
   const currentJobs = filteredPostings.slice(indexOfFirstJob, indexOfLastJob);
-  const totalPages = Math.ceil(jobPostings.length / jobsPerPage);
-
-  //Function that will filter the job listing based on the phrases and set filters
-  const getAllFilters = () => {
-    console.log(`This is the job phrase: ${jobPhrase}`);
-    console.log(`This is the category: ${category}`);
-
-    console.log(`This is the zip code: ${zipCode}`);
-    console.log(`This is radius: ${radius}`);
-    
-    console.log(`This is the employment type: full-time: ${employmentType.fullTime}, part-time: ${employmentType.partTime}, contract: ${employmentType.contract}`);
-    console.log(`This is the workplace type: in-person: ${workplaceType.inPerson}, remote: ${workplaceType.remote}, hybrid: ${workplaceType.hybrid}`);
-  } 
+  const totalPages = Math.ceil(filteredPostings.length / jobsPerPage);
 
   const employmentCheckboxChecker = (e) => {
     const {name, checked} = e.target;
@@ -284,6 +272,55 @@ const JobSearch = () => {
       remote: false,
       hybrid: false
     })
+  }
+
+  //Function that will filter the job listing based on the phrases and set filters
+  const getAllFilters = () => {
+    console.log(`This is the job phrase: ${jobPhrase}`);
+    console.log(`This is the category: ${category}`);
+
+    console.log(`This is the zip code: ${zipCode}`);
+    console.log(`This is radius: ${radius}`);
+    
+    console.log(`This is the employment type: full-time: ${employmentType.fullTime}, part-time: ${employmentType.partTime}, contract: ${employmentType.contract}`);
+    console.log(`This is the workplace type: in-person: ${workplaceType.inPerson}, remote: ${workplaceType.remote}, hybrid: ${workplaceType.hybrid}`);
+
+    const filtered = jobPostings
+    .map(posting => ({
+      ...posting,
+      distance: zipcodes.distance(zipCode, posting.zipcode)
+    }))
+    .filter(posting => {
+      const matchesPhrase = jobPhrase
+        ? posting.title.toLowerCase().includes(jobPhrase.toLowerCase())
+        : true;
+
+      const matchesCategory = category
+        ? posting.category.toLowerCase() === category
+        : true;
+
+      const withinRadius = radius
+        ? posting.distance <= Number(radius)
+        : true;
+
+      const matchesEmployment =
+        (!employmentType.fullTime && !employmentType.partTime && !employmentType.contract) ||
+        (employmentType.fullTime && posting.employmentType.toLowerCase() === "full-time") ||
+        (employmentType.partTime && posting.employmentType.toLowerCase() === "part-time") ||
+        (employmentType.contract && posting.employmentType.toLowerCase() === "contract");
+
+      const matchesWorkplace =
+        (!workplaceType.inPerson && !workplaceType.remote && !workplaceType.hybrid) ||
+        (workplaceType.inPerson && posting.workLocationType === "in-person") ||
+        (workplaceType.remote && posting.workLocationType === "remote") ||
+        (workplaceType.hybrid && posting.workLocationType === "hybrid");
+
+      return matchesPhrase && matchesCategory && withinRadius && matchesEmployment && matchesWorkplace;
+    })
+    .sort((a, b) => a.distance - b.distance);
+
+    setFilteredPostings(filtered);
+    setCurrentPage(1); // reset to first page after filtering
   } 
 
   return (
@@ -297,150 +334,37 @@ const JobSearch = () => {
       </header>
 
       <div className="main-content section-width">
-        <section className="search-area section-width">
 
-          <div className="text-section">
-            <h2>Search Job Listings</h2>
+        <JobSearchArea 
+          jobPhrase={jobPhrase}
+          setJobPhrase={setJobPhrase}
+          category={category}
+          setCategory={setCategory}
+          jobCategories={jobCategories}
+          zipCode={zipCode}
+          setZipCode={setZipCode}
+          radius={radius}
+          setRadius={setRadius}
+          radiusList={radiusList}
+          employmentType={employmentType}
+          employmentCheckboxChecker={employmentCheckboxChecker}
+          workplaceType={workplaceType}
+          workplaceTypeCheckboxChecker={workplaceTypeCheckboxChecker}
+          getAllFilters={getAllFilters}
+          clearAllFilters={clearAllFilters}
+          jobSearch={jobSearch}
+        />
 
-            <div className="input-fields">
-              <input 
-              type="text"
-              className="input" 
-              placeholder="Enter the job title..."
-              value={jobPhrase}
-              onChange={(e) => setJobPhrase(e.target.value)}
-              />
+        <JobPostings 
+          currentJobs = {currentJobs}
+        />
 
-              <select 
-              className="input"
-              id="select-category"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              >
-              <option value="">Select Category...</option>
-              {jobCategories.map((jobCategory, index) => (
-                <option value={jobCategory.toLowerCase()} key={`${jobCategory}-${index}`}>{jobCategory}</option>
-              ))}
-              </select>
-            </div>
-
-            <div className="input-fields">
-              <input
-                  type="text"
-                  className="input" 
-                  placeholder="Enter location..."
-                  value={zipCode}
-                  inputMode="numeric"
-                  onChange={(e) => setZipCode(e.target.value)}
-                />
-                
-              <select
-                className="input"
-                id="select-radius"
-                value={radius}
-                onChange={(e) => setRadius(e.target.value)}
-              >
-                <option value="">Select radius</option>
-                {radiusList.map((radius,index) =>
-                  radius === 1 ? (
-                  <option value={radius} key={`${radius}-${index}`}>{radius} mile</option>
-                ):(<option value={radius}>{radius} miles</option>
-                ))}
-              </select>
-            </div>
-           
-            <div className="checkboxes">
-              <fieldset>
-                <legend>Employment Type</legend>
-                <div className="employment-type">
-                  <label><input 
-                          className="checkbox-input"
-                          type="checkbox"
-                          name="fullTime" 
-                          onChange={employmentCheckboxChecker}
-                          checked={employmentType.fullTime}
-                          /><span>Full-time</span></label>
-                  <label><input 
-                          type="checkbox"
-                          name="partTime"  
-                          onChange={employmentCheckboxChecker}
-                          checked={employmentType.partTime}
-                          /><span>Part-time</span></label>
-                  <label><input 
-                          type="checkbox"
-                          name="contract"  
-                          onChange={employmentCheckboxChecker}
-                          checked={employmentType.contract}
-                          /><span>Contract</span></label>
-                </div>
-              </fieldset>
-
-              <fieldset>
-                <legend>Workplace Type</legend>
-                <div className="workplace-type">
-                  <label><input 
-                          type="checkbox"
-                          name="inPerson" 
-                          onChange={workplaceTypeCheckboxChecker}
-                          checked={workplaceType.inPerson}
-                          /><span>In-person</span></label>
-                  <label><input 
-                          type="checkbox"
-                          name="remote" 
-                          onChange={workplaceTypeCheckboxChecker}
-                          checked={workplaceType.remote}
-                          /><span>Remote</span></label>
-                  <label><input 
-                          type="checkbox"
-                          name="hybrid" 
-                          onChange={workplaceTypeCheckboxChecker}
-                          checked={workplaceType.hybrid}
-                          /><span>Hybrid</span></label>
-                </div>
-              </fieldset>
-            </div>
-
-            <div className="jobsearch-btns">
-              <button onClick={() => getAllFilters()}>Search</button>
-              <button onClick={() => clearAllFilters()}>Reset</button>
-            </div>
-
-          </div>
-
-          <img className="image-section" src={jobSearch} alt="job-search-image"/>
-
-        </section>
-
-        <section className="job-listings section-width">
-          <h2>Current Openings</h2>
-          <section>
-            {currentJobs.map((jobPosting, index) => (
-              <div className="job-card" key={`${jobPosting.title}-${index}`}>
-                <h3>{jobPosting.title}</h3> 
-                <span className="category">{jobPosting.category}</span>
-                <p className="company">{jobPosting.summary}</p>
-                <p className="location">
-                <FontAwesomeIcon icon={faLocationDot} style={{ color: "#000000" }} size="lg"/>
-                  {jobPosting.distance} miles away <span><FontAwesomeIcon icon={faClock} size="lg" /> {jobPosting.employmentType}</span></p>
-                
-                <span className="badge">{jobPosting.workLocationType}</span>
-                <button className="apply-btn">Apply</button>
-              </div>
-            ))}
-          </section>
-        </section>
-
-        <div className="pagination">
-          {Array.from({ length: totalPages }, (_, i) => (
-            <button 
-              key={i + 1} 
-              onClick={() => setCurrentPage(i + 1)} 
-              className={`page-btn ${currentPage === i + 1 ? 'active' : ''}`}
-            >
-              {i + 1}
-            </button>
-          ))}
-        </div>
+        <Pagination 
+          totalPages={totalPages} 
+          setCurrentPage={setCurrentPage} 
+          currentPage={currentPage}
+          />
+          
       </div>
       <FooterSection />
     </div>
