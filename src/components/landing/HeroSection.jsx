@@ -4,18 +4,22 @@ import { Link } from "react-router-dom";
 
 const HeroSection = () => {
   return (
-    <div className="each-section" id="hero-section">
-      <div>
-      <h1>Your next job is just around the corner</h1>
-      <p>Offer your skills or hire helping hands, right here in your neighborhood</p>
-      <div className="button-row">
-        <Link to="/jobs">
-          <button className="black-button">Find jobs</button>
+    <div className="section-container bg-ny-pink pt-[222px]">
+      <div className="section-content">
+      <h1 className="text-white">Your next job is just around the corner</h1>
+      <p className="text-white">Offer your skills or hire helping hands, right here in your neighborhood</p>
+      <div className="flex gap-2">
+        <Link to="/login">
+          <button className="btn-grn">Sign in</button>
         </Link>
-        <button className="white-button">Post a job</button>
+        <Link to={"/register"}>
+        <button className="btn-pnk">Sign up</button>
+        </Link>
       </div>        
       </div>
-      <img src={image} alt="computer" width="1200"/>
+      <div className="max-h-[40rem] overflow-hidden">
+      <img className="w-full object-cover" src={image} alt="computer"/>
+      </div>
     </div>
   )
 }

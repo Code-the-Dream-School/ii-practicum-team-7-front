@@ -22,9 +22,24 @@
     body {
         @apply font-body leading-body;
     }
+    html {
+        @apply m-0 p-0;
+    }
+    input {
+        @apply text-gray-700;
+    }
+    input::placeholder {
+        @apply text-gray-600;
+    }
 }
 
 @layer components {
+    .section-container {
+        @apply px-16 pt-28 pb-16;
+    }
+    .section-content {
+        @apply flex flex-col items-center gap-8 pb-16;
+    }
     .btn-grn {
         @apply
         text-black bg-monte-carlo-dark
