@@ -2,50 +2,46 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {    
-    h1 {
-        @apply font-heading text-h1 leading-heading tracking-heading;
-    }
-    h2 {
-        @apply font-heading text-h2 leading-heading tracking-heading;
-    }
-    h3 {
-        @apply font-heading text-h3 leading-heading tracking-heading;
-    }
-    h4 {
-        @apply font-heading text-h4 leading-heading tracking-heading;
-    }
-    h5 {
-        @apply font-heading text-h5 leading-heading tracking-heading;
-    }
+@layer base {
+  h1 {
+    @apply font-heading text-h1 leading-heading tracking-heading;
+  }
+  h2 {
+    @apply font-heading text-h2 leading-heading tracking-heading;
+  }
+  h3 {
+    @apply font-heading text-h3 leading-heading tracking-heading;
+  }
+  h4 {
+    @apply font-heading text-h4 leading-heading tracking-heading;
+  }
+  h5 {
+    @apply font-heading text-h5 leading-heading tracking-heading;
+  }
 
-    body {
-        @apply font-body leading-body;
-    }
+  body {
+    @apply font-body leading-body;
+  }
 }
 
 @layer components {
-    .btn-grn {
-        @apply
-        text-black bg-monte-carlo-dark
+  .btn-grn {
+    @apply text-black bg-monte-carlo-dark
         py-1.5 px-3
         disabled:text-gray-500
         disabled:bg-monte-carlo;
-    }
-    .btn-blk {
-        @apply
-        text-white bg-black
+  }
+  .btn-blk {
+    @apply text-white bg-black
+        py-1.5 px-3;
+  }
+  .btn-pnk {
+    @apply text-white bg-ny-pink
+        py-1.5 px-3;
+  }
+  .btn-wht {
+    @apply text-black bg-white
         py-1.5 px-3
-    }
-    .btn-pnk {
-        @apply
-        text-white bg-ny-pink
-        py-1.5 px-3
-    }
-    .btn-wht {
-        @apply
-        text-black bg-white
-        py-1.5 px-3
-        border border-gray-300
-    }
+        border border-gray-300;
+  }
 }
