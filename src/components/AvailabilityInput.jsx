@@ -28,7 +28,7 @@ function AvailabilityInput() {
 
     };
 
-    const handdleRemove = (id) => {
+    const handleRemove = (id) => {
         setAvailabilityList(availabilityList.filter(slot => slot.id !== id))
     }
 
@@ -49,10 +49,23 @@ function AvailabilityInput() {
 
             <label>Set End Time:</label>
             <input 
-                
+                type="time"
+                value={endTime}
+                onChange={(e) => setEndTime(e.target.value)}
             />
+            <button onClick={handleAvailability}>Add Availability</button>
+
+            <h3>Current Availability</h3>
+            {availabilityList.map((slot) => (
+                <li key={slot.id}>
+                    {slot.date} | {slot.startTime} - {slot.endTime} ({slot.timeZone})
+                    <button onClick={() => handleRemove(slot.id)}>Remove</button>
+                </li>
+            ))}
         </>
     )
     
 
 }
+
+export default AvailabilityInput
