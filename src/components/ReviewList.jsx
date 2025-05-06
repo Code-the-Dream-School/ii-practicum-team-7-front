@@ -1,15 +1,15 @@
 import React, {useState} from "react";
 import ReviewForm from "./ReviewForm";
 
-function ReviewList({ reviews }) {
+function ReviewList({ reviews, averageRating }) {
     return (
         <>
-            {reviews.length === 0 && <p>No reviews Yet</p>}
+            <h2>Average Rating: {averageRating ? averageRating : 'No Ratings Yet'}</h2>
+            {reviews.length === 0 && <p>No Reviews Yet</p>}
             {reviews.map((review, index) => (
                 <div key={index}>
-                    <strong>{review.reviewerName}</strong> rated {review.rating} /5
+                    <p>{review.reviewerName} Rated {review.rating} /5</p>
                     <p>{review.comment}</p>
-                    <hr />
                 </div>
             ))}
         </>
