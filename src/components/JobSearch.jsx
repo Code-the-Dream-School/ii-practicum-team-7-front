@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import logo from "../images/logo1.png";
 import jobSearch from "../images/jobsearch.jpg";
@@ -7,9 +7,25 @@ import zipcodes from 'zipcodes';
 import Pagination from "./jobsearch/Pagination.jsx";
 import JobPostings from "./jobsearch/JobPostings.jsx";
 import JobSearchArea from "./jobsearch/JobSearchArea.jsx";
-
+import axios from "axios";
 
 const JobSearch = () => {
+  const [ jobPostings, setJobPostings ] = useState([]);
+  const [ jobPhrase, setJobPhrase ] = useState("");
+  const [ zipCode, setZipCode ] = useState("10001");
+  const [ radius, setRadius ] = useState("");
+  const [ category, setCategory ] = useState("");
+  const [ employmentType, setEmploymentType ] = useState({
+    fullTime: false,
+    partTime: false,
+    contract: false
+  });
+  const [ workplaceType, setWorkplaceType ] = useState({
+    inPerson: false,
+    remote: false,
+    hybrid: false
+  });
+  const [ filteredPostings, setFilteredPostings ] = useState([]);
 
   //an array of job categories
   const jobCategories = [
@@ -37,208 +53,6 @@ const JobSearch = () => {
   const radiusList = [
     1, 5, 10, 15, 25, 50
   ]
-
-  //job postings test samples no backend yet.
-  const jobPostings = [
-    // Within 5 miles
-    {
-      title: "Mover",
-      category: "Moving",
-      summary: "Help clients relocate locally.",
-      zipcode: "10011",
-      employmentType: "Full-time",
-      workLocationType: "in-person"
-    },
-    {
-      title: "Cleaner",
-      category: "Cleaning",
-      summary: "Apartment cleaning in Manhattan.",
-      zipcode: "10018",
-      employmentType: "Part-time",
-      workLocationType: "in-person"
-    },
-    {
-      title: "Dog Walker",
-      category: "Pet Care",
-      summary: "Daily dog walking route.",
-      zipcode: "10003",
-      employmentType: "Part-time",
-      workLocationType: "in-person"
-    },
-    {
-      title: "Lawn Mower",
-      category: "Landscaping",
-      summary: "Seasonal lawn care service.",
-      zipcode: "10010",
-      employmentType: "Contract",
-      workLocationType: "hybrid"
-    },
-    {
-      title: "Dishwasher",
-      category: "Food Service",
-      summary: "Back-of-house restaurant role.",
-      zipcode: "10019",
-      employmentType: "Full-time",
-      workLocationType: "in-person"
-    },
-  
-    // Within 10 miles
-    {
-      title: "Cashier",
-      category: "Retail Helper",
-      summary: "Convenience store help needed.",
-      zipcode: "10451",
-      employmentType: "Full-time",
-      workLocationType: "in-person"
-    },
-    {
-      title: "Waiter",
-      category: "Food Service",
-      summary: "Serve food in a busy diner.",
-      zipcode: "11201",
-      employmentType: "Part-time",
-      workLocationType: "in-person"
-    },
-    {
-      title: "Delivery Helper",
-      category: "Delivery",
-      summary: "Assist with last-mile deliveries.",
-      zipcode: "11215",
-      employmentType: "Full-time",
-      workLocationType: "in-person"
-    },
-    {
-      title: "Online Customer Support",
-      category: "Customer Service",
-      summary: "Respond to tickets and emails.",
-      zipcode: "10452",
-      employmentType: "Contract",
-      workLocationType: "remote"
-    },
-    {
-      title: "Remote Data Entry",
-      category: "General Labor",
-      summary: "Enter simple data from home.",
-      zipcode: "11217",
-      employmentType: "Part-time",
-      workLocationType: "hybrid"
-    },
-  
-    // Within 15 miles
-    {
-      title: "Babysitter",
-      category: "Babysitting",
-      summary: "Evening childcare help needed.",
-      zipcode: "07030",
-      employmentType: "Part-time",
-      workLocationType: "in-person"
-    },
-    {
-      title: "Elderly Companion",
-      category: "Elder Care",
-      summary: "Daytime elderly companionship.",
-      zipcode: "07093",
-      employmentType: "Part-time",
-      workLocationType: "in-person"
-    },
-    {
-      title: "Virtual Assistant",
-      category: "General Labor",
-      summary: "Remote scheduling and admin tasks.",
-      zipcode: "07087",
-      employmentType: "Contract",
-      workLocationType: "remote"
-    },
-    {
-      title: "Security Guard",
-      category: "Security",
-      summary: "Night shift at office building.",
-      zipcode: "11373",
-      employmentType: "Full-time",
-      workLocationType: "hybrid"
-    },
-    {
-      title: "Online Tutor",
-      category: "Tutoring",
-      summary: "Remote math tutoring.",
-      zipcode: "11432",
-      employmentType: "Part-time",
-      workLocationType: "remote"
-    },
-  
-    // Within 20 miles
-    {
-      title: "Retail Stocker",
-      category: "Retail Helper",
-      summary: "Restocking shelves at night.",
-      zipcode: "11530",
-      employmentType: "Part-time",
-      workLocationType: "in-person"
-    },
-    {
-      title: "Car Washer",
-      category: "Car Wash",
-      summary: "Exterior and interior detailing.",
-      zipcode: "11501",
-      employmentType: "Contract",
-      workLocationType: "in-person"
-    },
-    {
-      title: "Tutor",
-      category: "Tutoring",
-      summary: "Help students with homework.",
-      zipcode: "07024",
-      employmentType: "Part-time",
-      workLocationType: "hybrid"
-    },
-    {
-      title: "Event Helper",
-      category: "Event Help",
-      summary: "Assist with setup/teardown.",
-      zipcode: "07020",
-      employmentType: "Contract",
-      workLocationType: "in-person"
-    },
-    {
-      title: "Remote Dispatcher",
-      category: "Logistics",
-      summary: "Coordinate drivers and shipments.",
-      zipcode: "11550",
-      employmentType: "Full-time",
-      workLocationType: "remote"
-    }
-  ];
-
-  const [ jobPhrase, setJobPhrase ] = useState("");
-  const [ zipCode, setZipCode ] = useState("10001");
-  const [ radius, setRadius ] = useState("5");
-  const [ category, setCategory ] = useState("");
-  const [ employmentType, setEmploymentType ] = useState({
-    fullTime: false,
-    partTime: false,
-    contract: false
-  });
-  const [ workplaceType, setWorkplaceType ] = useState({
-    inPerson: false,
-    remote: false,
-    hybrid: false
-  });
-
-  //Added distance between the posting's zip code and the default zip code.
-  const [ filteredPostings, setFilteredPostings ] = useState(() => {
-    return jobPostings.map(posting => ({
-      ...posting,
-      distance : zipcodes.distance(zipCode, posting.zipcode)
-    }))
-      .sort((postingA, postingB) => postingA.distance - postingB.distance);
-  });
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const jobsPerPage = 5;
-  const indexOfLastJob = currentPage * jobsPerPage;
-  const indexOfFirstJob = indexOfLastJob - jobsPerPage;
-  const currentJobs = filteredPostings.slice(indexOfFirstJob, indexOfLastJob);
-  const totalPages = Math.ceil(filteredPostings.length / jobsPerPage);
 
   const employmentCheckboxChecker = (e) => {
     const {name, checked} = e.target;
@@ -278,7 +92,7 @@ const JobSearch = () => {
     const filtered = jobPostings
     .map(posting => ({
       ...posting,
-      distance: zipcodes.distance(zipCode, posting.zipcode)
+      distance: zipcodes.distance(zipCode, posting.zipCode)
     }))
     .filter(posting => {
       const matchesPhrase = jobPhrase
@@ -312,6 +126,46 @@ const JobSearch = () => {
     setFilteredPostings(filtered);
     setCurrentPage(1); // reset to first page after filtering
   } 
+    
+  //To fetch jobs
+  const fetchJobs = async () => {
+    try {
+      const { data } = await axios.get(
+        "http://localhost:8000/api/v1/jobs",
+        { withCredentials: true }
+      );
+      setJobPostings(data.jobs);
+    } catch (error) {
+      console.log("Error fetch jobs,", error.message);
+    }
+  };
+  
+  //fetch jobs from the backend on the first load.
+  useEffect(() => {
+    fetchJobs();
+  }, []);
+
+  //to add distance once the jobPostings gets the update from the backend.
+  useEffect(() => {
+    if (jobPostings.length === 0) return;
+
+    //Added distance between the posting's zip code and the default zip code.  
+    const filtered = jobPostings.map(posting => ({
+      ...posting,
+      distance: zipcodes.distance(zipCode, posting.zipCode)
+    }))
+    .sort((a, b) => a.distance - b.distance);
+  
+    setFilteredPostings(filtered);
+  }, [jobPostings]);
+
+  //Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const jobsPerPage = 5;
+  const indexOfLastJob = currentPage * jobsPerPage;
+  const indexOfFirstJob = indexOfLastJob - jobsPerPage;
+  const currentJobs = filteredPostings.slice(indexOfFirstJob, indexOfLastJob);
+  const totalPages = Math.ceil(filteredPostings.length / jobsPerPage);
 
   return (
     <div className="job-search-page">
