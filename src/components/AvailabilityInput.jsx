@@ -8,64 +8,71 @@ function AvailabilityInput() {
     const [startTime, setStartTime] = useState('');
     const [endTime, setEndTime] = useState('');
     const [availabilityList, setAvailabilityList] = useState([]);
+    const [errorMessage, setErrorMessage] = useState('');
 
 
     const handleAvailability = () => {
-        if (!selectedDate || !startTime || !endTime) return;
+        if (!selectedDate || !startTime || !endTime) {
+            setErrorMessage('Please fill in all fields.');
+            return;
+        }
 
-    const newSlot = {
-        id: uuidv4(),
-        Date: selectedDate.toISOString().split('T')[0],
-        startTime,
-        endTime,
-        timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-    };
+        setErrorMessage(''); 
 
-    setAvailabilityList([...availabilityList, newSlot])
-    setSelectedDate(null)
-    setStartTime('')
-    setEndTime('')
+        const newSlot = {
+            id: uuidv4(),
+            Date: selectedDate.toISOString().split('T')[0],
+            startTime,
+            endTime,
+            timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        };
 
+        setAvailabilityList([...availabilityList, newSlot]);
+        setSelectedDate(null);
+        setStartTime('');
+        setEndTime('');
     };
 
     const handleRemove = (id) => {
-        setAvailabilityList(availabilityList.filter(slot => slot.id !== id))
-    }
+        setAvailabilityList(availabilityList.filter(slot => slot.id !== id));
+    };
 
     return (
         <>
             <h3>Set Your Availability</h3>
+
             <label>Select Date:</label>
-            <DatePicker selected={selectedDate} onChange={setSelectedDate}/>
+            <DatePicker selected={selectedDate} onChange={setSelectedDate} />
 
             <label>Set Start Time:</label>
-            <input 
+            <input
                 type="time"
                 value={startTime}
                 onChange={(e) => setStartTime(e.target.value)}
-
-            
             />
 
             <label>Set End Time:</label>
-            <input 
+            <input
                 type="time"
                 value={endTime}
                 onChange={(e) => setEndTime(e.target.value)}
             />
+
             <button onClick={handleAvailability}>Add Availability</button>
 
-            <h3>Current Availability</h3>
-            {availabilityList.map((slot) => (
-                <li key={slot.id}>
-                    {slot.date} | {slot.startTime} - {slot.endTime} ({slot.timeZone})
-                    <button onClick={() => handleRemove(slot.id)}>Remove</button>
-                </li>
-            ))}
-        </>
-    )
-    
+            {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
 
+            <h3>Current Availability</h3>
+            <ul>
+                {availabilityList.map((slot) => (
+                    <li key={slot.id}>
+                        {slot.Date} | {slot.startTime} - {slot.endTime} ({slot.timeZone})
+                        <button onClick={() => handleRemove(slot.id)}>Remove</button>
+                    </li>
+                ))}
+            </ul>
+        </>
+    );
 }
 
-export default AvailabilityInput
+export default AvailabilityInput;
