@@ -6,27 +6,30 @@ const JobApplicationsList = () => {
   const [applications, setApplications] = useState([]);
   const [error, setError] = useState("");
   const { jobId } = useParams();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchApplications = async () => {
       try {
-        const token = localStorage.getItem("authToken");
+        // const token = localStorage.getItem("authToken");// estamos usando cookies no necesitamos guardar aqui
+        setIsLoading(true);
         const response = await axios.get(
           `http://localhost:8000/api/v1/jobs/${jobId}/applications`, // me sale undefiend, tengo que esperar a el create job
           {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+            // headers: {
+            //   Authorization: `Bearer ${token}`,
+            // },
+            withCredentials: true, // estamos usando cookies no necesitamos guardar OJO
           }
         );
-
         setApplications(response.data.data); //tengo que checar
       } catch (error) {
         setError("Error fetching applications.");
         console.error("Error fetching applications:", error.message);
+      } finally {
+        setIsLoading(false);
       }
     };
-
     fetchApplications();
   }, [jobId]);
 

@@ -7,6 +7,7 @@ const JobApplicationForm = () => {
     resumeUrl: "",
     coverLetter: "",
   });
+  const [formError, setFormError] = useState("");
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
@@ -24,29 +25,26 @@ const JobApplicationForm = () => {
   // Handles form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setFormError("");
     setIsSubmitting(true);
 
+    if (!formData.resumeUrl || !formData.coverLetter) {
+      setFormError("please complete all fields before submitting!!");
+      return;
+    }
+    setIsSubmitting(false);
     try {
-      const token = localStorage.getItem("authToken");
-      if (!token) {
-        setError("No authentication token found.");
-        return;
-      }
       const response = await axios.post(
         `http://localhost:8000/api/v1/jobs/${jobId}/applications`, // sale undefiend tengo que esperar a que se create job para testear
         formData,
         {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
+          withCredentials: true,
         }
       );
 
       if (response.status !== 200) {
         throw new Error(response.data.message || "Failed to apply for job");
       }
-
       navigate(`/jobs/${jobId}`);
     } catch (error) {
       setError(error.message);
@@ -75,7 +73,6 @@ const JobApplicationForm = () => {
             className="w-full px-3 py-2 border border-gray-300 rounded"
           />
         </div>
-
         <div className="form-group">
           <label htmlFor="coverLetter" className="block text-lg">
             Cover Letter:
@@ -88,7 +85,6 @@ const JobApplicationForm = () => {
             className="w-full px-3 py-2 border border-gray-300 rounded"
           />
         </div>
-
         <button
           type="submit"
           disabled={isSubmitting}
