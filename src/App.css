@@ -4,14 +4,11 @@
 }
 
 body {
-  background-color: rgb(241, 241, 241);
-  background-color: rgb(200, 255, 202);
+  background-color: rgb(128, 58, 58);
 }
 
-.pagewrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.section-width { 
+  width: 100%;
 }
 
 main {
@@ -21,34 +18,38 @@ main {
 }
 
 h1 {
-  font-size: 60px;
-}
-
-h2 {
+  font-family: 'Teachers', sans-serif;
   font-size: 50px;
 }
 
+h2 {
+  font-family: 'Teachers', sans-serif;
+  font-size: 40px;
+}
+
 h3 {
+  font-family: 'Teachers', sans-serif;
   font-size: 25px;
 }
 
 p {
   font-size: 20px;
+  font-family: 'Cabin, sans-serif';
 }
 
 button {
   font-size: 16px;
   padding: 14px 25px;
-  border-radius: 12px;
+  border-radius: 10px;
   transition: 0.5s;
 }
 
 button:hover {
   cursor:pointer;
 }
+
 .each-section {
   height: 600px;
-  width: 1200px;
   background-color:white;
   display: flex;
   flex-direction: column;
@@ -63,25 +64,27 @@ button:hover {
 }
 
 .black-button {
-  color: white;
-  background-color: black;
+  color: black;
+  background-color: #7BCEB4;
+  border-color: #7BCEB4;
 }
 
 .black-button:hover {
-  color: black;
-  background-color: white;
+  color: white;
+  background-color: #CE7B85;
+  border-color: #CE7B85;
 }
 
 .white-button {
-  color: black;
-  background-color: white; 
+  color: white;
+  background-color: #CE7B85;
+  border-color: #CE7B85;
 }
 
 .white-button:hover {
-  color: white;
-  background-color: black;
+  color: black;
+  background-color: #7BCEB4;
 }
-
 
 .test-image {
   display: flex;
@@ -98,10 +101,9 @@ button:hover {
 }
 
 #navbar, #footer{
-  width: 1200px;
   height: 100px;
-  color: black;
-  background-color: rgb(190, 200, 238);
+  color: white;
+  background-color: #CE7B85;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -109,8 +111,24 @@ button:hover {
   padding: 0px 30px;
 }
 
-#hero-section {
+.home-link { 
+  background-color: black;
+  color: white;
+  text-decoration: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+}
+
+#footer {
   color: black;
+  background-color: #F5E4E6;
+}
+
+#hero-section {
+  color: white;
+  background-color: #CE7B85;
   height: 1000px;
 }
 
@@ -128,10 +146,16 @@ button:hover {
   object-fit: cover;
 }
 
+.how-section {
+  background-color: #E4F5F0;
+  padding: 50px 0px;
+}
+
 #each-how-section-1 {
   display:flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   height:30%;
   width: 100%;
   gap: 20px;
@@ -158,7 +182,15 @@ button:hover {
   margin-bottom: 20px;
 }
 
+.testimonial-wrapper {
+  background-color: rgb(233, 254, 250);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 #testimonial-section {
+  width: 1200px;
   background-color: rgb(233, 254, 250);
   padding: 0px 200px;
   display: flex;
@@ -171,7 +203,7 @@ button:hover {
   align-items: center;
   text-align: center;
   gap: 30px;
-  background-color:rgb(137, 235, 202)
+  background-color:#7BCEB4;
 }
 
 #sign-up-field-container {
@@ -187,7 +219,7 @@ button:hover {
   height: 100%;
   border-style: none;
   border-bottom: 1px rgb(210, 210, 210) solid;
-  background-color: rgb(137, 235, 202);
+  background-color: #7BCEB4;
 }
 
 #footer-center-links {
@@ -195,7 +227,7 @@ button:hover {
   display: flex;
   flex-direction: row;
   gap: 15px;
-  font-weight: bold; 
+  font-weight: bold;
 }
 
 #social-media-icons {

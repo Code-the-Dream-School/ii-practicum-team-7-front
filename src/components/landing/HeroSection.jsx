@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const HeroSection = () => {
   return (
-    <div className="each-section" id="hero-section">
+    <div className="each-section section-width" id="hero-section">
       <div>
       <h1>Your next job is just around the corner</h1>
       <p>Offer your skills or hire helping hands, right here in your neighborhood</p>
@@ -15,7 +15,7 @@ const HeroSection = () => {
         <button className="white-button">Post a job</button>
       </div>        
       </div>
-      <img src={image} alt="computer" width="1200"/>
+      <img src={image} alt="computer" width="1100"/>
     </div>
   )
 }
