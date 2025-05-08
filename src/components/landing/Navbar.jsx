@@ -4,9 +4,10 @@ import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
-    <div className="each-section" id="navbar">
+    <div className="each-section section-width" id="navbar">
       <img src={logoimage} alt="logo" width="400px" />
       <div className="button-row">
+        <Link to="/" className="home-link">Home</Link>
         <Link to="/login">
           <button className="black-button">Sign In</button>
         </Link>

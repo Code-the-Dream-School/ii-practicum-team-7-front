@@ -2,7 +2,7 @@ import React from 'react';
 
 const SignUpSection = () => {
   return (
-    <div className="each-section" id="sign-up-section">
+    <div className="each-section section-width" id="sign-up-section">
       <h2>Ready to find your next gig or helping hand?</h2>
       <p>Join the community and connect with local jobs and talent</p>
       <div id="sign-up-field-container">

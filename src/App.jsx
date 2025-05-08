@@ -1,10 +1,12 @@
 import Profile from "./components/UserProfile/UserProfilePg";
+
 import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import PageWrapper from "./components/PageWrapper";
+
 
 import "./App.css";
 
@@ -21,7 +23,9 @@ import UserInfoForm from "./components/UserInfoForm.jsx";
 import JobApplicationForm from "./components/JobApplicationForm";
 import JobApplicationsList from "./components/JobApplicationsList";
 
-const URL = "http://localhost:8000/api/v1/";
+
+const URL = 'http://localhost:8000/api/v1/';
+
 
 function App() {
   const [message, setMessage] = useState("");
@@ -39,24 +43,20 @@ function App() {
 
   return (
     <BrowserRouter>
-      <PageWrapper>
-        <Routes>
-          {/* <Route path="/login" element={<LoginForm />} />
-          <Route path="/register" element={<RegisterForm />} /> */}
-          <Route path="/jobs" element={<JobSearch />} />
-          <Route
-            path="/"
-            element={
-              <main>
-                <HeroSection />
-                <HowSection />
-                <TestimonialSection />
-                <SignUpSection />
-              </main>
-            }
-          />
-          <Route path="/login" element={<LoginForm />} />
-          <Route path="/register" element={<RegisterForm />} />
+
+    <PageWrapper>
+      <Routes>
+        <Route path='/login' element={<LoginForm />} />
+        <Route path='/register' element={<RegisterForm />} />
+        <Route path="/jobs" element={<JobSearch />} />
+        <Route path="/" element={
+          <main>
+            <HeroSection />
+            <HowSection />
+            <TestimonialSection />
+            <SignUpSection />
+          </main>
+        } />
           <Route path="/profile/:id" element={<Profile />} />
           <Route path="/create-profile" element={<UserInfoForm />} />
           <Route path="/edit-profile/:id" element={<UserInfoForm />} />
