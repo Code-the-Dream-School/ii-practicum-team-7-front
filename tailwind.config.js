@@ -23,7 +23,7 @@ export default {
       },
       colors: {
         'monte-carlo': {
-          light: '#F1FAF7',
+          light: '#E4F5F0',
           DEFAULT: '#A2DCCA',
           dark: '#7BCEB4',
         },
@@ -31,6 +31,9 @@ export default {
           light: '#F5E4E6',
           DEFAULT: '#CE7B85',
           dark: '#3D2427',
+        },
+        'ny-pink-md': {
+          DEFAULT: '#DCA2A9'
         },
       },
       fontFamily: {

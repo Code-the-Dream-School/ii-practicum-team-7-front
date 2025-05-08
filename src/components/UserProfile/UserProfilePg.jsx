@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import styles from "./userProfile.module.css";
 import { useParams, useNavigate } from "react-router-dom";
 
 const Profile = () => {
@@ -68,43 +67,73 @@ const Profile = () => {
   if (error) return <p>{error}</p>;
   if (!profile) return <p>No profile data found.</p>;
 
+  const roleLabels = {
+  jobSeeker: "Job Seeker",
+  hiring: "Hiring",
+  both: "Job Seeker & Hiring",
+  };
+
   return (
-    <div className={styles.profileContainer}>
+    <div className="bg-monte-carlo pt-36 pb-12 px-4 sm:px-8 pg:px-16">
       <h1>My Profile</h1>
-      <div className={styles.profileCard}>
+
+      {/* Profile Photo + Role */}
+      <div className="flex flex-col items-center my-6">
         {profile.image && (
           <img
             src={profile.image}
             alt="profile photo"
-            className={styles.profileImage}
+            className="w-52 h-52 rounded-full object-cover mb-2 border-4 border-white"
           />
         )}
-        <p>
-          <strong>Name:</strong> {profile.name}
-        </p>
-        <p>
-          <strong>Email:</strong> {profile.email}
-        </p>
-        <p>
-          <strong>Phone Number:</strong> {profile.phone || "Not specified"}
-        </p>
-        <p>
-          <strong>Location:</strong> {profile.address || "Not specified"}
-        </p>
-        <p>
-          <strong>Skills:</strong> {profile.skills || "Not specified"}
-        </p>
-        <p>
-          <strong>Description:</strong> {profile.bio || "No description"}
-        </p>
-        <p>
-          <strong>Role:</strong> {profile.role || "Not specified"}
+        <p className="text-white bg-ny-pink py-2 px-4 rounded-md text-lg">
+          <span className="font-bold">Role:</span> {roleLabels[profile.role] || "Not specified"}
         </p>
       </div>
 
+      {/* Info */}
+      <div className="bg-white p-6 rounded-md shadow-md max-w-2xl mx-auto space-y-8 my-6">
+        {profile.name && (
+          <p>
+            <span className="font-bold">Name:</span>{" "}
+            <span className="text-gray">{profile.name}</span>
+          </p>
+        )}
+        {profile.email && (
+          <p>
+            <span className="font-bold">Email:</span>{" "}
+            <span className="text-gray">{profile.email}</span>
+          </p>
+        )}
+        {profile.phone && (
+          <p>
+            <span className="font-bold">Phone:</span>{" "}
+            <span className="text-gray">{profile.phone}</span>
+          </p>
+        )}
+        {profile.address && (
+          <p>
+            <span className="font-bold">Location:</span>{" "}
+            <span className="text-gray">{profile.address}</span>
+          </p>
+        )}
+        {profile.skills && (
+          <p>
+            <span className="font-bold">Skills:</span>{" "}
+            <span className="text-gray">{profile.skills}</span>
+          </p>
+        )}
+        {profile.bio && (
+          <p>
+            <p className="font-bold">Description:</p>{" "}
+            <p className="text-gray">{profile.bio}</p>
+          </p>
+        )}
+      </div>
+
       {isOwner && (
-        <button onClick={() => navigate(`/edit-profile/${profile._id}`)}>
-          Edit Profile
+        <button onClick={() => navigate(`/edit-profile/${profile._id}`)} className="btn-blk">
+          Edit
         </button>
       )}
     </div>
