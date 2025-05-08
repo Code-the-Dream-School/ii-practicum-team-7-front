@@ -67,12 +67,6 @@ const Profile = () => {
 
   if (loading) return <p>Loading user profile...</p>;
   if (error) return <><p>{error}</p><Link to="/create-profile">Create profile</Link><Link to="/edit-profile/:id">Create profile</Link></>;
-
-  
-
-
-
-
   if (!profile) return <p>No profile data found.</p>;
 
   return (

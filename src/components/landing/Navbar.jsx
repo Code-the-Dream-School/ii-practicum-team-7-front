@@ -4,6 +4,9 @@ import logoimage from "../../images/logo.png";
 import { Link } from "react-router-dom";
 
 const Navbar = () => {
+
+  //current logic now to check if there is current user or not.  
+    //will be using it to hide certain buttons in the navbar
   const [currentUserId, setCurrentUserId] = useState(null);
   const fetchCurrentUser = async () => {
     try {
@@ -25,14 +28,22 @@ const Navbar = () => {
       <img src={logoimage} alt="logo" width="400px" />
       <div className="button-row">
         <Link to="/" className="home-link">Home</Link>
-        {currentUserId && <Link to={`/profile/${currentUserId}`}>Profile</Link>}
-        {!currentUserId && <Link to="/login">
-          <button className="black-button">Sign In</button>
-        </Link>}
-        {!currentUserId && <Link to="/register">
-          <button className="black-button">Sign Up</button>
-        </Link>}
-        {currentUserId && <button className="black-button">Sign out</button>}
+        {currentUserId && 
+          <>
+            <Link to={`/profile/${currentUserId}`}>Profile</Link>
+            <button className="black-button">Sign out</button>
+          </>
+        }
+        {!currentUserId && 
+          <>
+            <Link to="/login">
+              <button className="black-button">Sign In</button>
+            </Link>
+            <Link to="/register">
+              <button className="black-button">Sign Up</button>
+            </Link>
+          </>
+        }
       </div>
     </div>
   );
