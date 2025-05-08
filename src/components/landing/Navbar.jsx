@@ -1,21 +1,18 @@
 import React, { useState } from "react";
 import logoimage from "../../images/logo1.png";
 import { Link, useLocation } from "react-router-dom";
+import { navbarRouteStyles } from "../../routeStyles";
 
 const Navbar = () => {
-  const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
+  const location = useLocation();
   const currentPath = location.pathname;
+  const matchedKey = Object.keys(navbarRouteStyles).find((route) =>
+    currentPath === route || currentPath.startsWith(route + "/")
+  );
 
-  const routeStyles = {
-    "/": { navbar: "bg-ny-pink", button: "btn-grn", text: "text-white" },
-    "/login": { navbar: "bg-monte-carlo", button: "btn-pnk", text: "text-black" },
-    "/register": { navbar: "bg-monte-carlo", button: "btn-pnk", text: "text-black" },
-    "/jobs": { navbar: "bg-monte-carlo-dark", button: "btn-blk", text: "text-black" },
-    "/post-job": { navbar: "bg-white", button: "btn-blk", text: "text-black" },
-  };
-
-  const { navbar, button, text } = routeStyles[currentPath] || { navbar: "bg-white", button: "", text: "text-black" };
+  const matchedStyles = navbarRouteStyles[matchedKey] || { navbar: "bg-white", button: "btn-blk", text: "text-black"};
+  const { navbar, button, text } = matchedStyles;
 
   return (
     <div className={`${navbar} ${text} fixed top-0 left-0 right-0 z-50 flex items-center px-2 sm:px-4 md:px-16 py-2 sm:py-1`} id="navbar">

@@ -1,22 +1,19 @@
-import React, { useLayoutEffect } from 'react';
 import logo from "../../images/logo1.png";
 import { faXTwitter, faFacebook, faInstagram, faLinkedin, faYoutube } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Link, useLocation } from 'react-router-dom';
+import { footerRouteStyles } from '../../routeStyles';
 
 
 const FooterSection = () => {
   const location = useLocation();
   const currentPath = location.pathname;
-
-  const routeStyles = {
-    "/": { bg: "bg-ny-pink-light", text: "text-black", line: "border-gray-400" },
-    "/login": { bg: "bg-ny-pink-light", text: "text-black", line: "border-gray-400" },
-    "/register": { bg: "bg-ny-pink-light", text: "text-black", line: "border-gray-400" },
-    "/jobs": { bg: "bg-ny-pink", text: "text-white", line: "line-white" },
-  };
-
-  const { bg, text, line } = routeStyles[currentPath] || { bg: "white", text: "text-black" };
+  const matchedKey = Object.keys(footerRouteStyles).find((route) =>
+    currentPath === route || currentPath.startsWith(route + "/")
+  );
+  
+  const matchedStyles = footerRouteStyles[matchedKey] || { bg: "white", text: "black", line:"border-gray-300" };
+  const { bg, text, line } = matchedStyles;
 
   return (
     <>

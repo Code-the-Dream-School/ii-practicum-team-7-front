@@ -15,7 +15,7 @@ const SignUpSection = () => {
           <button className="btn-blk">Sign up</button>
         </div>
             
-      <p className="text-xs">By clicking Sign Up, you're confirming that you agree with our Terms and Conditions.</p>
+      <strong className="text-xs">By clicking Sign Up, you're confirming that you agree with our Terms and Conditions.</strong>
       </div>
     </div>
   )
