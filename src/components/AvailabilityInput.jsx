@@ -17,6 +17,27 @@ function AvailabilityInput() {
             return;
         }
 
+        const dateString = selectedDate.toISOString().split('T')[0];
+        const start = new Date(`${dateString}T${startTime}`);
+        const end = new Date(`${dateString}T${endTime}`);
+
+        if (start >= end) {
+            setErrorMessage('Start time Must be Before End Time');
+            return;
+        }
+
+        const isOverLapping = availabilityList.some(slot => {
+            if (slot.Date !== dateString) return false;
+            const existingStart = new Date(`${slot.Date}T${slot.startTime}`);
+            const existingEnd = new Date(`${slot.Date}T${slot.endTime}`);
+            return (start < existingEnd && end > existingStart)
+        });
+
+        if (isOverLapping) {
+            setErrorMessage('This Availability overlaps with existing slot')
+            return;
+        }
+
         setErrorMessage(''); 
 
         const newSlot = {
