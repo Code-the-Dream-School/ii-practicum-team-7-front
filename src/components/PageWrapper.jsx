@@ -13,7 +13,6 @@ function PageWrapper({children}) {
             </main>
             <FooterSection />
             </div>
-            
         </>
     )
 }
