@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import styles from "./userProfile.module.css";
 import { useParams, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Profile = () => {
   const { id } = useParams();
@@ -65,11 +66,19 @@ const Profile = () => {
   }, [id]);
 
   if (loading) return <p>Loading user profile...</p>;
-  if (error) return <p>{error}</p>;
+  if (error) return <><p>{error}</p><Link to="/create-profile">Create profile</Link><Link to="/edit-profile/:id">Create profile</Link></>;
+
+  
+
+
+
+
   if (!profile) return <p>No profile data found.</p>;
 
   return (
     <div className={styles.profileContainer}>
+      <Link to="/create-profile">Create profile</Link>
+      <Link to="/edit-profile/:id">Create profile</Link>
       <h1>My Profile</h1>
       <div className={styles.profileCard}>
         {profile.image && (

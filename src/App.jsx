@@ -15,6 +15,8 @@ import FooterSection from  './components/landing/FooterSection.jsx';
 import JobSearch from './components/JobSearch.jsx';
 import './App.css';
 import UserInfoForm from "./components/UserInfoForm.jsx";
+import LoginForm from "./components/LoginForm.jsx";
+import RegisterForm from "./components/RegisterForm.jsx";
 
 
 
@@ -57,7 +59,6 @@ function App() {
           <Route path="/profile/:id" element={<Profile />} />
           <Route path="/create-profile" element={<UserInfoForm />} />
           <Route path="/edit-profile/:id" element={<UserInfoForm />} />
-
       </Routes>
       </PageWrapper>
     </BrowserRouter>
