@@ -6,12 +6,11 @@ import FooterSection from "./landing/FooterSection";
 function PageWrapper({children}) {
     return (
         <>
-            <div className="pagewrapper">
+            <div className="pagewrapper section-width">
             <Navbar />
             {children}
             <FooterSection />
             </div>
-            
         </>
     )
 }

@@ -42,6 +42,18 @@
   .btn-wht {
     @apply text-black bg-white
         py-1.5 px-3
-        border border-gray-300;
-  }
+    }
+    .btn-pnk {
+        @apply
+        text-white bg-ny-pink
+        py-1.5 px-3
+    }
+    .btn-wht {
+        @apply
+        text-black bg-white
+        py-1.5 px-3
+        border border-gray-300
+    }
 }
+
+
