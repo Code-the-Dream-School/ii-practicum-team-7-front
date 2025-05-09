@@ -1,4 +1,5 @@
 import Profile from "./components/UserProfile/UserProfilePg";
+import ReviewPage from "./components/ReviewPage.jsx";
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import PageWrapper from './components/PageWrapper';
@@ -52,6 +53,7 @@ function App() {
         } />
 
           <Route path="/profile/:id" element={<Profile />} />
+          <Route path="/profile/:id/reviews" element={<ReviewPage />} />
           <Route path="/create-profile" element={<UserInfoForm />} />
           <Route path="/edit-profile/:id" element={<UserInfoForm />} />
         </Routes>
