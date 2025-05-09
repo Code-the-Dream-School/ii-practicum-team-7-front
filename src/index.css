@@ -4,48 +4,74 @@
 
 @layer base {    
     h1 {
-        @apply font-heading text-h1 leading-heading tracking-heading;
+        @apply font-heading text-h1 leading-heading tracking-heading
     }
     h2 {
-        @apply font-heading text-h2 leading-heading tracking-heading;
+        @apply font-heading text-h2 leading-heading tracking-heading
     }
     h3 {
-        @apply font-heading text-h3 leading-heading tracking-heading;
+        @apply font-heading text-h3 leading-heading tracking-heading
     }
     h4 {
-        @apply font-heading text-h4 leading-heading tracking-heading;
+        @apply font-heading text-h4 leading-heading tracking-heading
     }
     h5 {
-        @apply font-heading text-h5 leading-heading tracking-heading;
+        @apply font-heading text-h5 leading-heading tracking-heading
     }
 
     body {
-        @apply font-body leading-body;
+        @apply font-body leading-body
+    }
+    html {
+        @apply m-0 p-0
+    }
+    input {
+        @apply text-gray-700
+    }
+    input::placeholder {
+        @apply text-gray-600
+    }
+    textarea {
+        @apply text-gray-700
     }
 }
 
 @layer components {
+    .section-container {
+        @apply px-16 pt-28 pb-16
+    }
+    .section-content {
+        @apply flex flex-col items-center gap-8 pb-16
+    }
     .btn-grn {
         @apply
         text-black bg-monte-carlo-dark
         py-1.5 px-3
-        disabled:text-gray-500
-        disabled:bg-monte-carlo;
+        hover:bg-monte-carlo
+        disabled:text-gray-400
+        disabled:bg-gray-100
+        min-w-[70px]
     }
     .btn-blk {
         @apply
         text-white bg-black
         py-1.5 px-3
+        hover:bg-gray-800
+        min-w-[70px]
     }
     .btn-pnk {
         @apply
         text-white bg-ny-pink
         py-1.5 px-3
+        hover:bg-ny-pink-md
+        min-w-[70px]
     }
     .btn-wht {
         @apply
         text-black bg-white
         py-1.5 px-3
         border border-gray-300
+        min-w-[70px]
     }
 }
+
