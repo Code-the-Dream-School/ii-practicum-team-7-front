@@ -1,5 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import testimage1 from "../../images/testimonial1.jpg";
 import testimage2 from "../../images/testimonial2.jpg";
 import testimage3 from "../../images/testimonial3.jpeg";
@@ -8,6 +10,7 @@ import testimage4 from "../../images/testimonial4.jpg";
 const TestimonialSection = () => {
   const appName = "CNC"
   const [currIndex, setCurrIndex] = useState(0);
+
   const testimonialData = [
     {
       title: "An Absolute Game-Changer for My Career!",
@@ -42,115 +45,101 @@ const TestimonialSection = () => {
   const changeSlideLeft = () => {
     //check if it's first slide
     const isFirstSlide = currIndex === 0;
-    
     //if so, go back to the last slide
       //if not, go to previous slide
     const nextSlide = isFirstSlide ? testimonialData.length - 1 : currIndex - 1;
-
     setCurrIndex(nextSlide);
-  }
+  };
 
   const changeSlideRight = () => {
     //check if it's the last slide
     const isLastSlide = currIndex === testimonialData.length - 1;
-    
     //if so, go back to the first slide
       //if not go to next slide
     const nextSlide = isLastSlide ? 0 : currIndex + 1;
-
     setCurrIndex(nextSlide);
-  }
-
-  const leftArrowStyle = {
-    position: "absolute", 
-    top: "45%", 
-    left: "100px", 
-    fontSize: "50px",
-    cursor: "pointer"
-  }
-
-  const rightArrowStyle = {
-    position: "absolute", 
-    top: "45%", 
-    right: "100px", 
-    fontSize: "50px",
-    cursor: "pointer"
-  }
-
-  const slideContainerStyle = {
-    display: "flex",
-    transition: "transform 0.5s ease",
-    transform: `translateX(-${currIndex * 800}px)`,
-    width: `${testimonialData.length * 800}px`,
-  }
-
-  const slideStyle = {
-    width: "100%", 
-    height: "100%",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: "30px"
-  }
-
-  const dotStyle = {
-    position: "absolute",
-    top: "80%",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: "10px",
-    fontSize: "40px",
-    cursor: "pointer",
-  }
+  };
 
   const changeSlide = (e) => {
     const clickedDotNum = e.target.getAttribute('data-key');
     setCurrIndex(Number(clickedDotNum));
-  }
-
-  const increaseSize = (e) => {
-    e.target.style.transform = "scale(1.5)";
-  }
-
-  const reduceSize = (e) => {
-    e.target.style.transform = "scale(1)";
-  }
+  };
 
   return (
-    <div className="section-width testimonial-wrapper">
-      <div style={{position: "relative"}} className="each-section" id="testimonial-section">
-        <div style={leftArrowStyle} onClick={changeSlideLeft}> {"<"} </div>
-        <div style={{ overflow: "hidden", width: "100%" }}>
-          <div style={slideContainerStyle}>
-            {testimonialData.map((testimonial, index) => (
-              <div key={index} style={slideStyle}>
-                <h3>{testimonial.title}</h3>
-                <p>{testimonial.body}</p>
-                <div className="test-image">
-                  <img src={testimonial.imageURL} />
-                  <div>
-                    <p>{testimonial.name}</p>
-                    <p>{testimonial.jobTitle}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div style={rightArrowStyle} onClick={changeSlideRight}> {">"} </div>
-
-        <div style={dotStyle}>
-          {testimonialData.map((test, index) => 
-            <div key={index} data-key={index} onClick={changeSlide} onMouseOver={increaseSize} onMouseOut={reduceSize} >{"•"}</div>
-            )}
+    <div className="relative max-w-screen-md mx-auto overflow-hidden px-4 py-10">
+      
+      {/* Left Arrow */}
+      <div 
+        className="absolute top-1/2 left-2 sm:left-4 -translate-y-1/2 z-10 pt-8 px-4"
+        onClick={changeSlideLeft}
+      >
+        <div className="w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center 
+                  bg-monte-carlo-light rounded-full cursor-pointer select-none 
+                  hover:bg-monte-carlo transition">
+          {<FontAwesomeIcon icon={faArrowLeft} />}
         </div>
       </div>
-    </div>
 
-  )
-}
+      {/* Carousel Wrapper */}
+      <div className="overflow-hidden w-full">
+        <div 
+          className="flex transition-transform duration-500 ease-in-out"
+          style={{
+            transform: `translateX(-${currIndex * (100 / testimonialData.length)}%)`,
+            width: `${testimonialData.length *100}%`
+          }}
+        >
+          {testimonialData.map((testimonial, index) => (
+            <div
+              key={index}
+              className="w-full flex flex-col justify-center items-center text-center px-4 sm:px-8"
+              >
+              <h4 className="mb-4">{testimonial.title}</h4>
+              <p className="mb-6 text-sm sm:text-base">{testimonial.body}</p>
+              <div className="text-sm flex flex-col items-center gap-2">
+                <img 
+                  src={testimonial.imageURL}
+                  alt={testimonial.name}
+                  className="w-24 h-24 rounded-full object-cover"
+                />
+                <div>
+                  <p>{testimonial.name}</p>
+                  <p>{testimonial.jobTitle}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Right Arrow */}
+      <div
+        className="absolute top-1/2 right-2 sm:right-4 -translate-y-1/2 z-10 pt-8 px-4"
+        onClick={changeSlideRight}
+      >
+        <div className="w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center
+                  bg-monte-carlo-light rounded-full cursor-pointer select-none 
+                  hover:bg-monte-carlo transition">
+          {<FontAwesomeIcon icon={faArrowRight} />}
+        </div>
+      </div>
+
+      {/* Dots */}
+      <div className="flex justify-center items-center gap-2 text-2xl cursor-pointer">
+        {testimonialData.map((test, index) => 
+          <div
+            key={index}
+            data-key={index}
+            onClick={changeSlide}
+            className={`hover:scale-150 transition-transform duration-200 ${currIndex === index ? "text-monte-carlo-dark" : ""}`}
+          >
+            {"•"}
+          </div>
+        )}
+      </div>
+
+    </div>
+  );
+};
 
 export default TestimonialSection;

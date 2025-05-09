@@ -5,31 +5,47 @@ import thirdimage from "../../images/how3.jpg";
 
 const HowSection = () => {
   return (
-    <div className="each-section how-section section-width">
-      <div id="each-how-section-1">
-        <h2>How it Works</h2>
+    <div className="section-container bg-ny-pink-dark text-white">
+      
+      {/* Heading */}
+      <div className="mb-16">
+        <h2 className='mb-4'>How it Works</h2>
         <p>Finding the right person for the job or the perfect job for you, made simple</p>
       </div>
 
-      <div id="each-how-section-2">
+      {/* Grid */}
+      <div className="grid gap-12 lg:grid-cols-3">
+
+      {/* Step 1 */}
+      <div className="flex flex-col md:flex-col-reverse justify-between items-center text-center h-full">
         <div>
-          <img src={firstimage} alt="create"></img>
-          <h3>Create Your Account</h3>
-          <p>Sign up and create your profile</p>
-        </div>
+          <h3 className="text-h3 mb-4">Create Your Account</h3>
+          <p className="mb-6">Sign up and create your profile</p>
+        </div>          
+        <img src={firstimage} alt="create" className="mb-8 w-full h-80 object-cover"></img>
+      </div>
+
+      {/* Step 2 */}
+      <div className="flex flex-col md:flex-col-reverse justify-between items-center text-center h-full">
         <div>
-          <img src={secondimage} alt="look"></img>
-          <h3>Browse or Post Jobs</h3>
-          <p>Explore gigs nearby or post your project</p>
+          <h3 className="text-h3 mb-4">Browse or Post Jobs</h3>
+          <p className="mb-6">Explore gigs nearby or post your project</p>
         </div>
+        <img src={secondimage} alt="look" className="mb-8 w-full h-80 object-cover"></img>
+      </div>
+
+      {/* Step 3 */}
+      <div className="flex flex-col md:flex-col-reverse justify-between items-center text-center h-full">
         <div>
-          <img src={thirdimage} alt="together"></img>
-          <h3>Connect and Collaborate</h3>
-          <p>Work together and complete your project</p>
+          <h3 className="text-h3 mb-4">Connect and Collaborate</h3>
+          <p className="mb-6">Work together and complete your project</p>
         </div>
+        <img src={thirdimage} alt="together" className="mb-8 w-full h-80 object-cover"></img>
       </div>
 
     </div>
+
+  </div>
   )
 }
 
