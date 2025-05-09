@@ -55,41 +55,79 @@ function LoginForm() {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
-        <h2>Login</h2>
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={formData.password}
-          onChange={handleChange}
-          required
-        />
-        <button type="submit" disabled={loading}>
-          {loading ? "Logging In..." : "Log In"}
-        </button>
-        {error && <p>{error}</p>}
-      </form>
-      <p>
-        Don't have an account? <Link to="/register">Register here</Link>
-      </p>
-      <p>—or—</p>
-      <button type="button" onClick={handleGoogleSignIn}>
-        <img
-          src="https://developers.google.com/identity/images/g-logo.png"
-          alt="Google logo"
-          style={{ width: "20px", marginRight: "8px" }}
-        />
-        Sign in with Google
-      </button>
+      {/* Login Form */}
+      <div className="bg-monte-carlo pt-52 pb-12 px-16">
+        <div className="section-content">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <p>Welcome back!</p>
+            <h2>Sign in</h2>
+            <p>Please enter your email and password to sign in</p>
+
+            {/* Form Sections */}
+            <div className="flex flex-col w-full space-y-4">
+
+              {/* Email */}
+              <div className="text-left">
+                <label htmlFor="email" className="my-2 block">Email</label>
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="you@example.com"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                  className="w-full border-b border-b-gray-500 bg-inherit"
+                />
+              </div>
+
+              {/* Password */}
+              <div className="text-left">
+                <label htmlFor="password" className="my-2 block">Password</label>
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                  className="w-full border-b border-b-gray-500 bg-inherit"
+                />
+              </div>
+            </div>
+
+            {/* Buttons */}
+            <div className="flex flex-col items-center space-y-4">
+              <button type="submit" disabled={loading} className="btn-blk">
+                {loading ? "Signing you in..." : "Sign in"}
+              </button>
+
+              <p>— or —</p>
+
+              <button type="button" onClick={handleGoogleSignIn} className="flex flex-col items-center">
+                <img
+                  src="https://developers.google.com/identity/images/g-logo.png"
+                  alt="Google logo"
+                  className="rounded-full w-12 h-12 mb-4"
+                />
+                Sign in with Google
+              </button>
+
+              {error && <p>{error}</p>}
+            </div>
+          </form>
+        </div>
+      </div>
+
+      {/* Register */}
+      <div className="section-container bg-ny-pink-md text-white">
+        <div className="section-content">
+          <h3>Don't have an account yet?</h3>
+          <p>Register to get started</p>
+          <Link to="/register">
+            <button className="btn-grn">Register</button>
+          </Link>
+          </div>
+        </div>
     </>
   );
 }
