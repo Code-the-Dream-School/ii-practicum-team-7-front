@@ -1,14 +1,11 @@
 import Profile from "./components/UserProfile/UserProfilePg";
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-
 import PageWrapper from './components/PageWrapper';
-import LoginForm from './components/LoginForm';
-import RegisterForm from './components/RegisterForm';
-
-import './App.css';
 
 import { getAllData } from './util/index';
+import LoginForm from "./components/LoginForm.jsx";
+import RegisterForm from "./components/RegisterForm.jsx";
 import Navbar from './components/landing/Navbar.jsx';
 import HeroSection from './components/landing/HeroSection.jsx';
 import HowSection from './components/landing/HowSection.jsx';
@@ -16,17 +13,15 @@ import TestimonialSection from './components/landing/TestimonialSection.jsx';
 import SignUpSection from  './components/landing/SignUpSection.jsx';
 import FooterSection from  './components/landing/FooterSection.jsx';
 import JobSearch from './components/JobSearch.jsx';
-import './App.css';
-import UserInfoForm from "./components/UserInfoForm.jsx";
+import UserInfoForm from "./components/UserProfile/UserInfoForm.jsx";
+import JobPost from "./components/JobPost.jsx";
 
 
-const URL = "http://localhost:8000/api/v1/";
+const URL = 'http://localhost:8000/api/v1/';
+
 
 function App() {
-
-
-  const [message, setMessage] = useState(''); 
-
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     (async () => {
@@ -40,13 +35,13 @@ function App() {
   }, []);
 
   return (
-
     <BrowserRouter>
     <PageWrapper>
       <Routes>
         <Route path='/login' element={<LoginForm />} />
         <Route path='/register' element={<RegisterForm />} />
         <Route path="/jobs" element={<JobSearch />} />
+        <Route path="/create-job" element={<JobPost />} />
         <Route path="/" element={
           <main>
             <HeroSection />
@@ -55,16 +50,13 @@ function App() {
             <SignUpSection />
           </main>
         } />
-           <Route path="/login" element={<LoginForm />} />
-          <Route path="/register" element={<RegisterForm />} />
+
           <Route path="/profile/:id" element={<Profile />} />
           <Route path="/create-profile" element={<UserInfoForm />} />
           <Route path="/edit-profile/:id" element={<UserInfoForm />} />
-
-      </Routes>
+        </Routes>
       </PageWrapper>
     </BrowserRouter>
-
   );
 }
-export default App
+export default App;
