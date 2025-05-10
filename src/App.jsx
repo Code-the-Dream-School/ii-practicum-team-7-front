@@ -2,7 +2,6 @@ import Profile from "./components/UserProfile/UserProfilePg";
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import PageWrapper from './components/PageWrapper';
-
 import { getAllData } from './util/index';
 import LoginForm from "./components/LoginForm.jsx";
 import RegisterForm from "./components/RegisterForm.jsx";
@@ -13,9 +12,6 @@ import TestimonialSection from './components/landing/TestimonialSection.jsx';
 import SignUpSection from  './components/landing/SignUpSection.jsx';
 import FooterSection from  './components/landing/FooterSection.jsx';
 import JobSearch from './components/JobSearch.jsx';
-import UserInfoForm from "./components/UserInfoForm.jsx";
-import LoginForm from "./components/LoginForm.jsx";
-import RegisterForm from "./components/RegisterForm.jsx";
 import UserInfoForm from "./components/UserProfile/UserInfoForm.jsx";
 
 const URL = 'http://localhost:8000/api/v1/';

@@ -1,30 +1,54 @@
 import React, {useState, useEffect} from "react";
 import axios from "axios";
 import logoimage from "../../images/logo1.png";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { navbarRouteStyles } from "../../routeStyles";
 
 const Navbar = () => {
-    //current logic now to check if there is current user or not.  
-    //will be using it to hide certain buttons in the navbar
-    const [currentUserId, setCurrentUserId] = useState(null);
-    const fetchCurrentUser = async () => {
-      try {
-        const { data } = await axios.get(
-          "http://localhost:8000/api/v1/auth/current-user",
-          { withCredentials: true }
-        );
-        setCurrentUserId(data.userId);
-      } catch (error) {
-        console.log("Error fetch current user,", error.message);
-      }
-    };
-    useEffect(() => {
-      fetchCurrentUser();
-    }, []);
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const currentUserURL = "http://localhost:8000/api/v1/auth/current-user";
+  const options = { withCredentials: true };
+
+  //Checks if there is current user or not.  
+  //will be using currentUserId to hide certain buttons in the navbar
+  const [currentUserId, setCurrentUserId] = useState(null);
+  const fetchCurrentUser = async () => {
+
+    try {
+      const { data } = await axios.get(currentUserURL, options);
+      setCurrentUserId(data.userId);
+      console.log(localStorage.getItem("token"))
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+      setCurrentUserId(null);
+    } else {
+      console.log("Error fetching current user:", error.message);
+    }
+    }
+  };
+
+  useEffect(() => {
+    fetchCurrentUser();
+  }, [location]);
+
+  //To logout user
+  const logoutURL = "http://localhost:8000/api/v1/auth/logout";
+  const logoutCurrentUser = async () => {
+    try {
+      await axios.post(logoutURL, {}, options);
+      localStorage.removeItem("token");
+      setCurrentUserId((prev) => null);
+      navigate("/");
+      window.location.reload();
+    } catch (error) {
+      console.log("Error logging out,", error.message);
+    }
+  };
 
   const [menuOpen, setMenuOpen] = useState(false);
-  const location = useLocation();
   const currentPath = location.pathname;
   const matchedKey = Object.keys(navbarRouteStyles).find((route) =>
     currentPath === route || currentPath.startsWith(route + "/")
@@ -49,11 +73,23 @@ const Navbar = () => {
       
       {/* Nav Button */}
       <div className="flex items-center gap-4">
-        <Link to="/login">
-          <button className={`${button} whitespace-nowrap ml-4 py-2`}>
-            Sign in
-          </button>
-        </Link>
+        {!currentUserId && 
+          <>
+            <Link to="/login">
+              <button className={`${button} whitespace-nowrap ml-4 py-2`}>Sign In</button>
+            </Link>
+            <Link to="/register">
+              <button className={`${button} whitespace-nowrap ml-4 py-2`}>Sign Up</button>
+            </Link>
+          </>
+        }
+        <Link to="/jobs" onClick={() => setMenuOpen(false)} className={`${button} whitespace-nowrap ml-4 py-2`}>Job Search</Link>
+          {currentUserId && 
+          <>
+            <Link to={`/profile/${currentUserId}`} className={`${button} whitespace-nowrap ml-4 py-2`}>Profile</Link>
+            <button className={`${button} whitespace-nowrap ml-4 py-2`} onClick={() => logoutCurrentUser()}>Sign out</button>
+          </>
+        }
 
         {/* Menu Button */}
         <button className="text-4xl" onClick={() => setMenuOpen(!menuOpen)}>
@@ -75,16 +111,16 @@ const Navbar = () => {
           {currentUserId && 
           <>
             <Link to={`/profile/${currentUserId}`}>Profile</Link>
-            <button className="black-button">Sign out</button>
+            <button onClick={logoutCurrentUser}>Sign out</button>
           </>
         }
         {!currentUserId && 
           <>
             <Link to="/login">
-              <button className="black-button">Sign In</button>
+              <button>Sign In</button>
             </Link>
             <Link to="/register">
-              <button className="black-button">Sign Up</button>
+              <button>Sign Up</button>
             </Link>
           </>
         }
