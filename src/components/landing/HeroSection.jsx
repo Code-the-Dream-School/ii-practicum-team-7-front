@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import image from "../../images/landing1.jpg";
 import { Link } from "react-router-dom";
 
@@ -21,7 +21,7 @@ const HeroSection = () => {
       <img className="w-full object-cover" src={image} alt="computer"/>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default HeroSection;

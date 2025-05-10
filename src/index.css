@@ -55,6 +55,7 @@
     .btn-blk {
         @apply
         text-white bg-black
+
         py-1.5 px-3
         hover:bg-gray-800
         min-w-[70px]
@@ -74,4 +75,5 @@
         min-w-[70px]
     }
 }
+
 
