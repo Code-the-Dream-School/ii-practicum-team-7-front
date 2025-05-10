@@ -8,7 +8,6 @@ const SignUpSection = () => {
         <p className="text-[18px]">Join the community and connect with local jobs and talent</p>
         <div className="flex items-center gap-2">
           <input
-            id="email-input"
             placeholder="Enter your email"
             className="bg-inherit border-b border-gray-600 outline-none flex-1 pb-3.5 leading-none"
           />

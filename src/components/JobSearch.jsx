@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import logo from "../images/logo1.png";
 import jobSearch from "../images/jobsearch.jpg";
-import './JobSearch.css';
 import zipcodes from 'zipcodes';
 import Pagination from "./jobsearch/Pagination.jsx";
 import JobPostings from "./jobsearch/JobPostings.jsx";
@@ -12,7 +11,7 @@ import axios from "axios";
 const JobSearch = () => {
   const [ jobPostings, setJobPostings ] = useState([]);
   const [ jobPhrase, setJobPhrase ] = useState("");
-  const [ zipCode, setZipCode ] = useState("10001");
+  const [ zipCode, setZipCode ] = useState("");
   const [ radius, setRadius ] = useState("");
   const [ category, setCategory ] = useState("");
   const [ employmentType, setEmploymentType ] = useState({

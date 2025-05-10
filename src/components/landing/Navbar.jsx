@@ -53,6 +53,7 @@ const Navbar = () => {
             ✕
           </button>
           <Link to="/jobs" onClick={() => setMenuOpen(false)}>Job Search</Link>
+          <Link to="/create-job" onClick={() => setMenuOpen(false)}>Post a Job</Link>
         </div>
       </div>
     </div>
