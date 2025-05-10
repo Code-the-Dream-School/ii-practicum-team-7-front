@@ -39,7 +39,6 @@ const Navbar = () => {
   const logoutCurrentUser = async () => {
     try {
       await axios.post(logoutURL, {}, options);
-      localStorage.removeItem("token");
       setCurrentUserId((prev) => null);
       navigate("/");
       window.location.reload();

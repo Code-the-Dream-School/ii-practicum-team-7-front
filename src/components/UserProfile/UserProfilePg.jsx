@@ -77,7 +77,7 @@ const Profile = () => {
   return (
     <div className="bg-monte-carlo pt-36 pb-12 px-4 sm:px-8 pg:px-16">
       <Link to="/create-profile">Create profile</Link>
-      <Link to="/edit-profile/:id">Create profile</Link>
+      <Link to="/edit-profile/:id">Edit profile</Link>
       <h1>My Profile</h1>
 
       {/* Profile Photo + Role */}
