@@ -1,4 +1,4 @@
-import Profile from "./components/UserProfile/UserProfilePg";
+import Profile from "./components/UserProfile/UserProfilePg.jsx";
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import PageWrapper from './components/PageWrapper';

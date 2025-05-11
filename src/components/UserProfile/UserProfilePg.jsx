@@ -55,6 +55,7 @@ const Profile = () => {
         setProfile(data.profile); // assuming `data.data` contains the profile
         console.log("Fetched profile:", data.profile);
       } catch (error) {
+        console.log("Error fetching")
         setError("Error fetching the profile.");
       } finally {
         setLoading(false);
@@ -64,9 +65,26 @@ const Profile = () => {
     fetchUserProfile();
   }, [id]);
 
-  if (loading) return <p>Loading user profile...</p>;
-  if (error) return <><p>{error}</p><Link to="/create-profile">Create profile</Link><Link to="/edit-profile/:id">Create profile</Link></>;
-  if (!profile) return <p>No profile data found.</p>;
+  if (loading) return (
+    <div className="bg-monte-carlo pt-36 pb-12 px-4 sm:px-8 pg:px-16">
+      <p>Loading user profile...</p>;
+    </div>
+  )
+
+  if (error) return (
+    <div className="bg-monte-carlo pt-36 pb-12 px-4 sm:px-8 pg:px-16">
+      <h1>{error}</h1>
+      <Link to="/create-profile">Create profile</Link>
+    </div>
+    )
+
+  if (!profile) return (
+    <div className="bg-monte-carlo pt-36 pb-12 px-4 sm:px-8 pg:px-16">
+      <p>No profile data found.</p>;
+    </div>
+  )
+  
+
 
   const roleLabels = {
   jobSeeker: "Job Seeker",

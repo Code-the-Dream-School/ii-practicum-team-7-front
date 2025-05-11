@@ -20,7 +20,6 @@ const Navbar = () => {
     try {
       const { data } = await axios.get(currentUserURL, options);
       setCurrentUserId(data.userId);
-      console.log(localStorage.getItem("token"))
     } catch (error) {
       if (error.response && error.response.status === 401) {
       setCurrentUserId(null);
