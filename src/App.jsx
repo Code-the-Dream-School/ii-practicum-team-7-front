@@ -1,8 +1,7 @@
-import Profile from "./components/UserProfile/UserProfilePg";
+import Profile from "./components/UserProfile/UserProfilePg.jsx";
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import PageWrapper from './components/PageWrapper';
-
 import { getAllData } from './util/index';
 import LoginForm from "./components/LoginForm.jsx";
 import RegisterForm from "./components/RegisterForm.jsx";
@@ -18,7 +17,6 @@ import JobPost from "./components/JobPost.jsx";
 
 
 const URL = 'http://localhost:8000/api/v1/';
-
 
 function App() {
   const [message, setMessage] = useState("");
@@ -54,7 +52,7 @@ function App() {
           <Route path="/profile/:id" element={<Profile />} />
           <Route path="/create-profile" element={<UserInfoForm />} />
           <Route path="/edit-profile/:id" element={<UserInfoForm />} />
-        </Routes>
+      </Routes>
       </PageWrapper>
     </BrowserRouter>
   );
