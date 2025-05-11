@@ -106,7 +106,7 @@ const Navbar = () => {
           {currentUserId && 
           <>
             <Link to={`/profile/${currentUserId}`}>Profile</Link>
-            <button onClick={logoutCurrentUser}>Sign out</button>
+            <button onClick={logoutCurrentUser} className="text-left mt-8">Sign out</button>
           </>
           }
           {!currentUserId && 
