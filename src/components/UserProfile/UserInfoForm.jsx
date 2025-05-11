@@ -74,7 +74,7 @@ function UserInfoForm() {
         phone: data.profile.phone || "",
       });
 
-      navigate(`/profile/${data.createdBy}`); // Redirect to profile page
+      navigate(`/profile/${data.profile.createdBy}`); // Redirect to profile page
     } catch (error) {
       console.error("Error creating profile:", error.message);
     } finally {
