@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Profile = () => {
   const { id } = useParams();
@@ -63,10 +64,22 @@ const Profile = () => {
     fetchUserProfile();
   }, [id]);
 
-  if (loading) return <p>Loading user profile...</p>;
-  if (error) return <p>{error}</p>;
-  if (!profile) return <p>No profile data found.</p>;
+  if (loading) return (
+    <div className="bg-monte-carlo pt-36 pb-12 px-4 sm:px-8 pg:px-16">
+      <p>Loading user profile...</p>;
+    </div>
+  )
 
+  if (error) {
+    navigate("/create-profile");
+  }
+
+  if (!profile) return (
+    <div className="bg-monte-carlo pt-36 pb-12 px-4 sm:px-8 pg:px-16">
+      <p>No profile data found.</p>;
+    </div>
+  )
+  
   const roleLabels = {
   jobSeeker: "Job Seeker",
   hiring: "Hiring",
