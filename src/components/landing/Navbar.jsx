@@ -81,12 +81,8 @@ const Navbar = () => {
             </Link>
           </>
         }
-        <Link to="/jobs" onClick={() => setMenuOpen(false)} className={`${button} whitespace-nowrap ml-4 py-2`}>Job Search</Link>
-          {currentUserId && 
-          <>
-            <Link to={`/profile/${currentUserId}`} className={`${button} whitespace-nowrap ml-4 py-2`}>Profile</Link>
-            <button className={`${button} whitespace-nowrap ml-4 py-2`} onClick={() => logoutCurrentUser()}>Sign out</button>
-          </>
+        {currentUserId && 
+          <button className={`${button} whitespace-nowrap ml-4 py-2`} onClick={() => logoutCurrentUser()}>Sign out</button>
         }
 
         {/* Menu Button */}
@@ -111,17 +107,17 @@ const Navbar = () => {
             <Link to={`/profile/${currentUserId}`}>Profile</Link>
             <button onClick={logoutCurrentUser}>Sign out</button>
           </>
-        }
-        {!currentUserId && 
-          <>
-            <Link to="/login">
-              <button>Sign In</button>
-            </Link>
-            <Link to="/register">
-              <button>Sign Up</button>
-            </Link>
-          </>
-        }
+          }
+          {!currentUserId && 
+            <>
+              <Link to="/login">
+                <button>Sign In</button>
+              </Link>
+              <Link to="/register">
+                <button>Sign Up</button>
+              </Link>
+            </>
+          }
         </div>
       </div>
     </div>
