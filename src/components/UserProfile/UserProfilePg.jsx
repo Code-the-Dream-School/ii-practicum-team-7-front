@@ -44,7 +44,7 @@ const Profile = () => {
     const fetchUserProfile = async () => {
       try {
         // const token = localStorage.getItem("authToken");
-        const url = `http://localhost:8000/api/v1/profile/${id}`;
+        const url = `http://localhost:8000/api/v1/profile/current-user/${id}`;
 
         const { data } = await axios.get(url, {
           // headers: {
@@ -137,10 +137,10 @@ const Profile = () => {
           </p>
         )}
         {profile.bio && (
-          <p>
+          <>
             <p className="font-bold">Description:</p>{" "}
             <p className="text-gray">{profile.bio}</p>
-          </p>
+          </>
         )}
       </div>
 

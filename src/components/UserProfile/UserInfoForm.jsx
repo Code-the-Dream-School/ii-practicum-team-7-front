@@ -29,6 +29,7 @@ function UserInfoForm() {
   // Track if user is editing an existing profile
   const { id: profileIdFromParams } = useParams();
   const [profileId, setProfileId] = useState(() => profileIdFromParams || "");
+  const [userID, setUserID] = useState("");
   const isEditMode = !!profileIdFromParams;
 
   // State management
@@ -93,6 +94,7 @@ function UserInfoForm() {
 
       const data = await response.json();
 
+      setUserID(data.profile.createdBy);
       setFormData({
         ...data.profile,
         phone: data.profile.phone || "",
@@ -115,7 +117,7 @@ function UserInfoForm() {
       if (!response.ok) throw new Error(`Error: ${response.status}`);
       const data = await response.json();
       console.log("Updated profile:", data);
-      navigate(`/profile/${data.updatedProfile._id}`); // Redirect to the updated profile page
+      navigate(`/profile/${userID}`); // Redirect to the updated profile page
     } catch (error) {
       console.error("Error updating profile:", error.message);
     } finally {
@@ -143,7 +145,7 @@ function UserInfoForm() {
       if (!userConfirm) return;
     }
     console.log("Redirect to user profile");
-    navigate(`/profile/${profileId}`);
+    navigate(`/profile/${userID}`);
   };
 
   // Handle form submission
