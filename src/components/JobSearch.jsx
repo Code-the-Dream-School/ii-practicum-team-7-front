@@ -73,6 +73,7 @@ const JobSearch = () => {
   const clearAllFilters = () => {
     setJobPhrase("");
     setZipCode("");
+    setRadius("")
     setCategory("");
     setEmploymentType({
       fullTime: false,
@@ -167,8 +168,8 @@ const JobSearch = () => {
   const totalPages = Math.ceil(filteredPostings.length / jobsPerPage);
 
   return (
-    <div className="job-search-page">
-      <div className="main-content section-width">
+    <div>
+      <div>
 
         <JobSearchArea 
           jobPhrase={jobPhrase}

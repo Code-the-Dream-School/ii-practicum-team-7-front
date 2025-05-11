@@ -52,7 +52,7 @@ const Navbar = () => {
           <button className="self-end text-2xl" onClick={() => setMenuOpen(false)}>
             ✕
           </button>
-          <Link to="/jobs" onClick={() => setMenuOpen(false)}>Job Search</Link>
+          <Link to="/jobs" onClick={() => setMenuOpen(false)}>Find Jobs</Link>
           <Link to="/create-job" onClick={() => setMenuOpen(false)}>Post a Job</Link>
         </div>
       </div>
