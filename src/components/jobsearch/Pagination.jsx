@@ -9,7 +9,10 @@ const Pagination = (props) => {
         <button 
         key={i + 1} 
         onClick={() => setCurrentPage(i + 1)} 
-        className={`page-btn ${currentPage === i + 1 ? 'active' : ''}`}
+        className={`
+          bg-black text-ny-pink-light px-1.5 rounded-md
+          ${currentPage === i + 1 ? 'active' : ''}
+          `}
         >
         {i + 1}
         </button>
@@ -19,7 +22,7 @@ const Pagination = (props) => {
   }
   
   return (
-    <div className="pagination">
+    <div className="bg-ny-pink-light py-8">
       {renderPagination()}
     </div>    
   )

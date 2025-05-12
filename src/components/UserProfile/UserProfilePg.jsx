@@ -63,22 +63,12 @@ const Profile = () => {
 
     fetchUserProfile();
   }, [id]);
-
-  if (loading) return (
-    <div className="bg-monte-carlo pt-36 pb-12 px-4 sm:px-8 pg:px-16">
-      <p>Loading user profile...</p>;
-    </div>
-  )
-
-  if (error) {
-    navigate("/create-profile");
-  }
-
-  if (!profile) return (
-    <div className="bg-monte-carlo pt-36 pb-12 px-4 sm:px-8 pg:px-16">
-      <p>No profile data found.</p>;
-    </div>
-  )
+  
+  useEffect(() => {
+    if (error) {
+      navigate("/create-profile");
+    }
+  }, [error, navigate]);
   
   const roleLabels = {
   jobSeeker: "Job Seeker",
@@ -148,7 +138,6 @@ const Profile = () => {
         <button onClick={() => navigate(`/edit-profile/${profile._id}`)} className="btn-blk">
           Edit
         </button>
-      )}
     </div>
   );
 };

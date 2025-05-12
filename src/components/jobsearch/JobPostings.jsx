@@ -5,23 +5,37 @@ import { faClock } from '@fortawesome/free-regular-svg-icons';
 const JobPostings = (props) => {
   const { currentJobs } = props;
   return (
-    <section className="job-listings section-width">
-      <h2>Current Openings</h2>
-      <div>
-        {currentJobs.length === 0 && <h3 style={{color: "red"}}>No Jobs Found</h3>}
-        {currentJobs.map((jobPosting, index) => (
-          <div className="job-card" key={`${jobPosting.title}-${index}`}>
-            <h3>{jobPosting.title}</h3> 
-            <span className="category">{jobPosting.category}</span>
-            <p className="company">{jobPosting.summary}</p>
-            <p className="location">
-            <FontAwesomeIcon icon={faLocationDot} style={{ color: "#000000" }} size="lg"/>
-              {jobPosting.distance} miles away <span><FontAwesomeIcon icon={faClock} size="lg" /> {jobPosting.employmentType}</span></p>
-            
-            <span className="badge">{jobPosting.workLocationType}</span>
-            <button className="apply-btn">Apply</button>
-          </div>
-        ))}
+    <section className="pt-28 pb-12 px-4 sm:px-8 pg:px-16 bg-ny-pink-light">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
+        <h2 className="lg:text-left text-center">Current Openings</h2>
+        <div className="text-center mx-auto md:text-left md:mx-0">
+          {currentJobs.length === 0 && <h5>No Jobs Found</h5>}
+          {currentJobs.map((jobPosting, index) => (
+            <div key={`${jobPosting.title}-${index}`} className="py-6 border-t border-gray-400 text-left space-y-4">
+              <div className="flex flex-wrap items-center gap-6">
+                <h4>{jobPosting.title}</h4> 
+                <span
+                  className="text-black bg-[#E9D8DA] py-1.5 px-3 border border-gray-400 min-w-[70px]"
+                >
+                  {jobPosting.category}
+                </span>
+              </div>
+              <p>{jobPosting.summary}</p>
+              <div className="flex flex-wrap items-center gap-4">
+                <p className="flex items-center gap-1">
+                <FontAwesomeIcon icon={faLocationDot} size="lg"/>
+                  {jobPosting.distance} miles away
+                </p>
+                <span className="flex items-center gap-1">
+                  <FontAwesomeIcon icon={faClock} size="lg"/>
+                  {jobPosting.employmentType}
+                </span>                
+                <span>{jobPosting.workLocationType}</span>
+              </div>
+              <button className="btn-lt-pnk">Apply</button>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   )
