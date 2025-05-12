@@ -1,86 +1,65 @@
 import React, { useState } from "react";
 
-function ReviewForm({ revieweeId, setReviews, currentUser }) {
-    const [revieweeName, setRevieweeName] = useState('');
-    const [rating, setRating] = useState('');
-    const [comment, setComment] = useState('');
+function ReviewForm({ setReviews }) {
+  const [reviewerName, setReviewerName] = useState('');
+  const [rating, setRating] = useState('');
+  const [comment, setComment] = useState('');
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-        if (!currentUser) {
-            alert('You need to be logged in to submit a review!');
-            return;
-        }
-
-        const newReview = {
-            revieweeId,
-            rating: Number(rating),
-            comment
-        };
-
-
-        fetch('http://localhost:8000/api/v1/review', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(newReview),
-            credentials: 'include',
-        })
-            .then((response) => response.json())
-            .then((addedReview) => {
-                setReviews((prevReviews) => [addedReview, ...prevReviews]);
-                setRevieweeName('');
-                setRating('');
-                setComment('');
-            })
-            .catch((error) => {
-                console.error('Error submitting review:', error);
-                alert('Something went wrong while submitting your review.');
-            });
+    const newReview = {
+      reviewerName,
+      rating: Number(rating),
+      comment,
     };
 
-    return (
-        <form onSubmit={handleSubmit}>
-            <label>
-                Reviewee Name:
-                <input
-                    type="text"
-                    value={revieweeName}
-                    onChange={(e) => setRevieweeName(e.target.value)}
-                    placeholder="Enter freelancer's name"
-                    required
-                />
-            </label>
-            <br />
+    setReviews(prev => [newReview, ...prev]);
 
-            <label>
-                Rating:
-                <select
-                    value={rating}
-                    onChange={(e) => setRating(e.target.value)}
-                    required
-                >
-                    <option value="" disabled>Select rating</option>
-                    {[1, 2, 3, 4, 5].map((n) => (
-                        <option key={n} value={n}>{n}</option>
-                    ))}
-                </select>
-            </label>
-            <br />
+    setReviewerName('');
+    setRating('');
+    setComment('');
+  };
 
-            <textarea
-                value={comment}
-                placeholder="Leave a Review"
-                onChange={(e) => setComment(e.target.value)}
-                required
-            />
-            <br />
+  return (
+    <form onSubmit={handleSubmit}>
+      <label>
+        Your Name:
+        <input
+          type="text"
+          value={reviewerName}
+          onChange={(e) => setReviewerName(e.target.value)}
+          required
+        />
+      </label>
+      <br />
 
-            <button type="submit">Submit Review</button>
-        </form>
-    );
+      <label>
+        Rating:
+        <select
+          value={rating}
+          onChange={(e) => setRating(e.target.value)}
+          required
+        >
+          <option value="" disabled>Select rating</option>
+          {[1, 2, 3, 4, 5].map((n) => (
+            <option key={n} value={n}>{n}</option>
+          ))}
+        </select>
+      </label>
+      <br />
+
+      <textarea
+        value={comment}
+        placeholder="Leave a review"
+        onChange={(e) => setComment(e.target.value)}
+        required
+      />
+      <br />
+
+      <button type="submit">Submit Review</button>
+    </form>
+  );
 }
 
 export default ReviewForm;
