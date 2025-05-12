@@ -101,11 +101,12 @@ const Navbar = () => {
           <button className="self-end text-2xl" onClick={() => setMenuOpen(false)}>
             ✕
           </button>
-          <Link to="/jobs" onClick={() => setMenuOpen(false)}>Job Search</Link>
+          <Link to="/jobs" onClick={() => setMenuOpen(false)}>Find Jobs</Link>
+          <Link to="/create-job" onClick={() => setMenuOpen(false)}>Post a Job</Link>
           {currentUserId && 
           <>
             <Link to={`/profile/${currentUserId}`}>Profile</Link>
-            <button onClick={logoutCurrentUser}>Sign out</button>
+            <button onClick={logoutCurrentUser} className="text-left mt-8">Sign out</button>
           </>
           }
           {!currentUserId && 

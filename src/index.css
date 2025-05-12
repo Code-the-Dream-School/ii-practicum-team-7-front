@@ -55,7 +55,6 @@
     .btn-blk {
         @apply
         text-white bg-black
-
         py-1.5 px-3
         hover:bg-gray-800
         min-w-[70px]
@@ -67,11 +66,20 @@
         hover:bg-ny-pink-md
         min-w-[70px]
     }
+    .btn-lt-pnk {
+        @apply
+        text-black bg-ny-pink-light
+        py-1.5 px-3
+        hover:text-gray-600
+        border border-gray-300
+        min-w-[70px]
+    }
     .btn-wht {
         @apply
         text-black bg-white
         py-1.5 px-3
         border border-gray-300
+        hover:text-gray-500
         min-w-[70px]
     }
 }
