@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Profile = () => {
   const { id } = useParams();
@@ -43,7 +44,7 @@ const Profile = () => {
     const fetchUserProfile = async () => {
       try {
         // const token = localStorage.getItem("authToken");
-        const url = `http://localhost:8000/api/v1/profile/${id}`;
+        const url = `http://localhost:8000/api/v1/profile/current-user/${id}`;
 
         const { data } = await axios.get(url, {
           // headers: {
@@ -62,11 +63,13 @@ const Profile = () => {
 
     fetchUserProfile();
   }, [id]);
-
-  if (loading) return <p>Loading user profile...</p>;
-  if (error) return <p>{error}</p>;
-  if (!profile) return <p>No profile data found.</p>;
-
+  
+  useEffect(() => {
+    if (error) {
+      navigate("/create-profile");
+    }
+  }, [error, navigate]);
+  
   const roleLabels = {
   jobSeeker: "Job Seeker",
   hiring: "Hiring",
@@ -124,10 +127,10 @@ const Profile = () => {
           </p>
         )}
         {profile.bio && (
-          <p>
+          <>
             <p className="font-bold">Description:</p>{" "}
             <p className="text-gray">{profile.bio}</p>
-          </p>
+          </>
         )}
       </div>
 
@@ -135,7 +138,6 @@ const Profile = () => {
         <button onClick={() => navigate(`/edit-profile/${profile._id}`)} className="btn-blk">
           Edit
         </button>
-      )}
     </div>
   );
 };

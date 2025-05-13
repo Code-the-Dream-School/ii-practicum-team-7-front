@@ -101,15 +101,15 @@ function JobPost() {
   };
 
   return (
-    <div className="form-container">
-      <h2>Create New Job Posting</h2>
-      {error && <div className="error-message">Error: {error} </div>}
+    <div className="bg-monte-carlo-dark pt-36 pb-12 px-4 sm:px-8 pg:px-16">
+      <h2 className="mb-16">New Job Post</h2>
+      {error && <div>Error: {error} </div>}
 
-      <form onSubmit={handleSubmit} className="job-form">
+      <form onSubmit={handleSubmit} className="md:max-w-2xl max-w-md mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
         {/* Title */}
-        <div className="form-group">
-          <label htmlFor="title">
-            Job Title <span className="required">*</span>
+        <div className="flex flex-col gap-2">
+          <label htmlFor="title" className="space-x-2">
+            <span className="text-red-500">*</span>Job Title:
           </label>
           <input
             type="text"
@@ -118,35 +118,34 @@ function JobPost() {
             value={formData.title}
             onChange={handleInputChange}
             required
+            className="w-full border rounded p-2"
           />
         </div>
 
         {/* Category */}
-        <div className="form-group">
+        <div className="flex flex-col gap-2">
           <label htmlFor="category">
-            Category <span className="required">*</span>
+            <span className="text-red-500">*</span>Category:
           </label>
-          <input
-            type="text"
-            id="category"
+          <select
             name="category"
             value={formData.category}
             onChange={handleInputChange}
-            list="categoryOptions"
-            placeholder="Select or type a category"
-            required
-          />
-          <datalist id="categoryOptions">
-            {jobCategories.map((category) => (
-              <option key={category} value={category} />
-            ))}
-          </datalist>
+            className="w-full border rounded p-2 cursor-pointer"
+          >
+            <option value="">Category</option>
+              {jobCategories.map((jobCategory, index) => (
+                <option value={jobCategory.toLowerCase()} key={`${jobCategory}-${index}`}>
+                  {jobCategory}
+                </option>
+              ))}
+          </select>
         </div>
 
         {/* Summary */}
-        <div className="form-group">
+        <div className="flex flex-col gap-2 md:col-span-2">
           <label htmlFor="summary">
-            Summary <span className="required">*</span>
+            <span className="text-red-500">*</span>Summary:
           </label>
           <textarea
             id="summary"
@@ -155,63 +154,17 @@ function JobPost() {
             onChange={handleInputChange}
             maxLength={maxSummaryLength}
             required
+            className="w-full border rounded p-2"
           />
-          <div className="character-counter">
+          <div className="text-gray-700 text-sm">
             {remainingSummaryInput} characters remaining
           </div>
         </div>
 
-        {/* Job Location Info */}
-        <div className="form-row">
-          <div className="form-group">
-            <label htmlFor="zipCode">
-              ZIP code <span className="required">*</span>
-            </label>
-            <input
-              type="number"
-              id="zipCode"
-              name="zipCode"
-              value={formData.zipCode}
-              onChange={handleInputChange}
-              min={10000}
-              max={99999}
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="city">
-              City <span className="required">*</span>
-            </label>
-            <input
-              type="text"
-              id="city"
-              name="city"
-              value={formData.city}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="state">
-              State <span className="required">*</span>
-            </label>
-            <input
-              type="text"
-              id="state"
-              name="state"
-              value={formData.state}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-        </div>
-
         {/* Job Description */}
-        <div className="form-group">
+        <div className="flex flex-col gap-2 md:col-span-2">
           <label htmlFor="description">
-            Job Description <span className="required">*</span>
+            <span className="text-red-500">*</span>Job Description:
           </label>
           <textarea
             id="description"
@@ -219,68 +172,126 @@ function JobPost() {
             value={formData.description}
             onChange={handleInputChange}
             maxLength={maxDescriptionLength}
+            className="w-full border rounded p-2"
           />
-          <div className="character-counter">
+          <div className="text-gray-700 text-sm">
             {remainingDescriptionInput} characters remaining
+          </div>
+        </div>       
+
+        {/* Job Location Info */}
+        <div className="md:col-span-2">
+          <h5 className="mb-4">Job Location</h5>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+
+            <div className="flex flex-col gap-2">
+              <label htmlFor="city">
+                <span className="text-red-500">*</span>City:
+              </label>
+              <input
+                type="text"
+                id="city"
+                name="city"
+                value={formData.city}
+                onChange={handleInputChange}
+                required
+                className="w-full border rounded p-2"
+              />
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <label htmlFor="state">
+                <span className="text-red-500">*</span>State:
+              </label>
+              <input
+                type="text"
+                id="state"
+                name="state"
+                value={formData.state}
+                onChange={handleInputChange}
+                required
+                className="w-full border rounded p-2"
+              />
+            </div>
+            
+            <div className="flex flex-col gap-2">
+              <label htmlFor="zipCode">
+                <span className="text-red-500">*</span>ZIP code:
+              </label>
+              <input
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]{5}"
+                maxLength={5}
+                id="zipCode"
+                name="zipCode"
+                value={formData.zipCode}
+                onChange={handleInputChange}
+                required
+                className="w-full border rounded p-2"
+              />
+            </div>
           </div>
         </div>
 
-        {/* Employment Type */}
-        <fieldset className="form-group">
-          <legend>
-            Employment Type <span className="required">*</span>
-          </legend>
-          <div className="radio-group">
-            {["Full-Time", "Part-Time", "Contract"].map((type) => (
-              <label key={type}>
-                <input
-                  type="radio"
-                  name="employmentType"
-                  value={type}
-                  checked={formData.employmentType === type}
-                  onChange={handleInputChange}
-                  required
-                />
-                {type}
-              </label>
-            ))}
-          </div>
-        </fieldset>
+        {/* Employment Type */}        
+        <div className="md:col-span-2 grid grid-cols-2 gap-6 text-left">
+          <fieldset className="bg-white p-6 rounded-md shadow-md space-y-8 mb-4">
+            <legend className="font-semibold float-left">
+              <span className="text-red-500">*</span>Employment Type:
+            </legend>
+            <div className="pt-4 space-y-2">
+              {["Full-Time", "Part-Time", "Contract"].map((type) => (
+                <label key={type} className="flex space-x-2">
+                  <input
+                    type="radio"
+                    name="employmentType"
+                    value={type}
+                    checked={formData.employmentType === type}
+                    onChange={handleInputChange}
+                    required
+                  />
+                  <span>{type}</span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
 
-        {/* Work Location Type */}
-        <fieldset className="form-group">
-          <legend>
-            Work Location Type <span className="required">*</span>
-          </legend>
-          <div className="radio-group">
-            {["In-Person", "Remote", "Hybrid"].map((location) => (
-              <label key={location}>
-                <input
-                  type="radio"
-                  name="workLocationType"
-                  value={location}
-                  checked={formData.workLocationType === location}
-                  onChange={handleInputChange}
-                  required
-                />
-                {location}
-              </label>
-            ))}
-          </div>
-        </fieldset>
+          {/* Work Location Type */}
+          <fieldset className="bg-white p-6 rounded-md shadow-md space-y-8 mb-4">
+            <legend className="font-semibold float-left">
+              <span className="text-red-500">*</span>Work Location Type:
+            </legend>
+            <div className="pt-4 space-y-2">
+              {["In-Person", "Remote", "Hybrid"].map((location) => (
+                <label key={location} className="flex space-x-2">
+                  <input
+                    type="radio"
+                    name="workLocationType"
+                    value={location}
+                    checked={formData.workLocationType === location}
+                    onChange={handleInputChange}
+                    required
+                  />
+                  <span>{location}</span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+        </div>       
 
         {/* Form Actions */}
-        <div className="form-actions">
+        <div className="flex justify-center gap-2 md:col-span-2 mt-4">
           <button
             type="button"
-            className="btn-cancel"
+            className="btn-wht"
             onClick={() => navigate(-1)}
             disabled={isSaving}
           >
             Cancel
           </button>
-          <button type="submit" className="btn-submit" disabled={isSaving}>
-            {isSaving ? "Creating..." : "Create Job"}
+          <button type="submit" className="btn-blk" disabled={isSaving}>
+            {isSaving ? "Creating..." : "Create"}
           </button>
         </div>
       </form>
