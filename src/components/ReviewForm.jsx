@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import { sendReviewNotification } from "../util/sendJobUpdateEmail";
 function ReviewForm({ setReviews }) {
   const [reviewerName, setReviewerName] = useState('');
   const [rating, setRating] = useState('');
@@ -15,6 +15,11 @@ function ReviewForm({ setReviews }) {
     };
 
     setReviews(prev => [newReview, ...prev]);
+
+    sendReviewNotification({
+    reviewerName,
+    rating: Number(rating),
+  });
 
     setReviewerName('');
     setRating('');

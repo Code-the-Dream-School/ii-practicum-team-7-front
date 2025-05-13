@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams, useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 
 const Profile = () => {
   const { id } = useParams();
@@ -10,11 +9,9 @@ const Profile = () => {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [currentUserId, setCurrentUserId] = useState(null); // Get user Id from backend response instead
+  const [currentUserId, setCurrentUserId] = useState(null);
 
-  // const loggedInUserId = localStorage.getItem("userId");
-
-  //To fetch current user.
+  // To fetch current user
   const fetchCurrentUser = async () => {
     try {
       const { data } = await axios.get(
@@ -31,7 +28,6 @@ const Profile = () => {
     fetchCurrentUser();
   }, []);
 
-  // Only check isOwner if profile exists
   const isOwner = profile && profile.createdBy === currentUserId;
 
   useEffect(() => {
@@ -43,16 +39,9 @@ const Profile = () => {
 
     const fetchUserProfile = async () => {
       try {
-        // const token = localStorage.getItem("authToken");
         const url = `http://localhost:8000/api/v1/profile/current-user/${id}`;
-
-        const { data } = await axios.get(url, {
-          // headers: {
-          //   Authorization: `Bearer ${token}`,
-          // },
-          withCredentials: true, // send cookies automatically
-        });
-        setProfile(data.profile); // assuming `data.data` contains the profile
+        const { data } = await axios.get(url, { withCredentials: true });
+        setProfile(data.profile);
         console.log("Fetched profile:", data.profile);
       } catch (error) {
         setError("Error fetching the profile.");
@@ -63,18 +52,22 @@ const Profile = () => {
 
     fetchUserProfile();
   }, [id]);
-  
+
   useEffect(() => {
     if (error) {
       navigate("/create-profile");
     }
   }, [error, navigate]);
-  
+
   const roleLabels = {
-  jobSeeker: "Job Seeker",
-  hiring: "Hiring",
-  both: "Job Seeker & Hiring",
+    jobSeeker: "Job Seeker",
+    hiring: "Hiring",
+    both: "Job Seeker & Hiring",
   };
+
+  if (loading) {
+    return <div className="pt-36 px-4">Loading...</div>;
+  }
 
   return (
     <div className="bg-monte-carlo pt-36 pb-12 px-4 sm:px-8 pg:px-16">
@@ -82,7 +75,7 @@ const Profile = () => {
 
       {/* Profile Photo + Role */}
       <div className="flex flex-col items-center my-6">
-        {profile.image && (
+        {profile?.image && (
           <img
             src={profile.image}
             alt="profile photo"
@@ -90,43 +83,44 @@ const Profile = () => {
           />
         )}
         <p className="text-white bg-ny-pink py-2 px-4 rounded-md text-lg">
-          <span className="font-bold">Role:</span> {roleLabels[profile.role] || "Not specified"}
+          <span className="font-bold">Role:</span>{" "}
+          {roleLabels[profile?.role] || "Not specified"}
         </p>
       </div>
 
       {/* Info */}
       <div className="bg-white p-6 rounded-md shadow-md max-w-2xl mx-auto space-y-8 my-6">
-        {profile.name && (
+        {profile?.name && (
           <p>
             <span className="font-bold">Name:</span>{" "}
             <span className="text-gray">{profile.name}</span>
           </p>
         )}
-        {profile.email && (
+        {profile?.email && (
           <p>
             <span className="font-bold">Email:</span>{" "}
             <span className="text-gray">{profile.email}</span>
           </p>
         )}
-        {profile.phone && (
+        {profile?.phone && (
           <p>
             <span className="font-bold">Phone:</span>{" "}
             <span className="text-gray">{profile.phone}</span>
           </p>
         )}
-        {profile.address && (
+        {profile?.address && (
           <p>
             <span className="font-bold">Location:</span>{" "}
             <span className="text-gray">{profile.address}</span>
           </p>
         )}
-        {profile.skills && (
+        {profile?.skills && (
           <p>
             <span className="font-bold">Skills:</span>{" "}
             <span className="text-gray">{profile.skills}</span>
           </p>
         )}
-        {profile.bio && (
+        {profile?.bio && (
           <>
             <p className="font-bold">Description:</p>{" "}
             <p className="text-gray">{profile.bio}</p>
@@ -135,9 +129,13 @@ const Profile = () => {
       </div>
 
       {isOwner && (
-        <button onClick={() => navigate(`/edit-profile/${profile._id}`)} className="btn-blk">
+        <button
+          onClick={() => navigate(`/edit-profile/${profile._id}`)}
+          className="btn-blk"
+        >
           Edit
         </button>
+      )}
     </div>
   );
 };
