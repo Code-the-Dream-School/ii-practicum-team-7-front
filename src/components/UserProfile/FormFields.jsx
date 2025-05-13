@@ -15,7 +15,6 @@ export default function Fields({
     return (
         <>
             {fields.map(({ name, label, type = "text", required, autocomplete, placeholder }) => (
-                <>
                     <div key={name} className="text-left">
                         <label htmlFor={name}>
                             {required && <span className="text-red-500">*</span>} {label}
@@ -37,9 +36,8 @@ export default function Fields({
                         {name === "phone" && (
                             <small className="text-gray-700">Ex: 123-456-7890</small>
                         )}
-                    </div>
 
-                    {name === "email" && (
+                        {name === "email" && (
                         <fieldset className="bg-white p-6 rounded-md shadow-md max-w-72 mx-auto text-center md:mx-0 md:text-left">
                             <legend className="font-semibold float-left">                
                                 <span className="text-red-500">*</span>Choose Your Role:                
@@ -67,8 +65,8 @@ export default function Fields({
                                 ))}
                             </div>
                         </fieldset>  
-                    )}
-                </>
+                        )}
+                    </div>
             ))}
 
             {/* Bio */}
