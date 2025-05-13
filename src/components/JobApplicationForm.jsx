@@ -5,14 +5,26 @@ import axios from "axios";
 const JobApplicationForm = () => {
   const [formData, setFormData] = useState({
     applicantName: "",
-    resumeUrl: "",
-    coverLetter: "",
+    resumeFile: null,
+    coverLetterFile: null,
   });
   const [formError, setFormError] = useState("");
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
   const { jobId } = useParams();
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [status, setStatus] = useState("idle"); // idle | uploading | success | error
+
+  //convert pdf to base64
+  const convertToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+  };
 
   // Handles the change of form fields
   const handleInputChange = (e) => {
@@ -23,6 +35,17 @@ const JobApplicationForm = () => {
     }));
   };
 
+  //for the files
+  const handleFileChange = (e) => {
+    const { name, files } = e.target;
+    if (files.length > 0) {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: files[0],
+      }));
+    }
+  };
+
   // Handles form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,32 +53,57 @@ const JobApplicationForm = () => {
     setFormError("");
 
     if (
-      !formData.resumeUrl ||
-      !formData.coverLetter ||
+      !formData.resumeFile ||
+      !formData.coverLetterFile ||
       !formData.applicantName
     ) {
       setFormError("please complete all fields before submitting!!");
       return;
     }
 
+    // const submissionData = new FormData();
+    // submissionData.append("applicantName", formData.applicantName);
+    // submissionData.append("resume", formData.resumeFile);
+    // submissionData.append("coverletter", formData.coverLetterFile);
+
     setIsSubmitting(true);
+    setStatus("uploading");
+    setUploadProgress(0);
 
     try {
+      const resumeBase64 = await convertToBase64(formData.resumeFile);
+      const coverLetterBase64 = await convertToBase64(formData.coverLetterFile);
+      const submissionData = {
+        applicantName: formData.applicantName,
+        resumeUrl: resumeBase64,
+        coverLetter: coverLetterBase64,
+      };
+
       const response = await axios.post(
         `http://localhost:8000/api/v1/jobs/${jobId}/applications`,
-        formData,
+        submissionData,
         {
           withCredentials: true,
+          onUploadProgress: (ProgressEvent) => {
+            const progress = ProgressEvent.total
+              ? Math.round((ProgressEvent.loaded * 100) / ProgressEvent.total)
+              : 0;
+            setUploadProgress(progress);
+          },
         }
       );
       console.log("Response:", response);
       if (response.status !== 201) {
         throw new Error(response.data.message || "Failed to apply for job");
       }
+      setStatus("success");
       alert("application sent successfully!");
-      navigate(`/jobs`);
+      setTimeout(() => {
+        navigate(`/jobs`);
+      }, 1000);
     } catch (error) {
       setError(error.message);
+      setStatus("error");
       console.error("Error applying for job:", error.message);
     } finally {
       setIsSubmitting(false);
@@ -88,36 +136,61 @@ const JobApplicationForm = () => {
         </div>
         <div className="form-group">
           <label
-            htmlFor="resumeUrl"
+            htmlFor="resumeFile"
             className="block text-lg font-medium text-gray-700"
           >
-            Resume URL:
+            Resume (PDF):
           </label>
           <input
-            type="url"
-            id="resumeUrl"
-            name="resumeUrl"
-            value={formData.resumeUrl}
-            onChange={handleInputChange}
+            type="file"
+            id="resumeFile"
+            name="resumeFile"
+            accept=".pdf"
+            onChange={handleFileChange}
             required
-            className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-ny-pink"
           />
         </div>
         <div className="form-group">
           <label
-            htmlFor="coverLetter"
+            htmlFor="coverLetterFile"
             className="block text-lg font-medium text-gray-700"
           >
-            Cover Letter:
+            Cover Letter (PDF):
           </label>
-          <textarea
-            id="coverLetter"
-            name="coverLetter"
-            value={formData.coverLetter}
-            onChange={handleInputChange}
+          <input
+            type="file"
+            id="coverLetterFile"
+            name="coverLetterFile"
+            accept=".pdf"
+            onChange={handleFileChange}
             className="w-full px-4 py-2 border border-gray-300 rounded resize-none focus:outline-none focus:ring-2 focus:ring-ny-pink"
           />
         </div>
+        {status === "uploading" && (
+          <div className="space-y-2">
+            <div className="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
+              <div
+                className="h-2 bg-blue-600 transition-all duration-300"
+                style={{ width: `${uploadProgress}%` }}
+              ></div>
+            </div>
+            <p className="text-sm text-gray-600 text-center">
+              {uploadProgress}% uploaded
+            </p>
+          </div>
+        )}
+
+        {status === "success" && (
+          <p className="text-sm text-green-600 text-center">
+            Files uploaded successfully!
+          </p>
+        )}
+
+        {status === "error" && (
+          <p className="text-sm text-red-600 text-center">
+            Upload failed. Please try again.
+          </p>
+        )}
         <button
           type="submit"
           disabled={isSubmitting}

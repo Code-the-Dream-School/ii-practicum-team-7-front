@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Profile = () => {
   const { id } = useParams();
@@ -62,11 +63,13 @@ const Profile = () => {
 
     fetchUserProfile();
   }, [id]);
-
-  if (loading) return <p>Loading user profile...</p>;
-  if (error) return <p>{error}</p>;
-  if (!profile) return <p>No profile data found.</p>;
-
+  
+  useEffect(() => {
+    if (error) {
+      navigate("/create-profile");
+    }
+  }, [error, navigate]);
+  
   const roleLabels = {
   jobSeeker: "Job Seeker",
   hiring: "Hiring",
@@ -75,66 +78,74 @@ const Profile = () => {
 
   return (
     <div className="bg-monte-carlo pt-36 pb-12 px-4 sm:px-8 pg:px-16">
-      <h1>My Profile</h1>
+      {loading ? (
+        <p className="text-black text-center text-lg">Loading profile...</p>
+      ) : !profile ? (
+        <p className="text-black text-center text-lg">No profile data found</p>
+      ) : (
+        <>
+          <h1>My Profile</h1>
 
-      {/* Profile Photo + Role */}
-      <div className="flex flex-col items-center my-6">
-        {profile.image && (
-          <img
-            src={profile.image}
-            alt="profile photo"
-            className="w-52 h-52 rounded-full object-cover mb-2 border-4 border-white"
-          />
-        )}
-        <p className="text-white bg-ny-pink py-2 px-4 rounded-md text-lg">
-          <span className="font-bold">Role:</span> {roleLabels[profile.role] || "Not specified"}
-        </p>
-      </div>
+          {/* Profile Photo + Role */}
+          <div className="flex flex-col items-center my-6">
+            {profile.image && (
+              <img
+                src={profile.image}
+                alt="profile photo"
+                className="w-52 h-52 rounded-full object-cover mb-2 border-4 border-white"
+              />
+            )}
+            <p className="text-white bg-ny-pink py-2 px-4 rounded-md text-lg">
+              <span className="font-bold">Role:</span> {roleLabels[profile.role] || "Not specified"}
+            </p>
+          </div>
 
-      {/* Info */}
-      <div className="bg-white p-6 rounded-md shadow-md max-w-2xl mx-auto space-y-8 my-6">
-        {profile.name && (
-          <p>
-            <span className="font-bold">Name:</span>{" "}
-            <span className="text-gray">{profile.name}</span>
-          </p>
-        )}
-        {profile.email && (
-          <p>
-            <span className="font-bold">Email:</span>{" "}
-            <span className="text-gray">{profile.email}</span>
-          </p>
-        )}
-        {profile.phone && (
-          <p>
-            <span className="font-bold">Phone:</span>{" "}
-            <span className="text-gray">{profile.phone}</span>
-          </p>
-        )}
-        {profile.address && (
-          <p>
-            <span className="font-bold">Location:</span>{" "}
-            <span className="text-gray">{profile.address}</span>
-          </p>
-        )}
-        {profile.skills && (
-          <p>
-            <span className="font-bold">Skills:</span>{" "}
-            <span className="text-gray">{profile.skills}</span>
-          </p>
-        )}
-        {profile.bio && (
-          <p>
-            <p className="font-bold">Description:</p>{" "}
-            <p className="text-gray">{profile.bio}</p>
-          </p>
-        )}
-      </div>
+          {/* Info */}
+          <div className="bg-white p-6 rounded-md shadow-md max-w-2xl mx-auto space-y-8 my-6">
+            {profile.name && (
+              <p>
+                <span className="font-bold">Name:</span>{" "}
+                <span className="text-gray">{profile.name}</span>
+              </p>
+            )}
+            {profile.email && (
+              <p>
+                <span className="font-bold">Email:</span>{" "}
+                <span className="text-gray">{profile.email}</span>
+              </p>
+            )}
+            {profile.phone && (
+              <p>
+                <span className="font-bold">Phone:</span>{" "}
+                <span className="text-gray">{profile.phone}</span>
+              </p>
+            )}
+            {profile.address && (
+              <p>
+                <span className="font-bold">Location:</span>{" "}
+                <span className="text-gray">{profile.address}</span>
+              </p>
+            )}
+            {profile.skills && (
+              <p>
+                <span className="font-bold">Skills:</span>{" "}
+                <span className="text-gray">{profile.skills}</span>
+              </p>
+            )}
+            {profile.bio && (
+              <p>
+                <p className="font-bold">Description:</p>{" "}
+                <p className="text-gray">{profile.bio}</p>
+              </p>
+            )}
+          </div>
 
-      {isOwner && (
-        <button onClick={() => navigate(`/edit-profile/${profile._id}`)} className="btn-blk">
-          Edit
-        </button>
+          {isOwner && (
+            <button onClick={() => navigate(`/edit-profile/${profile._id}`)} className="btn-blk">
+              Edit
+            </button>
+          )}
+        </>
       )}
     </div>
   );
