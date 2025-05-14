@@ -111,10 +111,18 @@ const JobApplicationForm = () => {
   };
 
   return (
-    <div className="max-w-xl mx-auto mt-10 p-6 bg-white shadow-md rounded-md">
+    <div className="max-w-xl mx-auto mt-32 p-6 bg-white shadow-md rounded-md">
       <h2 className="text-2xl font-semibold text-center text-ny-pink mb-4">
         Apply for Job
       </h2>
+      <p className="text-sm text-gray-500 text-center mb-2">
+        All fields marked with <span className="text-red-500">*</span> are
+        required.
+      </p>
+
+      {formError && (
+        <div className="text-red-500 mb-2 text-center">{formError}</div>
+      )}
       {error && <div className="text-red-500 mb-2 text-center">{error}</div>}
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="form-group">
@@ -122,7 +130,7 @@ const JobApplicationForm = () => {
             htmlFor="applicantName"
             className="block text-lg font-medium text-gray-700"
           >
-            Your Name:
+            <span className="text-red-500">*</span>Your Name:
           </label>
           <input
             type="text"
@@ -139,7 +147,7 @@ const JobApplicationForm = () => {
             htmlFor="resumeFile"
             className="block text-lg font-medium text-gray-700"
           >
-            Resume (PDF):
+            <span className="text-red-500">*</span> Resume (PDF):
           </label>
           <input
             type="file"
@@ -155,7 +163,7 @@ const JobApplicationForm = () => {
             htmlFor="coverLetterFile"
             className="block text-lg font-medium text-gray-700"
           >
-            Cover Letter (PDF):
+            <span className="text-red-500">*</span> Cover Letter (PDF):
           </label>
           <input
             type="file"

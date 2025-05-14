@@ -34,7 +34,11 @@ const JobPostings = (props) => {
                 </span>
                 <span>{jobPosting.workLocationType}</span>
               </div>
-              <button className="btn-lt-pnk">Apply</button>
+              <Link to={`/jobs/${jobPosting._id}/apply`}>
+                <button className="bg-ny-pink hover:bg-ny-pink-dark text-white font-semibold py-2 px-4 rounded transition duration-300">
+                  Apply
+                </button>
+              </Link>
             </div>
           ))}
         </div>
