@@ -1,3 +1,7 @@
+
+import JobApplicationForm from "./components/JobApplicationForm.jsx";
+import JobApplicationsList from "./components/JobApplicationsList.jsx";
+
 import Profile from "./components/UserProfile/UserProfilePg.jsx";
 import ReviewPage from "./components/ReviewPage.jsx"; 
 import React, { useState, useEffect } from 'react';
@@ -17,6 +21,7 @@ import UserInfoForm from "./components/UserProfile/UserInfoForm.jsx";
 import JobPost from "./components/JobPost.jsx";
 
 const URL = 'http://localhost:8000/api/v1/';
+
 
 function App() {
   const [message, setMessage] = useState("");
@@ -52,6 +57,12 @@ function App() {
           <Route path="/profile/:id" element={<Profile />} />
           <Route path="/create-profile" element={<UserInfoForm />} />
           <Route path="/edit-profile/:id" element={<UserInfoForm />} />
+             <Route path="/jobs/:jobId/apply" element={<JobApplicationForm />} />
+          <Route
+            path="/jobs/:jobId/applications"
+            element={<JobApplicationsList />}
+          />
+
         </Routes>
       </PageWrapper>
     </BrowserRouter>

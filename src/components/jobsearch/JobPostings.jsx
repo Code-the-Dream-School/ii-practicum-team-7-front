@@ -1,6 +1,7 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLocationDot } from '@fortawesome/free-solid-svg-icons';
-import { faClock } from '@fortawesome/free-regular-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
+import { faClock } from "@fortawesome/free-regular-svg-icons";
+import { Link } from "react-router-dom";
 
 const JobPostings = (props) => {
   const { currentJobs } = props;
@@ -11,25 +12,26 @@ const JobPostings = (props) => {
         <div className="text-center mx-auto md:text-left md:mx-0">
           {currentJobs.length === 0 && <h5>No Jobs Found</h5>}
           {currentJobs.map((jobPosting, index) => (
-            <div key={`${jobPosting.title}-${index}`} className="py-6 border-t border-gray-400 text-left space-y-4">
+            <div
+              key={`${jobPosting.title}-${index}`}
+              className="py-6 border-t border-gray-400 text-left space-y-4"
+            >
               <div className="flex flex-wrap items-center gap-6">
-                <h4>{jobPosting.title}</h4> 
-                <span
-                  className="text-black bg-[#E9D8DA] py-1.5 px-3 border border-gray-400 min-w-[70px]"
-                >
+                <h4>{jobPosting.title}</h4>
+                <span className="text-black bg-[#E9D8DA] py-1.5 px-3 border border-gray-400 min-w-[70px]">
                   {jobPosting.category}
                 </span>
               </div>
               <p>{jobPosting.summary}</p>
               <div className="flex flex-wrap items-center gap-4">
                 <p className="flex items-center gap-1">
-                <FontAwesomeIcon icon={faLocationDot} size="lg"/>
+                  <FontAwesomeIcon icon={faLocationDot} size="lg" />
                   {jobPosting.distance} miles away
                 </p>
                 <span className="flex items-center gap-1">
-                  <FontAwesomeIcon icon={faClock} size="lg"/>
+                  <FontAwesomeIcon icon={faClock} size="lg" />
                   {jobPosting.employmentType}
-                </span>                
+                </span>
                 <span>{jobPosting.workLocationType}</span>
               </div>
               <button className="btn-lt-pnk">Apply</button>
@@ -38,7 +40,7 @@ const JobPostings = (props) => {
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
 export default JobPostings;
