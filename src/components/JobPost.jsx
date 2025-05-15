@@ -87,14 +87,31 @@ function JobPost() {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to create job post");
+        let errorMessage = errorData.message || "Failed to create job post.";
+        if (response.status === 401) {
+          errorMessage = "Please log in to post job.";
+        } else if (response.status === 400) {
+          errorMessage =
+            "Invalid data: " +
+            (errorData.message || "Please check your inputs");
+        }
+
+        throw new Error(errorMessage);
       }
 
       const data = await response.json();
       navigate("/jobs");
     } catch (error) {
-      setError(error.message);
-      console.error("Error creating job:", error.message);
+      let errorMessage = error.message;
+      if (
+        error.name === "TypeError" &&
+        error.message.includes("Failed to fetch")
+      ) {
+        errorMessage =
+          "Unable to connect to the server. Please check your internet connection.";
+      }
+      setError(errorMessage);
+      console.error("Error creating job:", error);
     } finally {
       setIsSaving(false);
     }
@@ -103,9 +120,11 @@ function JobPost() {
   return (
     <div className="bg-monte-carlo-dark pt-36 pb-12 px-4 sm:px-8 pg:px-16">
       <h2 className="mb-16">New Job Post</h2>
-      {error && <div>Error: {error} </div>}
 
-      <form onSubmit={handleSubmit} className="md:max-w-2xl max-w-md mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
+      <form
+        onSubmit={handleSubmit}
+        className="md:max-w-2xl max-w-md mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 text-left"
+      >
         {/* Title */}
         <div className="flex flex-col gap-2">
           <label htmlFor="title" className="space-x-2">
@@ -134,11 +153,14 @@ function JobPost() {
             className="w-full border rounded p-2 cursor-pointer"
           >
             <option value="">Category</option>
-              {jobCategories.map((jobCategory, index) => (
-                <option value={jobCategory.toLowerCase()} key={`${jobCategory}-${index}`}>
-                  {jobCategory}
-                </option>
-              ))}
+            {jobCategories.map((jobCategory, index) => (
+              <option
+                value={jobCategory.toLowerCase()}
+                key={`${jobCategory}-${index}`}
+              >
+                {jobCategory}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -177,13 +199,12 @@ function JobPost() {
           <div className="text-gray-700 text-sm">
             {remainingDescriptionInput} characters remaining
           </div>
-        </div>       
+        </div>
 
         {/* Job Location Info */}
         <div className="md:col-span-2">
           <h5 className="mb-4">Job Location</h5>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-
             <div className="flex flex-col gap-2">
               <label htmlFor="city">
                 <span className="text-red-500">*</span>City:
@@ -213,7 +234,7 @@ function JobPost() {
                 className="w-full border rounded p-2"
               />
             </div>
-            
+
             <div className="flex flex-col gap-2">
               <label htmlFor="zipCode">
                 <span className="text-red-500">*</span>ZIP code:
@@ -234,7 +255,7 @@ function JobPost() {
           </div>
         </div>
 
-        {/* Employment Type */}        
+        {/* Employment Type */}
         <div className="md:col-span-2 grid grid-cols-2 gap-6 text-left">
           <fieldset className="bg-white p-6 rounded-md shadow-md space-y-8 mb-4">
             <legend className="font-semibold float-left">
@@ -278,7 +299,7 @@ function JobPost() {
               ))}
             </div>
           </fieldset>
-        </div>       
+        </div>
 
         {/* Form Actions */}
         <div className="flex justify-center gap-2 md:col-span-2 mt-4">
@@ -293,6 +314,8 @@ function JobPost() {
           <button type="submit" className="btn-blk" disabled={isSaving}>
             {isSaving ? "Creating..." : "Create"}
           </button>
+
+          {error && <div> ⚠️ Error: {error} </div>}
         </div>
       </form>
     </div>
