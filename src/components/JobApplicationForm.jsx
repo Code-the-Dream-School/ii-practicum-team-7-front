@@ -36,12 +36,22 @@ const JobApplicationForm = () => {
   };
 
   //for the files
+  const maxSizeFile = 9.5 * 1024 * 1024;
+
   const handleFileChange = (e) => {
     const { name, files } = e.target;
     if (files.length > 0) {
+      const file = files[0];
+      if (file.size > maxSizeFile) {
+        setFormError(
+          `The file "${file.name}" is too big. Maximum size allowed is 9.5 MB.`
+        );
+        return;
+      }
+      setFormError("");
       setFormData((prev) => ({
         ...prev,
-        [name]: files[0],
+        [name]: file,
       }));
     }
   };
@@ -60,11 +70,6 @@ const JobApplicationForm = () => {
       setFormError("please complete all fields before submitting!!");
       return;
     }
-
-    // const submissionData = new FormData();
-    // submissionData.append("applicantName", formData.applicantName);
-    // submissionData.append("resume", formData.resumeFile);
-    // submissionData.append("coverletter", formData.coverLetterFile);
 
     setIsSubmitting(true);
     setStatus("uploading");
@@ -102,7 +107,19 @@ const JobApplicationForm = () => {
         navigate(`/jobs`);
       }, 1000);
     } catch (error) {
-      setError(error.message);
+      if (error.response) {
+        if (error.response.status === 401) {
+          setError(
+            "user must be logged in to apply for job.  Please log in and try again."
+          );
+        } else {
+          setError(error.response.data?.message || "an error ocurred.");
+        }
+      } else {
+        setError(
+          "Hmm... something went wrong! Check your connection or try smaller files."
+        );
+      }
       setStatus("error");
       console.error("Error applying for job:", error.message);
     } finally {
@@ -156,7 +173,11 @@ const JobApplicationForm = () => {
             accept=".pdf"
             onChange={handleFileChange}
             required
+            disabled={isSubmitting}
           />
+          <p className="text-xs text-gray-500 mt-1">
+            Max file size: 9.5 MB. PDF only.
+          </p>
         </div>
         <div className="form-group">
           <label
@@ -171,8 +192,13 @@ const JobApplicationForm = () => {
             name="coverLetterFile"
             accept=".pdf"
             onChange={handleFileChange}
+            required
+            disabled={isSubmitting}
             className="w-full px-4 py-2 border border-gray-300 rounded resize-none focus:outline-none focus:ring-2 focus:ring-ny-pink"
           />
+          <p className="text-xs text-gray-500 mt-1">
+            Max file size: 9.5 MB. PDF only.
+          </p>
         </div>
         {status === "uploading" && (
           <div className="space-y-2">
