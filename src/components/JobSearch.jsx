@@ -72,7 +72,7 @@ const JobSearch = () => {
   //Function that clears all the search phrases and filters
   const clearAllFilters = () => {
     setJobPhrase("");
-    setZipCode("10001");
+    setZipCode(""); //fixed small bug
     setRadius("")
     setCategory("");
     setEmploymentType({
