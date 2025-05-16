@@ -11,7 +11,7 @@ import axios from "axios";
 const JobSearch = () => {
   const [ jobPostings, setJobPostings ] = useState([]);
   const [ jobPhrase, setJobPhrase ] = useState("");
-  const [ zipCode, setZipCode ] = useState("");
+  const [ zipCode, setZipCode ] = useState("10001");
   const [ radius, setRadius ] = useState("");
   const [ category, setCategory ] = useState("");
   const [ employmentType, setEmploymentType ] = useState({
@@ -69,10 +69,9 @@ const JobSearch = () => {
     }))
   }
 
-  //Function that clears all the search phrases and filters
+  //Function that clears all the search phrases and filters except the zip code.
   const clearAllFilters = () => {
     setJobPhrase("");
-    setZipCode("10001");
     setRadius("")
     setCategory("");
     setEmploymentType({
@@ -89,42 +88,49 @@ const JobSearch = () => {
 
   //Function that will filter the job listing based on the phrases and set filters
   const getAllFilters = () => {
-    const filtered = jobPostings
-    .map(posting => ({
-      ...posting,
-      distance: zipcodes.distance(zipCode, posting.zipCode)
-    }))
-    .filter(posting => {
-      const matchesPhrase = jobPhrase
-        ? posting.title.toLowerCase().includes(jobPhrase.toLowerCase())
-        : true;
 
-      const matchesCategory = category
-        ? posting.category.toLowerCase() === category
-        : true;
+    //check if zip code is legitimate
+      //the lookup function will not return null if the zip code is valid
+    if(zipcodes.lookup(zipCode)) {
+      const filtered = jobPostings
+        .map(posting => ({
+          ...posting,
+          distance: zipcodes.distance(zipCode, posting.zipCode)
+        }))
+        .filter(posting => {
+          const matchesPhrase = jobPhrase
+            ? posting.title.toLowerCase().includes(jobPhrase.toLowerCase())
+            : true;
 
-      const withinRadius = radius
-        ? posting.distance <= Number(radius)
-        : true;
+          const matchesCategory = category
+            ? posting.category.toLowerCase() === category
+            : true;
 
-      const matchesEmployment =
-        (!employmentType.fullTime && !employmentType.partTime && !employmentType.contract) ||
-        (employmentType.fullTime && posting.employmentType.toLowerCase() === "full-time") ||
-        (employmentType.partTime && posting.employmentType.toLowerCase() === "part-time") ||
-        (employmentType.contract && posting.employmentType.toLowerCase() === "contract");
+          const withinRadius = radius
+            ? posting.distance <= Number(radius)
+            : true;
 
-      const matchesWorkplace =
-        (!workplaceType.inPerson && !workplaceType.remote && !workplaceType.hybrid) ||
-        (workplaceType.inPerson && posting.workLocationType === "in-person") ||
-        (workplaceType.remote && posting.workLocationType === "remote") ||
-        (workplaceType.hybrid && posting.workLocationType === "hybrid");
+          const matchesEmployment =
+            (!employmentType.fullTime && !employmentType.partTime && !employmentType.contract) ||
+            (employmentType.fullTime && posting.employmentType.toLowerCase() === "full-time") ||
+            (employmentType.partTime && posting.employmentType.toLowerCase() === "part-time") ||
+            (employmentType.contract && posting.employmentType.toLowerCase() === "contract");
 
-      return matchesPhrase && matchesCategory && withinRadius && matchesEmployment && matchesWorkplace;
-    })
-    .sort((a, b) => a.distance - b.distance);
+          const matchesWorkplace =
+            (!workplaceType.inPerson && !workplaceType.remote && !workplaceType.hybrid) ||
+            (workplaceType.inPerson && posting.workLocationType === "in-person") ||
+            (workplaceType.remote && posting.workLocationType === "remote") ||
+            (workplaceType.hybrid && posting.workLocationType === "hybrid");
 
-    setFilteredPostings(filtered);
-    setCurrentPage(1); // reset to first page after filtering
+          return matchesPhrase && matchesCategory && withinRadius && matchesEmployment && matchesWorkplace;
+        })
+        .sort((a, b) => a.distance - b.distance);
+      setFilteredPostings(filtered);
+      setCurrentPage(1); // reset to first page after filtering
+    } else {
+      alert("Invalid zip code.  Try again!");
+      setFilteredPostings((prev) => []);
+    }    
   } 
     
   //To fetch jobs
@@ -149,12 +155,13 @@ const JobSearch = () => {
   useEffect(() => {
     if (jobPostings.length === 0) return;
 
-    //Added distance between the posting's zip code and the default zip code.  
+    //Added distance between the posting's zip code and the default zip code.
+      //then sort by created date from the newest to oldest   
     const filtered = jobPostings.map(posting => ({
       ...posting,
       distance: zipcodes.distance(zipCode, posting.zipCode)
     }))
-    .sort((a, b) => a.distance - b.distance);
+    .sort((a, b) => new Date(b.createdDate) - new Date(a.createdDate));
   
     setFilteredPostings(filtered);
   }, [jobPostings]);
