@@ -129,7 +129,6 @@ const JobSearch = () => {
       setCurrentPage(1); // reset to first page after filtering
     } else {
       alert("Invalid zip code.  Try again!");
-      setFilteredPostings((prev) => []);
     }    
   } 
     
