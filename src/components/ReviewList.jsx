@@ -13,7 +13,7 @@ function ReviewList({ reviews, averageRating }) {
       </h4>
 
       {reviews.map((review, index) => (
-        <div key={index} className="bg-white p-6 rounded-md shadow-md mx-auto w-2/3 lg:w-1/3 text-center md:mx-0 mt-6">
+        <div key={index} className="bg-white p-6 rounded-md shadow-md mx-auto w-2/3 lg:w-1/3 text-center mt-6">
           <p>
             <span className="text-ny-pink font-semibold">{review.reviewerName}</span> rated:{" "}
             {"★".repeat(review.rating) + "☆".repeat(5 - review.rating)} ({review.rating}/5)
