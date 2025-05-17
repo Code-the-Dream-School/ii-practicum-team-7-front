@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import zipcodes from 'zipcodes';
 
 const BASE_URL = "http://localhost:8000/api/v1/jobs";
 
@@ -72,11 +73,29 @@ function JobPost() {
     setError(null);
   };
 
+  const setCityState = (e) => {
+    const validZipCodeObj = zipcodes.lookup(e.target.value);
+    if(validZipCodeObj) {
+      setFormData((prev) => ({
+      ...prev,
+      zipCode: e.target.value,
+      city: validZipCodeObj.city,
+      state: validZipCodeObj.state
+    }));
+    }
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSaving(true);
 
     try {
+      const validZipCodeObj = zipcodes.lookup(formData.zipCode);
+      if(!validZipCodeObj || formData.city !== validZipCodeObj.city || formData.state !== validZipCodeObj.state) {
+        alert("Invalid zip code, city, or state.")
+        throw new Error("Invalid zip code, city, or state.");
+      }  
+
       const dataToSend = {
         ...formData,
         zipCode: parseInt(formData.zipCode, 10),
@@ -214,7 +233,7 @@ function JobPost() {
                 id="city"
                 name="city"
                 value={formData.city}
-                onChange={handleInputChange}
+                disabled={true}
                 required
                 className="w-full border rounded p-2"
               />
@@ -229,7 +248,7 @@ function JobPost() {
                 id="state"
                 name="state"
                 value={formData.state}
-                onChange={handleInputChange}
+                disabled={true}
                 required
                 className="w-full border rounded p-2"
               />
@@ -247,6 +266,7 @@ function JobPost() {
                 id="zipCode"
                 name="zipCode"
                 value={formData.zipCode}
+                onInput={setCityState}
                 onChange={handleInputChange}
                 required
                 className="w-full border rounded p-2"

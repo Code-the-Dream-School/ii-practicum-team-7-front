@@ -4,6 +4,15 @@ import { faClock } from "@fortawesome/free-regular-svg-icons";
 import { Link } from "react-router-dom";
 
 const JobPostings = (props) => {
+
+  const daysSince = (createdDate) => {
+    const oneDay = 24 * 60 * 60 * 1000;
+    const created = new Date(createdDate);
+    const now = new Date();
+    const diffDays = Math.round(Math.abs((now - created) / oneDay));
+    return `posted ${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+  }
+
   const { currentJobs } = props;
   return (
     <section className="pt-28 pb-12 px-4 sm:px-8 pg:px-16 bg-ny-pink-light">
@@ -33,6 +42,7 @@ const JobPostings = (props) => {
                   {jobPosting.employmentType}
                 </span>
                 <span>{jobPosting.workLocationType}</span>
+                <span>{daysSince(jobPosting.createdDate)}</span>
               </div>
               <button className="btn-lt-pnk">Apply</button>
             </div>
