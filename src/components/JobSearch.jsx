@@ -118,9 +118,9 @@ const JobSearch = () => {
 
           const matchesWorkplace =
             (!workplaceType.inPerson && !workplaceType.remote && !workplaceType.hybrid) ||
-            (workplaceType.inPerson && posting.workLocationType === "in-person") ||
-            (workplaceType.remote && posting.workLocationType === "remote") ||
-            (workplaceType.hybrid && posting.workLocationType === "hybrid");
+            (workplaceType.inPerson && posting.workLocationType.toLowerCase() === "in-person") ||
+            (workplaceType.remote && posting.workLocationType.toLowerCase() === "remote") ||
+            (workplaceType.hybrid && posting.workLocationType.toLowerCase() === "hybrid");
 
           return matchesPhrase && matchesCategory && withinRadius && matchesEmployment && matchesWorkplace;
         })
