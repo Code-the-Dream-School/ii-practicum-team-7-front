@@ -115,14 +115,6 @@ const Navbar = () => {
             </Link>
           </>
         )}
-        {currentUserId && (
-          <button
-            className={`${button} whitespace-nowrap ml-4 py-2`}
-            onClick={() => logoutCurrentUser()}
-          >
-            Sign out
-          </button>
-        )}
         
         {currentUserId && 
           <button className={`${button} whitespace-nowrap ml-2 py-2`} onClick={() => logoutCurrentUser()}>Sign out</button>
