@@ -46,7 +46,7 @@ const JobApplicationsList = () => {
   };
 
   return (
-    <div className="pt-36 bg-monte-carlo-dark">
+    <div className="pt-48 bg-monte-carlo-dark">
       <h2 className="mb-16">
         Job Applications
       </h2>

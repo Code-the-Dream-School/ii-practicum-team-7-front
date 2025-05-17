@@ -70,8 +70,8 @@
         @apply
         text-black bg-ny-pink-light
         py-1.5 px-3
-        hover:text-gray-600
-        border border-gray-300
+        hover:text-ny-pink
+        border border-gray-400
         min-w-[70px]
     }
     .btn-wht {

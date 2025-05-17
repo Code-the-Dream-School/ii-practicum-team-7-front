@@ -45,7 +45,7 @@ const JobPostings = (props) => {
                 <span>{daysSince(jobPosting.createdDate)}</span>
               </div>
               <Link to={`/jobs/${jobPosting._id}/apply`}>
-                <button className="bg-ny-pink hover:bg-ny-pink-dark text-white font-semibold py-2 px-4 rounded transition duration-300">
+                <button className="btn-blk mt-4">
                   Apply
                 </button>
               </Link>
