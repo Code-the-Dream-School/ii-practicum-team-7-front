@@ -22,11 +22,11 @@ function ReviewPage() {
   }, [reviews]);
 
   return (
-    <>
-      <h3>Leave a Review</h3>
+    <div className="flex flex-col space-y-8 py-16 bg-monte-carlo-light">
+      <h2>Rate our app!</h2>
       <ReviewForm setReviews={setReviews} />
       <ReviewList reviews={reviews} averageRating={averageRating} />
-    </>
+    </div>
   );
 }
 

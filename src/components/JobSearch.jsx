@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import logo from "../images/logo1.png";
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import jobSearch from "../images/jobsearch.jpg";
-import zipcodes from "zipcodes";
+import zipcodes from 'zipcodes';
+import PostLink from './jobsearch/PostLink.jsx';
 import Pagination from "./jobsearch/Pagination.jsx";
 import JobPostings from "./jobsearch/JobPostings.jsx";
 import JobSearchArea from "./jobsearch/JobSearchArea.jsx";
@@ -212,13 +212,15 @@ const JobSearch = () => {
           clearAllFilters={clearAllFilters}
           jobSearch={jobSearch}
         />
-        <div style={{ margin: "1rem 0" }}>
+
+        <div className="bg-ny-pink-light pt-8">
           <select
             value={selectedJobId || ""}
             onChange={(e) => setSelectedJobId(e.target.value)}
+            className="w-1/2 lg:w-1/3 bg-inherit border border-gray-400 rounded p-2"
           >
             <option value="" disabled>
-              SELECT A JOB
+              Select a job
             </option>
             {filteredPostings.map((job) => (
               <option key={job._id} value={job._id}>
@@ -229,9 +231,9 @@ const JobSearch = () => {
 
           <button
             onClick={handleViewApplications}
-            style={{ marginLeft: "10px" }}
+            className="btn-pnk mx-4"
           >
-            VIEW APPLICATIONS
+            View applications
           </button>
         </div>
 
@@ -242,6 +244,9 @@ const JobSearch = () => {
           setCurrentPage={setCurrentPage}
           currentPage={currentPage}
         />
+
+        <PostLink />
+
       </div>
     </div>
   );

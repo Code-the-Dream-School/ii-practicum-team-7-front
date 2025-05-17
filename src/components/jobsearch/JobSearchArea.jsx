@@ -82,7 +82,7 @@ const JobSearchArea = (props) => {
                       checked={employmentType[type]}
                       onChange={employmentCheckboxChecker}
                     />
-                    <span>{type.charAt(0).toUpperCase() + type.slice(1)}</span>
+                    <span>{type.replace(/([a-z])([A-Z])/g, '$1-$2').replace(/^./, str => str.toUpperCase())}</span>
                   </label>
                 ))}
               </div>
@@ -101,7 +101,7 @@ const JobSearchArea = (props) => {
                       checked={workplaceType[type]}
                       onChange={workplaceTypeCheckboxChecker}
                     />
-                    <span>{type.charAt(0).toUpperCase() + type.slice(1)}</span>
+                    <span>{type.replace(/([a-z])([A-Z])/g, '$1-$2').replace(/^./, str => str.toUpperCase())}</span>
                   </label>
                 ))}
               </div>

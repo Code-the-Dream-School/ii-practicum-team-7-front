@@ -243,7 +243,7 @@ function UserInfoForm() {
             )}
             <button type="submit"
               disabled={isLoading || isSaving || !hasChanged}
-              className="btn-grn">
+              className="btn-blk">
               {isSaving ? "Saving..." : isEditMode ? "Save" : "Create"}
             </button>
           </div>

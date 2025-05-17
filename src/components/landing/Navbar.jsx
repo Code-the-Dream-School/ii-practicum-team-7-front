@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import {useState, useEffect, useRef} from "react";
 import axios from "axios";
 import logoimage from "../../images/logo1.png";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -57,6 +57,24 @@ const Navbar = () => {
   };
   const { navbar, button, text } = matchedStyles;
 
+  const menuRef = useRef(null);
+
+  // Close the menu if user clicks away
+  useEffect(() => {
+    const handleClickAway = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickAway);
+    
+    return () => {
+      document.removeEventListener("mousedown", handleClickAway);
+    };
+
+  }, [menuOpen]);
+
   return (
     <div
       className={`${navbar} ${text} fixed top-0 left-0 right-0 z-50 flex items-center px-2 sm:px-4 md:px-16 py-2 sm:py-1`}
@@ -80,6 +98,9 @@ const Navbar = () => {
 
       {/* Nav Button */}
       <div className="flex items-center gap-4">
+        <Link to={"/"}>
+          <button className={`${button} whitespace-nowrap py-2`}>Home</button>
+        </Link>
         {!currentUserId && (
           <>
             <Link to="/login">
@@ -102,6 +123,10 @@ const Navbar = () => {
             Sign out
           </button>
         )}
+        
+        {currentUserId && 
+          <button className={`${button} whitespace-nowrap ml-2 py-2`} onClick={() => logoutCurrentUser()}>Sign out</button>
+        }
 
         {/* Menu Button */}
         <button className="text-4xl" onClick={() => setMenuOpen(!menuOpen)}>
@@ -111,6 +136,7 @@ const Navbar = () => {
 
       {/* Slide-Out Menu */}
       <div
+        ref={menuRef}
         className={`fixed top-0 right-0 h-full w-64 bg-inherit transform transition-transform duration-300 ease-in-out ${
           menuOpen ? "translate-x-0" : "translate-x-full"
         }`}
