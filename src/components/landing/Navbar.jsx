@@ -101,7 +101,7 @@ const Navbar = () => {
         <Link to={"/"}>
           <button className={`${button} whitespace-nowrap py-2`}>Home</button>
         </Link>
-        {!currentUserId && 
+        {!currentUserId && (
           <>
             <Link to="/login">
               <button className={`${button} whitespace-nowrap ml-4 py-2`}>
@@ -123,7 +123,7 @@ const Navbar = () => {
             Sign out
           </button>
         )}
-        }
+        
         {currentUserId && 
           <button className={`${button} whitespace-nowrap ml-2 py-2`} onClick={() => logoutCurrentUser()}>Sign out</button>
         }
