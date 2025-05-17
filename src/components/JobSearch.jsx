@@ -1,31 +1,33 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../images/logo1.png";
 import jobSearch from "../images/jobsearch.jpg";
-import zipcodes from 'zipcodes';
+import zipcodes from "zipcodes";
 import Pagination from "./jobsearch/Pagination.jsx";
 import JobPostings from "./jobsearch/JobPostings.jsx";
 import JobSearchArea from "./jobsearch/JobSearchArea.jsx";
 import axios from "axios";
 
 const JobSearch = () => {
+
   const [ jobPostings, setJobPostings ] = useState([]);
   const [ jobPhrase, setJobPhrase ] = useState("");
   const [ zipCode, setZipCode ] = useState("10001");
   const [ radius, setRadius ] = useState("");
   const [ category, setCategory ] = useState("");
   const [ employmentType, setEmploymentType ] = useState({
+
     fullTime: false,
     partTime: false,
-    contract: false
+    contract: false,
   });
-  const [ workplaceType, setWorkplaceType ] = useState({
+  const [workplaceType, setWorkplaceType] = useState({
     inPerson: false,
     remote: false,
-    hybrid: false
+    hybrid: false,
   });
-  const [ filteredPostings, setFilteredPostings ] = useState([]);
-
+  const [filteredPostings, setFilteredPostings] = useState([]);
+  const [selectedJobId, setSelectedJobId] = useState(null);
   //an array of job categories
   const jobCategories = [
     "General Labor",
@@ -45,49 +47,50 @@ const JobSearch = () => {
     "Car Wash",
     "Security",
     "Event Help",
-    "Junk Removal"
+    "Junk Removal",
   ];
 
   //an array of radius
-  const radiusList = [
-    1, 5, 10, 15, 25, 50
-  ]
+  const radiusList = [1, 5, 10, 15, 25, 50];
 
   const employmentCheckboxChecker = (e) => {
-    const {name, checked} = e.target;
+    const { name, checked } = e.target;
     setEmploymentType((prev) => ({
       ...prev,
-      [name]: checked
-    }))
-  }
+      [name]: checked,
+    }));
+  };
 
   const workplaceTypeCheckboxChecker = (e) => {
-    const {name, checked} = e.target;
+    const { name, checked } = e.target;
     setWorkplaceType((prev) => ({
       ...prev,
-      [name]: checked
-    }))
-  }
+      [name]: checked,
+    }));
+  };
 
   //Function that clears all the search phrases and filters except the zip code.
   const clearAllFilters = () => {
     setJobPhrase("");
+
     setRadius("")
+
     setCategory("");
     setEmploymentType({
       fullTime: false,
       partTime: false,
-      contract: false
+      contract: false,
     });
     setWorkplaceType({
       inPerson: false,
       remote: false,
-      hybrid: false
-    })
-  }
+      hybrid: false,
+    });
+  };
 
   //Function that will filter the job listing based on the phrases and set filters
   const getAllFilters = () => {
+
 
     //check if zip code is legitimate
       //the lookup function will not return null if the zip code is valid
@@ -132,19 +135,19 @@ const JobSearch = () => {
     }    
   } 
     
+
   //To fetch jobs
   const fetchJobs = async () => {
     try {
-      const { data } = await axios.get(
-        "http://localhost:8000/api/v1/jobs",
-        { withCredentials: true }
-      );
+      const { data } = await axios.get("http://localhost:8000/api/v1/jobs", {
+        withCredentials: true,
+      });
       setJobPostings(data.jobs);
     } catch (error) {
       console.log("Error fetch jobs,", error.message);
     }
   };
-  
+
   //fetch jobs from the backend on the first load.
   useEffect(() => {
     fetchJobs();
@@ -155,6 +158,7 @@ const JobSearch = () => {
     if (jobPostings.length === 0) return;
 
     //Added distance between the posting's zip code and the default zip code.
+
       //then sort by created date from the newest to oldest   
     const filtered = jobPostings.map(posting => ({
       ...posting,
@@ -162,6 +166,7 @@ const JobSearch = () => {
     }))
     .sort((a, b) => new Date(b.createdDate) - new Date(a.createdDate));
   
+
     setFilteredPostings(filtered);
   }, [jobPostings]);
 
@@ -173,11 +178,22 @@ const JobSearch = () => {
   const currentJobs = filteredPostings.slice(indexOfFirstJob, indexOfLastJob);
   const totalPages = Math.ceil(filteredPostings.length / jobsPerPage);
 
+  // VIEW APPLICATION LIST
+
+  const navigate = useNavigate();
+  const handleViewApplications = () => {
+    if (!selectedJobId) {
+      alert("Please select a job first.");
+      return;
+    }
+    console.log("view application for job ID:", selectedJobId);
+    navigate(`/jobs/${selectedJobId}/applications`);
+  };
+
   return (
     <div>
       <div>
-
-        <JobSearchArea 
+        <JobSearchArea
           jobPhrase={jobPhrase}
           setJobPhrase={setJobPhrase}
           category={category}
@@ -196,20 +212,39 @@ const JobSearch = () => {
           clearAllFilters={clearAllFilters}
           jobSearch={jobSearch}
         />
+        <div style={{ margin: "1rem 0" }}>
+          <select
+            value={selectedJobId || ""}
+            onChange={(e) => setSelectedJobId(e.target.value)}
+          >
+            <option value="" disabled>
+              SELECT A JOB
+            </option>
+            {filteredPostings.map((job) => (
+              <option key={job._id} value={job._id}>
+                {job.title}
+              </option>
+            ))}
+          </select>
 
-        <JobPostings 
-          currentJobs = {currentJobs}
-        />
+          <button
+            onClick={handleViewApplications}
+            style={{ marginLeft: "10px" }}
+          >
+            VIEW APPLICATIONS
+          </button>
+        </div>
 
-        <Pagination 
-          totalPages={totalPages} 
-          setCurrentPage={setCurrentPage} 
+        <JobPostings currentJobs={currentJobs} />
+
+        <Pagination
+          totalPages={totalPages}
+          setCurrentPage={setCurrentPage}
           currentPage={currentPage}
-          />
-
+        />
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default JobSearch;
