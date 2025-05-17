@@ -29,7 +29,7 @@
         @apply text-gray-700
     }
     input::placeholder {
-        @apply text-gray-600
+        @apply text-gray-500
     }
     textarea {
         @apply text-gray-700

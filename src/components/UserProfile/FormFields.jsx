@@ -38,7 +38,7 @@ export default function Fields({
                         )}
 
                         {name === "email" && (
-                        <fieldset className="bg-white p-6 rounded-md shadow-md max-w-72 mx-auto text-center md:mx-0 md:text-left">
+                        <fieldset className="bg-white p-6 rounded-md shadow-md max-w-72 mx-auto text-center md:mx-0 md:text-left mt-6">
                             <legend className="font-semibold float-left">                
                                 <span className="text-red-500">*</span>Choose Your Role:                
                             </legend>

@@ -22,7 +22,9 @@ const HowSection = () => {
         <div>
           <h3 className="text-h3 mb-4">Create Your Account</h3>
           <p className="mb-6">
-            <Link to="/register" className="text-ny-pink-light">Sign up and create your profile</Link>
+            <Link to="/register" className="text-monte-carlo">Sign up</Link>
+            {" "}and{" "}
+            <Link to="/create-profile" className="text-monte-carlo">create your profile</Link>
           </p>
         </div>          
         <img src={firstimage} alt="create" className="mb-8 w-full h-80 object-cover"></img>
@@ -33,7 +35,9 @@ const HowSection = () => {
         <div>
           <h3 className="text-h3 mb-4">Browse or Post Jobs</h3>
           <p className="mb-6">
-            <Link to="/jobs" className="text-ny-pink-light">Explore gigs nearby or post your project</Link>
+            <Link to="/jobs" className="text-monte-carlo">Explore gigs nearby</Link>
+            {" "}or{" "}
+            <Link to="/create-job" className="text-monte-carlo">post your project</Link>
           </p>
         </div>
         <img src={secondimage} alt="look" className="mb-8 w-full h-80 object-cover"></img>

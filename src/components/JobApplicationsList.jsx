@@ -46,8 +46,8 @@ const JobApplicationsList = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto mt-10 p-6 bg-white shadow-md rounded-md">
-      <h2 className="text-2xl font-semibold text-center text-ny-pink mb-4">
+    <div className="pt-36 bg-monte-carlo-dark">
+      <h2 className="mb-16">
         Job Applications
       </h2>
       {isLoading && <p>Loading...</p>}
@@ -55,7 +55,7 @@ const JobApplicationsList = () => {
       {applications.length === 0 && !isLoading ? (
         <p className="text-center">No applications yet.</p>
       ) : (
-        <ul className="space-y-4 mt-4">
+        <ul className="max-w-4xl mx-auto bg-white shadow-md rounded-md w-2/3">
           {applications.map((application, index) => (
             <li
               key={
@@ -67,7 +67,7 @@ const JobApplicationsList = () => {
               <h3 className="text-xl font-semibold">
                 {application.applicantName}
               </h3>
-              <div className="mt-2">
+              <div className="pt-2">
                 <p>
                   Resume:
                   <button
@@ -102,7 +102,7 @@ const JobApplicationsList = () => {
                 </p>
               </div>
 
-              <div className="mt-2">
+              <div className="pt-2">
                 <p>
                   Applied on:
                   {new Date(application.createdAt).toLocaleDateString()}

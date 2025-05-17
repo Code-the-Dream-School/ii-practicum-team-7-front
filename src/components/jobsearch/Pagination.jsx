@@ -10,7 +10,7 @@ const Pagination = (props) => {
         key={i + 1} 
         onClick={() => setCurrentPage(i + 1)} 
         className={`
-          bg-black text-ny-pink-light px-1.5 rounded-md
+          bg-black text-ny-pink-light px-1.5 rounded-md min-w-[21px] mx-1
           ${currentPage === i + 1 ? 'active' : ''}
           `}
         >

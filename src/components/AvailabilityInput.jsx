@@ -22,7 +22,7 @@ function AvailabilityInput() {
         const end = new Date(`${dateString}T${endTime}`);
 
         if (start >= end) {
-            setErrorMessage('Start time Must be Before End Time');
+            setErrorMessage('Start Time Must be Before End Time');
             return;
         }
 

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from "react-router-dom";
-import logo from "../images/logo1.png";
 import jobSearch from "../images/jobsearch.jpg";
 import zipcodes from 'zipcodes';
+import PostLink from './jobsearch/PostLink.jsx';
 import Pagination from "./jobsearch/Pagination.jsx";
 import JobPostings from "./jobsearch/JobPostings.jsx";
 import JobSearchArea from "./jobsearch/JobSearchArea.jsx";
@@ -205,7 +204,9 @@ const JobSearch = () => {
           totalPages={totalPages} 
           setCurrentPage={setCurrentPage} 
           currentPage={currentPage}
-          />
+        />
+
+        <PostLink />
 
       </div>
     </div>
