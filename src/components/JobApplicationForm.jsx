@@ -36,12 +36,22 @@ const JobApplicationForm = () => {
   };
 
   //for the files
+  const maxSizeFile = 9.5 * 1024 * 1024;
+
   const handleFileChange = (e) => {
     const { name, files } = e.target;
     if (files.length > 0) {
+      const file = files[0];
+      if (file.size > maxSizeFile) {
+        setFormError(
+          `The file "${file.name}" is too big. Maximum size allowed is 9.5 MB.`
+        );
+        return;
+      }
+      setFormError("");
       setFormData((prev) => ({
         ...prev,
-        [name]: files[0],
+        [name]: file,
       }));
     }
   };
@@ -60,11 +70,6 @@ const JobApplicationForm = () => {
       setFormError("please complete all fields before submitting!!");
       return;
     }
-
-    // const submissionData = new FormData();
-    // submissionData.append("applicantName", formData.applicantName);
-    // submissionData.append("resume", formData.resumeFile);
-    // submissionData.append("coverletter", formData.coverLetterFile);
 
     setIsSubmitting(true);
     setStatus("uploading");
@@ -102,7 +107,19 @@ const JobApplicationForm = () => {
         navigate(`/jobs`);
       }, 1000);
     } catch (error) {
-      setError(error.message);
+      if (error.response) {
+        if (error.response.status === 401) {
+          setError(
+            "user must be logged in to apply for job.  Please log in and try again."
+          );
+        } else {
+          setError(error.response.data?.message || "an error ocurred.");
+        }
+      } else {
+        setError(
+          "Hmm... something went wrong! Check your connection or try smaller files."
+        );
+      }
       setStatus("error");
       console.error("Error applying for job:", error.message);
     } finally {
@@ -111,10 +128,18 @@ const JobApplicationForm = () => {
   };
 
   return (
-    <div className="max-w-xl mx-auto mt-10 p-6 bg-white shadow-md rounded-md">
+    <div className="max-w-xl mx-auto mt-32 p-6 bg-white shadow-md rounded-md">
       <h2 className="text-2xl font-semibold text-center text-ny-pink mb-4">
         Apply for Job
       </h2>
+      <p className="text-sm text-gray-500 text-center mb-2">
+        All fields marked with <span className="text-red-500">*</span> are
+        required.
+      </p>
+
+      {formError && (
+        <div className="text-red-500 mb-2 text-center">{formError}</div>
+      )}
       {error && <div className="text-red-500 mb-2 text-center">{error}</div>}
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="form-group">
@@ -122,7 +147,7 @@ const JobApplicationForm = () => {
             htmlFor="applicantName"
             className="block text-lg font-medium text-gray-700"
           >
-            Your Name:
+            <span className="text-red-500">*</span>Your Name:
           </label>
           <input
             type="text"
@@ -139,7 +164,7 @@ const JobApplicationForm = () => {
             htmlFor="resumeFile"
             className="block text-lg font-medium text-gray-700"
           >
-            Resume (PDF):
+            <span className="text-red-500">*</span> Resume (PDF):
           </label>
           <input
             type="file"
@@ -148,14 +173,18 @@ const JobApplicationForm = () => {
             accept=".pdf"
             onChange={handleFileChange}
             required
+            disabled={isSubmitting}
           />
+          <p className="text-xs text-gray-500 mt-1">
+            Max file size: 9.5 MB. PDF only.
+          </p>
         </div>
         <div className="form-group">
           <label
             htmlFor="coverLetterFile"
             className="block text-lg font-medium text-gray-700"
           >
-            Cover Letter (PDF):
+            <span className="text-red-500">*</span> Cover Letter (PDF):
           </label>
           <input
             type="file"
@@ -163,8 +192,13 @@ const JobApplicationForm = () => {
             name="coverLetterFile"
             accept=".pdf"
             onChange={handleFileChange}
+            required
+            disabled={isSubmitting}
             className="w-full px-4 py-2 border border-gray-300 rounded resize-none focus:outline-none focus:ring-2 focus:ring-ny-pink"
           />
+          <p className="text-xs text-gray-500 mt-1">
+            Max file size: 9.5 MB. PDF only.
+          </p>
         </div>
         {status === "uploading" && (
           <div className="space-y-2">
