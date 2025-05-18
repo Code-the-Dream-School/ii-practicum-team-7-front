@@ -148,7 +148,7 @@ const Navbar = () => {
           </Link>
           {currentUserId && (
             <>
-              <Link to={`/profile/${currentUserId}`}>Profile</Link>
+              <Link to={`/profile/${currentUserId}`} onClick={() => setMenuOpen(false)}>Profile</Link>
               <button onClick={logoutCurrentUser} className="text-left mt-8">
                 Sign out
               </button>

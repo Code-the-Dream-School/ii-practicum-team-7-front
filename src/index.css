@@ -58,6 +58,7 @@
         py-1.5 px-3
         hover:bg-gray-800
         min-w-[70px]
+        disabled:bg-gray-400
     }
     .btn-pnk {
         @apply
